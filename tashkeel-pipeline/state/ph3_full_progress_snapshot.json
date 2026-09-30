@@ -1,0 +1,28 @@
+{
+ "snapshot_at": "2026-10-01 (session after API-quota stop)",
+ "engine": "ph3_engine_v53.mjs (batched retries + final individual drain)",
+ "units_total_recorded": 618,
+ "ok": 567,
+ "failed": 45,
+ "quarantined": 6,
+ "attempts_distribution": {
+  "0": 6,
+  "1": 400,
+  "2": 131,
+  "3": 31,
+  "4": 50
+ },
+ "baseline_before_this_session": {
+  "recorded": 116,
+  "ok": 65,
+  "failed": 45,
+  "quarantined": 6
+ },
+ "new_this_session": {
+  "ok": 502,
+  "failed": 0
+ },
+ "remaining": 21262,
+ "resume_command": "cd /home/z/my-project && timeout 550 bash scripts/ph3_full_run_v53.sh 3  (repeat per ~9-min chunk; ~500 units/chunk with 3 workers; 4+ workers trigger 429 storms)",
+ "note": "Session stopped by API quota exhaustion (429 on single calls). v5.3 first-pass success rate on new units this session: 502/502 = 100%."
+}
