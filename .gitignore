@@ -18,6 +18,7 @@ inference/dars.wav
 inference/ask.wav
 inference/para.wav
 inference/msa.wav
+inference/web_outputs/
 
 # ملفات نظام
 Thumbs.db
