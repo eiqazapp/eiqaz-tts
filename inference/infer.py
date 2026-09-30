@@ -52,6 +52,79 @@ for _p in (LIB_DIR, MIXER_REPO_DIR):
 # نفس خريطة التوكنز المصرية من نواة التدريب (بدون أي تعديل)
 EGY_TOKEN_MAP = {'j': 'v', 'q': '<', '^': 't', '*': 'd'}
 
+# ============================================================================
+# إصلاح القاف الجيمية (PATCH 6) — انظر PATCHES.md والتحقيق الكامل في
+# validation/test_qaf_pronunciation.py
+# ============================================================================
+# السبب الجذري المُثبَت: الخريطة أعلاه تحوّل q→'<' بلا شرط في التدريب
+# والاستدلال معًا، فالنموذج لم يرَ توكن 'q' إطلاقًا (0 من 1,590,209 توكن
+# في corpus التدريب كاملًا). النتيجة: الكلمات التي تُنطق قافها [g]
+# (رقم، قانون، القرآن، مقام...) تُقرأ همزة [ʔ] أو مدًّا يشبه الألف.
+#
+# الإصلاح العام: لهذه الكلمات فقط (معجم هياكل مُثبَت)، تُستبدل ق→ج في
+# نص باكوالتير قبل الترميز، فتتولّد التوكن 'v' — وهو التوكن الذي تعلّمه
+# النموذج نطقًا [g] من كل جيمات corpus التدريب المصري (ج المصرية = [g]).
+# كل ما عداها يبقى على السلوك الأصلي q→'<' (الصحيح للقاف القاهرية [ʔ]).
+#
+# أمان التغيير: q و j يولّدان بنية توكنز متطابقة تمامًا (الفرق الوحيد
+# تلوين الحركات المُطبَقة AA/aa — والتوكنان يتوحدان إلى 'aa' في الترميز)،
+# فلا يتغير طول التسلسل ولا مواضع التوكنز، ولا يُمَس النموذج أو أوزانه.
+_QAF_DIAC = frozenset('auiFNK~o')       # حركات باكوالتير (تُنزع لهيكل المطابقة)
+_QAF_CLITICS = ('w', 'f', 'b', 'l', 'k')  # سوابق اتصال شائعة قبل الكلمة/ال
+
+# هياكل باكوالتير (بلا حركات) لكلمات قاف=[g]. «ال» والسوابق تُنزع تلقائيًا
+# عند المطابقة فلا حاجة لإدراج صيغها. '|' = مدّة آ.
+# الفئة B: قاف جيمية معتمدة من التحقيق (قياس صوتي/معجم دخائل/سجل ديني).
+# الفئة C: أفضل-جهد — [g] أقرب إلى [q] الفصحى من [ʔ] حتى إعادة التدريب.
+QAF_G_SKELETONS = frozenset({
+    # -- الفئة B (معتمدة) --
+    'rqm', 'rqmp', 'rqmnp', '>rqAm', 'trqym',            # رقم/رقمة/رقمنة/أرقام/ترقيم
+    'qr|n', 'qr|ny', 'qr|nyp', 'qrAn', 'qrAny',          # قرآن/قرآني/قرآنية (+رسم بلا مدة)
+    'mqAm', 'mqAmAt',                                    # مقام/مقامات
+    'qAnwn', 'qAnwny', 'qAnwnyp', 'qwAnyn',            # قانون/قانوني/قانونية/قوانين
+    'qr$', 'qrw$',                                       # قرش/قروش
+    'qyrAT', 'qrAryT',                                   # قيراط/قراريط
+    'qnTAr', 'qnATyr',                                   # قنطار/قناطير
+    # -- الفئة C (أفضل-جهد [g]؛ الهدف [q] الكامل يتطلب إعادة تدريب) --
+    "qrA'p", "qrA'h", "qrA'At",                          # قراءة/قراءات
+    'qr>', 'qr>t',                                        # قرأ/قرأت (السجل الديني [g]) — يقرأ/نقرأ تُترك [ʔ] عاميةً
+    'Hqyqp', 'Hqyqh', 'Hqyqy', 'Hqyqyp', 'HqA}q',        # حقيقة/حقيقي/حقائق
+    'dqyqp', 'dqyqh', 'dqyq', 'dqA}q',                   # دقيقة/دقيق/دقائق
+})
+
+
+def _qaf_skel_variants(s):
+    """صيغ المطابقة المحتملة لهيكل الكلمة: كما هو، أو بعد نزع «ال»،
+    أو سابقة اتصال (و/ف/ب/ل/ك) [+ «ال»]."""
+    out = {s}
+    if s.startswith('Al') and len(s) > 3:
+        out.add(s[2:])
+    for c in _QAF_CLITICS:
+        if s.startswith(c) and len(s) > 2:
+            out.add(s[1:])
+            if s[1:3] == 'Al' and len(s) > 4:
+                out.add(s[3:])
+    return out
+
+
+def fix_qaf_g(buck):
+    """إصلاح القاف الجيمية على مستوى باكوالتير: في الكلمات المعجمية فقط،
+    ق→ج (فتصبح 'v' بعد EGY_TOKEN_MAP = نطق [g] المُدرَّب). يعيد النص كما هو
+    إن لم تحدث أي إصلاحات. لا يمس اللهجة الفصحى (toks_ms) إطلاقًا."""
+    if 'q' not in buck:
+        return buck
+    words = buck.split(' ')
+    hit = False
+    for i, w in enumerate(words):
+        if 'q' not in w:
+            continue
+        skel = ''.join(c for c in w if c not in _QAF_DIAC)
+        if skel and any(v in QAF_G_SKELETONS
+                        for v in _qaf_skel_variants(skel)):
+            words[i] = w.replace('q', 'j')
+            hit = True
+    return ' '.join(words) if hit else buck
+
 # نفس تجاوزات الإعدادات المستخدمة في التدريب — تُستخدم فقط كاحتياط إذا
 # كان الـcheckpoint قديمًا لا يخزّن net_config داخله. الأصل: قراءة
 # net_config من الـcheckpoint نفسه (أدق وأكثر موثوقية).
@@ -101,7 +174,8 @@ def diacritic_density(text):
 
 
 def get_tokenizer():
-    """نفس دالة get_tokenizer في نواة التدريب حرفيًا."""
+    """نفس دالة get_tokenizer في نواة التدريب حرفيًا + إصلاح القاف الجيمية
+    (PATCH 6) على مسار اللهجة المصرية فقط — انظر fix_qaf_g أعلاه."""
     from tts_arabic.text import (
         arabic_to_buckwalter, tokens_to_ids, phonemes_to_tokens,
         buckwalter_to_phonemes)
@@ -110,7 +184,9 @@ def get_tokenizer():
         return phonemes_to_tokens(buckwalter_to_phonemes(arabic_to_buckwalter(text)))
 
     def toks_egy(text):
-        return [EGY_TOKEN_MAP.get(t, t) for t in toks_ms(text)]
+        buck = fix_qaf_g(arabic_to_buckwalter(text))
+        toks = phonemes_to_tokens(buckwalter_to_phonemes(buck))
+        return [EGY_TOKEN_MAP.get(t, t) for t in toks]
 
     return toks_ms, toks_egy, tokens_to_ids
 

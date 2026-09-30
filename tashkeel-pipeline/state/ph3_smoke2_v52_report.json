@@ -1,0 +1,298 @@
+{
+ "rows": [
+  {
+   "id": "0_04186_00",
+   "status": "quarantined"
+  },
+  {
+   "id": "1_06985_02",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 1,
+   "out": "اِلتَّسْرِعْ دَهْ مُمْكِنْ يِخْلِيكْ تِشْتَرِي بِسْعْرْ أَغْلَى مِنْ اِلْمُفْرُوضْ, أَوْ فِي مَكَانْ مُشْ مُنَاسِبْ لِيكْ,",
+   "approved_out": "اِلتَّسْرِعْ دَهْ مُمْكِنْ يِخْلِيكْ تِشْتَرِي بِسْعْرْ أَغْلَى مِنْ اِلْمُفْرُوْضْ, أَوْ فِيْ مَكَانْ مُشْ مُنَاسِبْ لِيْكْ,",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 106,
+   "n_tok_mine": 93,
+   "ratio_mine_vs_catt": 0.877,
+   "density": 3.27,
+   "over_160": false,
+   "fixes": {
+    "letter_restore": 1
+   }
+  },
+  {
+   "id": "0_04717_01",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 1,
+   "out": "بِيْقُولْ مُهِمَّة اوِّي إِنَّ اِلْوَاحِدْ مَا يِعْزِلْشْ نَفْسُهْ وَقْتْ اِلْأَزْمَة دِيْ.",
+   "approved_out": "بِيْقُوْلْ مُهِمَّة اُوِّيْ إِنَّ اِلْوَاحِدْ مَا يِعْزِلْشْ نَفْسُهْ وَقْتْ اِلْأَزْمَة دِيْ.",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 76,
+   "n_tok_mine": 68,
+   "ratio_mine_vs_catt": 0.895,
+   "density": 3.45,
+   "over_160": false,
+   "fixes": {
+    "al_kasra": 1,
+    "taa_sukun_strip": 0
+   }
+  },
+  {
+   "id": "1_05209_00",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 1,
+   "out": "إِزَّايْكُمْ? يَا رَبِّ تِكُونُوا بِخَيْرْ اِلنَّهَارْدَة بَقَى هِنْغُوصْ فِي حَتَّة مُهِمَّة اوِّي.",
+   "approved_out": "إِزَّايْكُمْ? يَا رَبِّ تِكُوْنُوْا بِخَيْرْ اِلْنَّهَارْدَة بَقَى هِنْغُوْصْ فِيْ حِتَّة مُهِمَّة اُوِّيْ.",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 89,
+   "n_tok_mine": 81,
+   "ratio_mine_vs_catt": 0.91,
+   "density": 3.25,
+   "over_160": false,
+   "fixes": {
+    "punct_unswap": 1,
+    "letter_restore": 1,
+    "al_kasra": 0,
+    "taa_sukun_strip": 1
+   }
+  },
+  {
+   "id": "1_02373_00",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 1,
+   "out": "وَاللهِ يَا طَانْتْ صَلْنَا اِسْتِخَارَة وَمَا فِيْشْ نَصِيْبْ رَبِّنَا يِكْرِمُوَا بِالْلِيْ أَحْسَنْ",
+   "approved_out": "وَاللهِ يَا طَانْتْ صَلْنَا اسْتِخَارَة وَمَا فِيْشْ نَصِيْبْ رَبِّنَا يِكْرِمُوْا بِالْلِيْ أَحْسَنْ",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 91,
+   "n_tok_mine": 77,
+   "ratio_mine_vs_catt": 0.846,
+   "density": 3.33,
+   "over_160": false,
+   "fixes": {}
+  },
+  {
+   "id": "0_06079_00",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 1,
+   "out": "تَمَامًا, فِي قَلْبْ مِنْطَقَة اِلنَّزَاعْ لَقَدَرَ اللهُ, قِيمَة اِلْعَقَارْ مُمْكِنْ تِنْهَارْ خَالِصْ, مَفِيشْ أَمَانْ, مِينْ هِيْشْتَرِيْ أَوْ يِسْتَثْمِرْ?",
+   "approved_out": "تَمَامًا, فِيْ قَلْبْ مِنْطَقَة اِلنِّزَاعْ لَقَدَرَ اللهُ, قِيْمَة اِلْعِقَارْ مُمْكِنْ تِنْهَارْ خَالِصْ, مِفِيْشْ أَمَانْ, مِيْنْ هِيْشْتَرِيْ أَوْ يِسْتَثْمِرْ?",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 138,
+   "n_tok_mine": 124,
+   "ratio_mine_vs_catt": 0.899,
+   "density": 3.39,
+   "over_160": false,
+   "fixes": {
+    "al_kasra": 0,
+    "taa_sukun_strip": 2,
+    "tier_a": [
+     "لقدر الله"
+    ]
+   }
+  },
+  {
+   "id": "1_00955_01",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 3,
+   "out": "مُبَاشِرَة وِمُفْهُومَة بِرَبِّنَا وِهِيَ طَبْعَاً اِلْاَكْثَر اِنْتِشَارَا وِقَبُولَا وِلِيهَا جِذْوَر وَاضْحَة فِي اِلدِّينْ",
+   "approved_out": "مُبَاشِرَة وَمُفْهُومَة بِرَبِّنَا وِهِيَ طَبْعًا اِلْاَكْثَرْ اِنْتِشَارًا وَقَبُوْلَا وَلِيْهَا جُذُوْرْ وَاضِحَة فِيْ اِلْدِيْنْ",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 116,
+   "n_tok_mine": 101,
+   "ratio_mine_vs_catt": 0.871,
+   "density": 3.77,
+   "over_160": false,
+   "fixes": {
+    "letter_restore": 1
+   }
+  },
+  {
+   "id": "1_02614_01",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 2,
+   "out": "شَخْص تَقْبَلْ اِلْكِرْم لِشَخْص عَلَيْه دَيْن اِجْتِمَاعِي وَاجِب اِلسَّدَاد وِبِكْدَه اِلْخِنَاءَة دِي مُش بِتِنْهِي اِلْمَوْقِف",
+   "approved_out": "شَخْصْ تَقْبَلْ اِلْكِرْمْ لِشَخْصْ عَلَيْهْ دَيْنْ اِجْتِمَاعِيْ وَاجِبْ اِلسَّدَادْ وَبِكَدْهْ اِلْخُنَاءَة دِيْ مُشْ بِتِنْهِيْ اِلْمَوْقِفْ",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 123,
+   "n_tok_mine": 104,
+   "ratio_mine_vs_catt": 0.846,
+   "density": 3.27,
+   "over_160": false,
+   "fixes": {}
+  },
+  {
+   "id": "0_08127_01",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 2,
+   "out": "طَبْ لَوْ حَدْ لَا قَدَرَ اللهُ وَقَعْ فِي فَخْ زِي دَهْ, حَجْمْ اِلضَّرْرْ بِيْبْقَى عَامِلْ إِزَايْ?",
+   "approved_out": "طَبْ لُوْ حَدْ لَا قَدَرَ اللهُ وَقَعْ فِيْ فَخْ زِيْ دَهْ, حَجْمْ اِلْضَّرَرْ بِيْبْقَى عَامِلْ إِزَايْ?",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 91,
+   "n_tok_mine": 80,
+   "ratio_mine_vs_catt": 0.879,
+   "density": 2.38,
+   "over_160": false,
+   "fixes": {
+    "tier_a": [
+     "لا قدر الله"
+    ]
+   }
+  },
+  {
+   "id": "0_01179_00",
+   "status": "ok",
+   "attempts": 1,
+   "approved_status": "ok",
+   "approved_attempts": 1,
+   "out": "رَمَضَانْ فِي مِصْرْ حَاجَة تَانِيَة بِصْ اِلْجُمْلَة دِي خِلَاصْ مَا بِقْتِشْ أُغْنِيَة",
+   "approved_out": "رَمَضَانْ فِيْ مِصْرْ حَاجَة تَانِيَة بَصْ اِلْجُمْلَة دِيْ خَلَاصْ مَا بِقْتْشْ أُغْنِيَة",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 84,
+   "n_tok_mine": 68,
+   "ratio_mine_vs_catt": 0.81,
+   "density": 2.75,
+   "over_160": false,
+   "fixes": {}
+  },
+  {
+   "id": "0_05699_00",
+   "status": "failed",
+   "attempts": 4,
+   "approved_status": "ok",
+   "approved_attempts": 4,
+   "out": "قبل أي حاجة تانية. نمسك ورقة و الم و نسأل نفسنا شوية أسئلة أساسية.",
+   "approved_out": "قَبَلْ أَيْ حَاجَة تَانِيَة. نَمْسِكْ وَرْقَة وَ اِلْمْ وَ نَسْأَلْ نَفْسُنَا شُوَيَّة أَسْئِلَة أُسَاسِيَّة.",
+   "text_identical_to_approved": false,
+   "same_valid_status": false,
+   "n_tok_catt": 107,
+   "n_tok_mine": 64,
+   "ratio_mine_vs_catt": 0.598,
+   "density": 0.0,
+   "over_160": false,
+   "fixes": {}
+  },
+  {
+   "id": "0_01276_00",
+   "status": "failed",
+   "attempts": 4,
+   "approved_status": "ok",
+   "approved_attempts": 4,
+   "out": "وتلغي كل مواعمدك المهمة لحد ما ربنا يكرم وشعرك يطول وتقدر تصلح المصيبة اللي حصلت وده",
+   "approved_out": "وتَلْغِي كُلْ مُوَاعِمْدُكْ اِلْمُهِمَّة لِحَدْ مَا رَبِّنَا يِكْرِمْ وِشُعْرْكْ يِطُولْ وِتِقْدِرْ تِصْلَحْ اِلْمَصِيبَة اِلْلِي حَصْلَتْ وِدَهْ",
+   "text_identical_to_approved": false,
+   "same_valid_status": false,
+   "n_tok_catt": 130,
+   "n_tok_mine": 81,
+   "ratio_mine_vs_catt": 0.623,
+   "density": 0.0,
+   "over_160": false,
+   "fixes": {}
+  },
+  {
+   "id": "0_03547_01",
+   "status": "failed",
+   "attempts": 4,
+   "approved_status": "failed",
+   "approved_attempts": 4,
+   "out": "أساسي على تقرير طبي مهم صدر في ديسمبر 2024 وعنوانه الوحده معبر جداً بركة البيت",
+   "approved_out": "اِسَاسِي عَلَى تِقْرِيرْ طِبِّي مُهِمْ صَدَرْ فِي دِيسَمْبَرْ ٢٠٢٤ وِعَنْوَانُهُ اِلْوَاحِدَة مَعْبِر جِدَاً بَرَكَة اِلْبَيْت",
+   "text_identical_to_approved": false,
+   "same_valid_status": true,
+   "n_tok_catt": 118,
+   "n_tok_mine": 74,
+   "ratio_mine_vs_catt": 0.627,
+   "density": 0.07,
+   "over_160": false,
+   "fixes": {}
+  },
+  {
+   "id": "1_00768_01",
+   "status": "failed",
+   "attempts": 4,
+   "approved_status": "ok",
+   "approved_attempts": 4,
+   "out": "بالزبط عالم كامل من الظواهر الاجتماعية اللي بتحصل جوه صالة الحديد دي",
+   "approved_out": "بِالزَّبَطْ عَالَمْ كَامِلْ مِنْ اِلظَّوَاهِرْ اِلْاجْتِمَاعِيَّة اِلْلِّيْ بِتْحَصِلْ جُوهْ صَالَة اِلْحَدِيدْ دِيْ",
+   "text_identical_to_approved": false,
+   "same_valid_status": false,
+   "n_tok_catt": 97,
+   "n_tok_mine": 64,
+   "ratio_mine_vs_catt": 0.66,
+   "density": 0.0,
+   "over_160": false,
+   "fixes": {}
+  }
+ ],
+ "meta": {
+  "engine": "ph3_engine_v52.mjs v5.2 (guide v2.1; retry rebatching — failures re-batched in groups of RETRY_BATCH_SIZE instead of individual retries; system prompt + validators byte-identical to v5.1)",
+  "guide_path": "/home/z/my-project/work/tashkeel_guide_v2.md",
+  "guide_sha256": "5057ac9d974a4fd30a9fe6873b785dcf739c893dc62a5f0d25f65ebd563a41ae",
+  "prompt_sha256": "60130f6baeca1b56d69a14e90d72f8f11a27f6d7c5b2e08832230800b1678149",
+  "tanween_list_path": "/home/z/my-project/work/tanween_closed_list.json",
+  "tanween_list_sha256": "90d18ea69078b465ff9cca3dccf38606a1712f48e61d2346e5033601e5fce59a",
+  "tier_a_map_path": "/home/z/my-project/work/tier_a_map.json",
+  "tier_a_map_sha256": "3106f354c0e2550e9641b48191857a284c25ba2328eb9c1b939f30b0c3abf29e",
+  "tier_a_meta": {
+   "version": "v2.1 — 2026-09-30",
+   "total_corpus_positions": 88,
+   "n_entries": 18
+  },
+  "letter_fixes_path": "/home/z/my-project/work/ph1_letter_fixes.json",
+  "quarantine_path": "/home/z/my-project/work/ph1_quarantine.json",
+  "n_quarantined_written": 0,
+  "model": "glm-4-plus",
+  "batch_size": 2,
+  "retry_batch_size": 5,
+  "max_retry_rounds": 3,
+  "token_stats": {
+   "first_calls": 4,
+   "retry_calls": 3,
+   "rate_limited": 0,
+   "usage_present": 7,
+   "prompt_tokens": 107675,
+   "completion_tokens": 1824,
+   "chars": {
+    "system": 25398,
+    "user_first": 3445,
+    "out_first": 974,
+    "user_retry": 9967,
+    "out_retry": 1354
+   }
+  },
+  "finished": "2026-09-30T17:45:22.888Z",
+  "punct_rule": "U+060C->, U+061F->?",
+  "gates": [
+   "skeleton+punct two-sided",
+   "tanween closed list 191 structures",
+   "taa no-haraka (sukun stripped; Tier A spans exempt — قُوّةَ)",
+   "density>=1.2/w floor5",
+   "post-fixes: al_kasra + taa_sukun_strip",
+   "enforcement: letter_restore (§أ-1/§و) + Tier A map + rabbena + re-validation"
+  ]
+ }
+}

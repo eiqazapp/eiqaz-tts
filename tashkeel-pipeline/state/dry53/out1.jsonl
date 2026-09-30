@@ -1,0 +1,4 @@
+{"id":"u1","raw":"الراجل ده جاي","converted":"الراجل ده جاي","out":"اِلرَّاجِل دَهْ جَايْ","attempts":1,"status":"ok","fixes":{},"checks":{"skeleton":true,"tanween":true,"taa":true,"density":true},"reason":null}
+{"id":"u2","raw":"الراجل ده جاي, ماشي?","converted":"الراجل ده جاي, ماشي?","out":"اِلرَّاجِلَ دَهْ جَايْ, مَاشِي?","attempts":2,"status":"ok","fixes":{"punct_unswap":2},"checks":{"skeleton":true,"tanween":true,"taa":true,"density":true},"reason":null}
+{"id":"u3","raw":"الوضع ده كويس","converted":"الوضع ده كويس","out":"اِلْوُضِعْ دَهْ كُوَيْسْ","attempts":2,"status":"ok","fixes":{},"checks":{"skeleton":true,"tanween":true,"taa":true,"density":true},"reason":null}
+{"id":"u4","raw":"الواحد بيقرا كتير","converted":"الواحد بيقرا كتير","out":"اِلْوَاحِدْ بِيْقِرَا كَتِيرْ","attempts":4,"status":"ok","fixes":{},"checks":{"skeleton":true,"tanween":true,"taa":true,"density":true},"reason":null}
