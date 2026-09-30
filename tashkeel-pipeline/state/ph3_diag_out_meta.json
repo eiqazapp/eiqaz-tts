@@ -1,0 +1,31 @@
+{
+ "engine": "ph3_engine.mjs v5 (guide v2.1 — approved 2026-09-30)",
+ "guide_path": "/home/z/my-project/work/tashkeel_guide_v2.md",
+ "guide_sha256": "5057ac9d974a4fd30a9fe6873b785dcf739c893dc62a5f0d25f65ebd563a41ae",
+ "prompt_sha256": "60130f6baeca1b56d69a14e90d72f8f11a27f6d7c5b2e08832230800b1678149",
+ "tanween_list_path": "/home/z/my-project/work/tanween_closed_list.json",
+ "tanween_list_sha256": "90d18ea69078b465ff9cca3dccf38606a1712f48e61d2346e5033601e5fce59a",
+ "tier_a_map_path": "/home/z/my-project/work/tier_a_map.json",
+ "tier_a_map_sha256": "3106f354c0e2550e9641b48191857a284c25ba2328eb9c1b939f30b0c3abf29e",
+ "tier_a_meta": {
+  "version": "v2.1 — 2026-09-30",
+  "total_corpus_positions": 88,
+  "n_entries": 18
+ },
+ "letter_fixes_path": "/home/z/my-project/work/ph1_letter_fixes.json",
+ "quarantine_path": "/home/z/my-project/work/ph1_quarantine.json",
+ "n_quarantined_written": 0,
+ "model": "glm-4-plus",
+ "batch_size": 50,
+ "max_single_retries": 3,
+ "finished": "2026-09-30T09:34:24.867Z",
+ "punct_rule": "U+060C->, U+061F->?",
+ "gates": [
+  "skeleton+punct two-sided",
+  "tanween closed list 191 structures",
+  "taa no-haraka (sukun stripped; Tier A spans exempt — قُوّةَ)",
+  "density>=1.2/w floor5",
+  "post-fixes: al_kasra + taa_sukun_strip",
+  "enforcement: letter_restore (§أ-1/§و) + Tier A map + rabbena + re-validation"
+ ]
+}

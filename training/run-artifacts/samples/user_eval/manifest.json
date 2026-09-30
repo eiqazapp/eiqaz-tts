@@ -1,0 +1,156 @@
+[
+ {
+  "speaker": 0,
+  "category": "egyptian",
+  "index": 0,
+  "text": "دلوقتي هنبدأ الدرس يا عمر.",
+  "n_tokens": 27
+ },
+ {
+  "speaker": 0,
+  "category": "egyptian",
+  "index": 1,
+  "text": "أنا عايز أعرف إنت عملت إيه النهارده.",
+  "n_tokens": 39
+ },
+ {
+  "speaker": 0,
+  "category": "egyptian",
+  "index": 2,
+  "text": "بص معايا هنا وخلينا نجرب مرة تانية.",
+  "n_tokens": 35
+ },
+ {
+  "speaker": 0,
+  "category": "egyptian",
+  "index": 3,
+  "text": "هو إنت ليه ما قلتليش من الأول؟",
+  "n_tokens": 30
+ },
+ {
+  "speaker": 0,
+  "category": "code_switching",
+  "index": 0,
+  "text": "أنا هعمل meeting بكرة الصبح.",
+  "n_tokens": 27
+ },
+ {
+  "speaker": 0,
+  "category": "code_switching",
+  "index": 1,
+  "text": "ممكن تبعتلي الـreport بعد شوية؟",
+  "n_tokens": 26
+ },
+ {
+  "speaker": 0,
+  "category": "code_switching",
+  "index": 2,
+  "text": "إحنا محتاجين نراجع الـdeadline.",
+  "n_tokens": 30
+ },
+ {
+  "speaker": 0,
+  "category": "difficult_words",
+  "index": 0,
+  "text": "الجمل شايل الحمل فوق الجبل في عز الشمس.",
+  "n_tokens": 38
+ },
+ {
+  "speaker": 0,
+  "category": "difficult_words",
+  "index": 1,
+  "text": "القرش غالي والقلب بيوجع يا قمر.",
+  "n_tokens": 33
+ },
+ {
+  "speaker": 0,
+  "category": "difficult_words",
+  "index": 2,
+  "text": "ظرف الثلاجة فيه تلات كوبايين شاي بلح.",
+  "n_tokens": 37
+ },
+ {
+  "speaker": 0,
+  "category": "difficult_words",
+  "index": 3,
+  "text": "عم حسين غطى الغلاية بغلاف فضي غليظ.",
+  "n_tokens": 35
+ },
+ {
+  "speaker": 1,
+  "category": "egyptian",
+  "index": 0,
+  "text": "دلوقتي هنبدأ الدرس يا عمر.",
+  "n_tokens": 27
+ },
+ {
+  "speaker": 1,
+  "category": "egyptian",
+  "index": 1,
+  "text": "أنا عايز أعرف إنت عملت إيه النهارده.",
+  "n_tokens": 39
+ },
+ {
+  "speaker": 1,
+  "category": "egyptian",
+  "index": 2,
+  "text": "بص معايا هنا وخلينا نجرب مرة تانية.",
+  "n_tokens": 35
+ },
+ {
+  "speaker": 1,
+  "category": "egyptian",
+  "index": 3,
+  "text": "هو إنت ليه ما قلتليش من الأول؟",
+  "n_tokens": 30
+ },
+ {
+  "speaker": 1,
+  "category": "code_switching",
+  "index": 0,
+  "text": "أنا هعمل meeting بكرة الصبح.",
+  "n_tokens": 27
+ },
+ {
+  "speaker": 1,
+  "category": "code_switching",
+  "index": 1,
+  "text": "ممكن تبعتلي الـreport بعد شوية؟",
+  "n_tokens": 26
+ },
+ {
+  "speaker": 1,
+  "category": "code_switching",
+  "index": 2,
+  "text": "إحنا محتاجين نراجع الـdeadline.",
+  "n_tokens": 30
+ },
+ {
+  "speaker": 1,
+  "category": "difficult_words",
+  "index": 0,
+  "text": "الجمل شايل الحمل فوق الجبل في عز الشمس.",
+  "n_tokens": 38
+ },
+ {
+  "speaker": 1,
+  "category": "difficult_words",
+  "index": 1,
+  "text": "القرش غالي والقلب بيوجع يا قمر.",
+  "n_tokens": 33
+ },
+ {
+  "speaker": 1,
+  "category": "difficult_words",
+  "index": 2,
+  "text": "ظرف الثلاجة فيه تلات كوبايين شاي بلح.",
+  "n_tokens": 37
+ },
+ {
+  "speaker": 1,
+  "category": "difficult_words",
+  "index": 3,
+  "text": "عم حسين غطى الغلاية بغلاف فضي غليظ.",
+  "n_tokens": 35
+ }
+]

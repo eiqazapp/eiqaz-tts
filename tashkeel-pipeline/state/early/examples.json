@@ -1,0 +1,593 @@
+[
+ {
+  "utt": "1_06999_01",
+  "word": "يمشي،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 6,
+  "dur_frames": 30,
+  "range_ms": [
+   2101,
+   2450
+  ],
+  "purity": 0.9,
+  "pause_center_ms": 2305.0,
+  "pause_len_ms": 337.0,
+  "neighbourhood": [
+   "m",
+   "$",
+   "ii",
+   ",",
+   "_+_",
+   "t",
+   "a"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_04343_01",
+  "word": "إزاي؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 10,
+  "dur_frames": 28,
+  "range_ms": [
+   5016,
+   5341
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 5178.0,
+  "pause_len_ms": 325.0,
+  "neighbourhood": [
+   "aa",
+   "y",
+   "a",
+   "?",
+   "_+_",
+   "l",
+   "ii"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_05088_00",
+  "word": "مهمة،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 6,
+  "dur_frames": 26,
+  "range_ms": [
+   2844,
+   3146
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 3007.0,
+  "pause_len_ms": 372.0,
+  "neighbourhood": [
+   "t",
+   "i",
+   "n",
+   ",",
+   "_+_",
+   "h",
+   "i"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_05203_02",
+  "word": "المعادي،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 14,
+  "dur_frames": 25,
+  "range_ms": [
+   5457,
+   5747
+  ],
+  "purity": 0.92,
+  "pause_center_ms": 5625.0,
+  "pause_len_ms": 290.0,
+  "neighbourhood": [
+   "aa",
+   "d",
+   "ii",
+   ",",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "1_05688_02",
+  "word": "معينة،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 6,
+  "dur_frames": 25,
+  "range_ms": [
+   2577,
+   2868
+  ],
+  "purity": 0.76,
+  "pause_center_ms": 2670.0,
+  "pause_len_ms": 255.0,
+  "neighbourhood": [
+   "t",
+   "i",
+   "n",
+   ",",
+   "_+_",
+   "w",
+   "a"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "1_09122_00",
+  "word": "خالص،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 8,
+  "dur_frames": 21,
+  "range_ms": [
+   3030,
+   3274
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 3140.0,
+  "pause_len_ms": 313.0,
+  "neighbourhood": [
+   "S",
+   "u",
+   "n",
+   ",",
+   "_+_",
+   "d",
+   "a"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_08077_00",
+  "word": "لورا،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 5,
+  "dur_frames": 17,
+  "range_ms": [
+   2426,
+   2624
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 2543.0,
+  "pause_len_ms": 325.0,
+  "neighbourhood": [
+   "r",
+   "a",
+   "n",
+   ",",
+   "_+_",
+   "w",
+   "a"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "1_05474_00",
+  "word": "ممكن؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 17,
+  "dur_frames": 15,
+  "range_ms": [
+   7256,
+   7430
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 7274.0,
+  "pause_len_ms": 360.0,
+  "neighbourhood": [
+   "n",
+   "u",
+   "n",
+   "?",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_05088_00",
+  "word": "نقطة،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 1,
+  "dur_frames": 13,
+  "range_ms": [
+   743,
+   894
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 842.0,
+  "pause_len_ms": 267.0,
+  "neighbourhood": [
+   "t",
+   "i",
+   "n",
+   ",",
+   "_+_",
+   "w",
+   "a"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_09242_00",
+  "word": "كلها،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 6,
+  "dur_frames": 13,
+  "range_ms": [
+   2438,
+   2589
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 2543.0,
+  "pause_len_ms": 279.0,
+  "neighbourhood": [
+   "a",
+   "h",
+   "aa",
+   ",",
+   "_+_",
+   "w",
+   "a"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "1_06547_00",
+  "word": "يمكن،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 5,
+  "dur_frames": 11,
+  "range_ms": [
+   1533,
+   1660
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 1660.0,
+  "pause_len_ms": 255.0,
+  "neighbourhood": [
+   "i",
+   "n",
+   "u",
+   ",",
+   "_+_",
+   "w",
+   "a"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_04175_01",
+  "word": "إزاي؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 10,
+  "dur_frames": 6,
+  "range_ms": [
+   5213,
+   5283
+  ],
+  "purity": 0.0,
+  "pause_center_ms": 5306.0,
+  "pause_len_ms": 46.0,
+  "neighbourhood": [
+   "z",
+   "aa",
+   "ii",
+   "?",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "WRONG"
+ },
+ {
+  "utt": "1_06378_00",
+  "word": "للفريق؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 8,
+  "dur_frames": 5,
+  "range_ms": [
+   3529,
+   3587
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 3535.0,
+  "pause_len_ms": 151.0,
+  "neighbourhood": [
+   "ii",
+   "<",
+   "i",
+   "?",
+   "_+_",
+   "<",
+   "a"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "1_03513_00",
+  "word": "الصيدلية؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 11,
+  "dur_frames": 4,
+  "range_ms": [
+   3587,
+   3634
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 3640.0,
+  "pause_len_ms": 151.0,
+  "neighbourhood": [
+   "a",
+   "t",
+   "i",
+   "?",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "1_06910_03",
+  "word": "نفسها؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 9,
+  "dur_frames": 3,
+  "range_ms": [
+   3692,
+   3727
+  ],
+  "purity": 0.0,
+  "pause_center_ms": 2972.0,
+  "pause_len_ms": 46.0,
+  "neighbourhood": [
+   "i",
+   "h",
+   "aa",
+   "?",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "WRONG"
+ },
+ {
+  "utt": "0_08077_00",
+  "word": "نقرر،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 1,
+  "dur_frames": 2,
+  "range_ms": [
+   964,
+   987
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 871.0,
+  "pause_len_ms": 302.0,
+  "neighbourhood": [
+   "i",
+   "r",
+   "u",
+   ",",
+   "_+_",
+   "l",
+   "aa"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_05088_00",
+  "word": "طبعاً،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 15,
+  "dur_frames": 1,
+  "range_ms": [
+   6513,
+   6525
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 6507.0,
+  "pause_len_ms": 81.0,
+  "neighbourhood": [
+   "a",
+   "n",
+   "aa",
+   ",",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_05648_01",
+  "word": "برضو،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 11,
+  "dur_frames": 1,
+  "range_ms": [
+   4841,
+   4853
+  ],
+  "purity": 0.0,
+  "pause_center_ms": 4923.0,
+  "pause_len_ms": 139.0,
+  "neighbourhood": [
+   "w",
+   "i",
+   "n",
+   ",",
+   "_+_",
+   "m",
+   "i"
+  ],
+  "verdict": "WRONG"
+ },
+ {
+  "utt": "0_05648_01",
+  "word": "كده؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 13,
+  "dur_frames": 1,
+  "range_ms": [
+   5352,
+   5364
+  ],
+  "purity": 0.0,
+  "pause_center_ms": 4923.0,
+  "pause_len_ms": 139.0,
+  "neighbourhood": [
+   "d",
+   "a",
+   "h",
+   "?",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "WRONG"
+ },
+ {
+  "utt": "0_06057_01",
+  "word": "الصح؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 6,
+  "dur_frames": 1,
+  "range_ms": [
+   2438,
+   2450
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 2566.0,
+  "pause_len_ms": 395.0,
+  "neighbourhood": [
+   "H",
+   "_dbl_",
+   "a",
+   "?",
+   "_+_",
+   "<",
+   "ii"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_06057_01",
+  "word": "نكبر؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 13,
+  "dur_frames": 1,
+  "range_ms": [
+   4853,
+   4865
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 4888.0,
+  "pause_len_ms": 93.0,
+  "neighbourhood": [
+   "i",
+   "r",
+   "u",
+   "?",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "0_09496_03",
+  "word": "جديد،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 12,
+  "dur_frames": 1,
+  "range_ms": [
+   5457,
+   5468
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 5341.0,
+  "pause_len_ms": 279.0,
+  "neighbourhood": [
+   "d",
+   "i",
+   "n",
+   ",",
+   "_+_",
+   "$",
+   "u"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "1_01232_00",
+  "word": "بالزبط،",
+  "mark": "،",
+  "token": ",",
+  "n_sep_before": 0,
+  "dur_frames": 1,
+  "range_ms": [
+   534,
+   546
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 551.0,
+  "pause_len_ms": 81.0,
+  "neighbourhood": [
+   "b",
+   "T",
+   "i",
+   ",",
+   "_+_",
+   "r",
+   "uu"
+  ],
+  "verdict": "CORRECT"
+ },
+ {
+  "utt": "1_01382_00",
+  "word": "محروقة؟",
+  "mark": "؟",
+  "token": "?",
+  "n_sep_before": 12,
+  "dur_frames": 1,
+  "range_ms": [
+   3622,
+   3634
+  ],
+  "purity": 1.0,
+  "pause_center_ms": 3657.0,
+  "pause_len_ms": 70.0,
+  "neighbourhood": [
+   "t",
+   "u",
+   "n",
+   "?",
+   "_+_",
+   "_eos_"
+  ],
+  "verdict": "CORRECT"
+ }
+]

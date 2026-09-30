@@ -1,0 +1,65 @@
+{
+ "engine": "ph3_engine.mjs v5 (guide v2.1 — approved 2026-09-30)",
+ "n_input": 21880,
+ "n_records": 116,
+ "status_counts": {
+  "ok": 65,
+  "failed": 45,
+  "quarantined": 6
+ },
+ "status_counts_by_split": {
+  "train": {
+   "ok": 60,
+   "failed": 42,
+   "quarantined": 6
+  },
+  "eval": {
+   "ok": 5,
+   "failed": 3
+  }
+ },
+ "attempts_histogram_ok_units": {
+  "1": 31,
+  "2": 15,
+  "3": 14,
+  "4": 5
+ },
+ "fixes": {
+  "units_touched": {
+   "letter_restore": 26,
+   "al_kasra": 41,
+   "taa_sukun_strip": 41,
+   "punct_unswap": 2
+  },
+  "total_operations": {
+   "letter_restore": 39,
+   "al_kasra": 19,
+   "taa_sukun_strip": 78,
+   "punct_unswap": 2
+  }
+ },
+ "letter_fix_units": 0,
+ "density_per_ok_unit": {
+  "n": 65,
+  "median": 3.857,
+  "mean": 3.83,
+  "p10": 3.106,
+  "p90": 4.473,
+  "min": 2.722,
+  "max": 4.833
+ },
+ "token_gate": {
+  "rule": "n_tokens(tashkeel output) <= 160 (§ق-7)",
+  "n_measured": 65,
+  "over_160": [],
+  "n_over_160": 0,
+  "ratio_mine_over_catt": {
+   "median": 0.8649,
+   "mean": 0.865,
+   "p10": 0.8191,
+   "p90": 0.9203,
+   "min": 0.7578,
+   "max": 0.9605
+  }
+ }
+}

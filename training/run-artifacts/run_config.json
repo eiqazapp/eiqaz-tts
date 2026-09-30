@@ -1,0 +1,29 @@
+{
+ "experiment": "NileTTS_4h_Controlled_Experiment",
+ "dataset": "KickItLikeShika/NileTTS-dataset",
+ "speakers": [
+  0,
+  1
+ ],
+ "n_train_pool": 19721,
+ "n_val_pool": 2157,
+ "time_budget_s": 15300.0,
+ "batch_size": 16,
+ "gan_warmup": 2000,
+ "g_lr": 0.0001,
+ "d_lr": 0.0001,
+ "fmatch_w": 1.0,
+ "score_w": 4.0,
+ "tar_len": 128,
+ "lr_min": 1e-05,
+ "lr_decay_iters": 150000,
+ "lr_anchor_it": 196142,
+ "max_frames": 950,
+ "max_tokens": 160,
+ "max_iters": 400000,
+ "n_params": 2869602,
+ "pitch_mean": 185.05661862047015,
+ "pitch_std": 79.4954760747707,
+ "device": "cuda",
+ "design": "from-scratch MixerTTS (author train_ms recipe): AdamW(1e-4, betas 0/0.99, wd 1e-6), LSGAN PatchDiscriminatorCond from iter GAN_WARMUP, bin loss scale 1.0 from start, 2 voices (SPEAKER_01 male + SPEAKER_02 female) from KickItLikeShika/NileTTS-dataset; same recipe as the previous masri-podcast-300h experiment"
+}

@@ -1,0 +1,30 @@
+# مجلدات بايثون المؤقتة
+__pycache__/
+*.py[cod]
+
+# بيئات افتراضية
+venv/
+.venv/
+env/
+
+# Checkpoints — كبيرة جدًا لـgit (تُدار محليًا، انظر README)
+*.pth
+*.ckpt
+
+# مخرجات توليد محلية شائعة (لا تُحفظ في المستودع)
+inference/out.wav
+inference/check.wav
+inference/dars.wav
+inference/ask.wav
+inference/para.wav
+inference/msa.wav
+
+# ملفات نظام
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# مفاتيح وأسرار — ممنوع رفعها نهائيًا
+kaggle.json
+.env
+*.pem

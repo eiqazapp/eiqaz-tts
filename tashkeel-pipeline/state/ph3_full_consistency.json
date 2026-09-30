@@ -1,0 +1,1274 @@
+{
+ "n_ok_units": 65,
+ "n_word_positions": 932,
+ "n_distinct_skeletons": 620,
+ "top50": [
+  {
+   "skeleton": "في",
+   "n_positions": 27,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "فِي",
+     "count": 27,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00002_01",
+      "0_00005_00",
+      "0_00005_01",
+      "0_00015_00",
+      "0_01400_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "من",
+   "n_positions": 15,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "مِن",
+     "count": 15,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00001_01",
+      "0_00015_00",
+      "0_01400_00",
+      "0_01402_01",
+      "0_07174_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "دي",
+   "n_positions": 15,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "دِي",
+     "count": 15,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00002_01",
+      "0_00015_00",
+      "0_08291_00",
+      "0_08292_00",
+      "1_00988_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "ده",
+   "n_positions": 15,
+   "n_forms": 2,
+   "consistency": 0.5333,
+   "forms": [
+    {
+     "form": "دِه",
+     "count": 8,
+     "pct": 0.5333,
+     "sample_ids": [
+      "0_00002_01",
+      "1_02417_00",
+      "1_02417_02",
+      "1_02418_00",
+      "1_02419_01"
+     ]
+    },
+    {
+     "form": "دَه",
+     "count": 7,
+     "pct": 0.4667,
+     "sample_ids": [
+      "0_07174_01",
+      "0_07175_00",
+      "0_08291_02",
+      "0_08292_00",
+      "1_02416_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "و",
+   "n_positions": 10,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "و",
+     "count": 10,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_06035_00",
+      "0_07174_00",
+      "0_07174_00",
+      "0_07174_01",
+      "0_07174_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "هو",
+   "n_positions": 9,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "هُو",
+     "count": 9,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00001_01",
+      "1_00988_01",
+      "1_00988_01",
+      "1_00991_00",
+      "1_02414_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "ما",
+   "n_positions": 9,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "مَا",
+     "count": 9,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00002_01",
+      "0_00005_00",
+      "0_00015_00",
+      "1_00987_01",
+      "1_02414_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "اللي",
+   "n_positions": 9,
+   "n_forms": 4,
+   "consistency": 0.5556,
+   "forms": [
+    {
+     "form": "اِلْلِي",
+     "count": 5,
+     "pct": 0.5556,
+     "sample_ids": [
+      "0_00005_00",
+      "0_00015_00",
+      "1_00990_00",
+      "1_02414_00",
+      "1_03714_00"
+     ]
+    },
+    {
+     "form": "اِللي",
+     "count": 2,
+     "pct": 0.2222,
+     "sample_ids": [
+      "1_00989_01",
+      "1_00989_01"
+     ]
+    },
+    {
+     "form": "اِللَّي",
+     "count": 1,
+     "pct": 0.1111,
+     "sample_ids": [
+      "0_01400_00"
+     ]
+    },
+    {
+     "form": "اِلْلِّي",
+     "count": 1,
+     "pct": 0.1111,
+     "sample_ids": [
+      "1_03718_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "بقى",
+   "n_positions": 7,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "بَقَى",
+     "count": 7,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00001_01",
+      "0_00017_00",
+      "1_00990_00",
+      "1_00991_00",
+      "1_02418_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "التقرير",
+   "n_positions": 7,
+   "n_forms": 3,
+   "consistency": 0.4286,
+   "forms": [
+    {
+     "form": "اِلْتَّقْرِير",
+     "count": 3,
+     "pct": 0.4286,
+     "sample_ids": [
+      "1_02414_01",
+      "1_02423_00",
+      "1_02430_01"
+     ]
+    },
+    {
+     "form": "اِلتَّقْرِيْر",
+     "count": 2,
+     "pct": 0.2857,
+     "sample_ids": [
+      "0_00005_01",
+      "0_00017_01"
+     ]
+    },
+    {
+     "form": "اِلْتَّقْرِيْر",
+     "count": 2,
+     "pct": 0.2857,
+     "sample_ids": [
+      "1_00990_00",
+      "1_00991_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "أو",
+   "n_positions": 7,
+   "n_forms": 2,
+   "consistency": 0.8571,
+   "forms": [
+    {
+     "form": "أَو",
+     "count": 6,
+     "pct": 0.8571,
+     "sample_ids": [
+      "0_00017_00",
+      "1_02412_01",
+      "1_02416_01",
+      "1_02425_00",
+      "1_03714_00"
+     ]
+    },
+    {
+     "form": "أُو",
+     "count": 1,
+     "pct": 0.1429,
+     "sample_ids": [
+      "1_00988_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "بالزبط",
+   "n_positions": 7,
+   "n_forms": 3,
+   "consistency": 0.7143,
+   "forms": [
+    {
+     "form": "بِالزَّبَط",
+     "count": 5,
+     "pct": 0.7143,
+     "sample_ids": [
+      "0_07174_01",
+      "0_07179_01",
+      "1_00987_01",
+      "1_00991_01",
+      "1_02414_01"
+     ]
+    },
+    {
+     "form": "بِالزِّبْط",
+     "count": 1,
+     "pct": 0.1429,
+     "sample_ids": [
+      "1_02411_00"
+     ]
+    },
+    {
+     "form": "بِاِلزَّبَط",
+     "count": 1,
+     "pct": 0.1429,
+     "sample_ids": [
+      "1_03720_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "لو",
+   "n_positions": 7,
+   "n_forms": 2,
+   "consistency": 0.8571,
+   "forms": [
+    {
+     "form": "لُو",
+     "count": 6,
+     "pct": 0.8571,
+     "sample_ids": [
+      "1_00987_01",
+      "1_02410_01",
+      "1_02416_00",
+      "1_02425_00",
+      "1_02425_01"
+     ]
+    },
+    {
+     "form": "لَو",
+     "count": 1,
+     "pct": 0.1429,
+     "sample_ids": [
+      "0_07175_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "يعني",
+   "n_positions": 7,
+   "n_forms": 2,
+   "consistency": 0.5714,
+   "forms": [
+    {
+     "form": "يَعْنِي",
+     "count": 4,
+     "pct": 0.5714,
+     "sample_ids": [
+      "1_00987_01",
+      "1_00989_01",
+      "1_03718_01",
+      "1_03721_01"
+     ]
+    },
+    {
+     "form": "يِعْنِي",
+     "count": 3,
+     "pct": 0.4286,
+     "sample_ids": [
+      "0_08291_01",
+      "1_02417_01",
+      "1_02419_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "بس",
+   "n_positions": 6,
+   "n_forms": 2,
+   "consistency": 0.5,
+   "forms": [
+    {
+     "form": "بَس",
+     "count": 3,
+     "pct": 0.5,
+     "sample_ids": [
+      "0_06035_00",
+      "0_07179_00",
+      "1_03718_01"
+     ]
+    },
+    {
+     "form": "بِس",
+     "count": 3,
+     "pct": 0.5,
+     "sample_ids": [
+      "1_02417_01",
+      "1_03714_01",
+      "1_03714_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "بقت",
+   "n_positions": 6,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "بِقْت",
+     "count": 6,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_06035_00",
+      "0_07179_00",
+      "1_02411_00",
+      "1_02417_02",
+      "1_02420_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "زي",
+   "n_positions": 6,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "زِي",
+     "count": 6,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_08292_00",
+      "1_02411_01",
+      "1_02414_01",
+      "1_02419_01",
+      "1_02423_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "زمان",
+   "n_positions": 5,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "زَمَان",
+     "count": 5,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00000_00",
+      "0_07179_00",
+      "1_00987_01",
+      "1_02410_01",
+      "1_02423_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "كل",
+   "n_positions": 5,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "كُل",
+     "count": 5,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00005_00",
+      "0_01402_01",
+      "0_08291_01",
+      "1_02419_00",
+      "1_02422_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "لازم",
+   "n_positions": 5,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "لَازِم",
+     "count": 5,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_01402_01",
+      "1_02416_01",
+      "1_02418_00",
+      "1_03717_01",
+      "1_03718_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "دلوقتي",
+   "n_positions": 5,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "دِلْوَقْتِي",
+     "count": 5,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_06035_00",
+      "0_07179_00",
+      "0_08291_00",
+      "1_00988_00",
+      "1_02411_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "فيه",
+   "n_positions": 5,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "فِيه",
+     "count": 5,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_07174_00",
+      "0_07175_00",
+      "1_00990_00",
+      "1_02412_01",
+      "1_02414_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "مش",
+   "n_positions": 5,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "مُش",
+     "count": 5,
+     "pct": 1.0,
+     "sample_ids": [
+      "1_00988_01",
+      "1_00991_01",
+      "1_02425_00",
+      "1_03714_01",
+      "1_03721_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "تماما",
+   "n_positions": 5,
+   "n_forms": 2,
+   "consistency": 0.6,
+   "forms": [
+    {
+     "form": "تَمَامًا",
+     "count": 3,
+     "pct": 0.6,
+     "sample_ids": [
+      "1_00992_00",
+      "1_03719_01",
+      "1_03721_01"
+     ]
+    },
+    {
+     "form": "تَمَامَا",
+     "count": 2,
+     "pct": 0.4,
+     "sample_ids": [
+      "1_02418_00",
+      "1_03717_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "بين",
+   "n_positions": 5,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "بَيْن",
+     "count": 5,
+     "pct": 1.0,
+     "sample_ids": [
+      "1_02422_01",
+      "1_02425_00",
+      "1_03720_01",
+      "1_03720_01",
+      "1_03721_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "مكان",
+   "n_positions": 4,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "مَكَان",
+     "count": 4,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00001_01",
+      "0_00005_01",
+      "0_08291_02",
+      "1_00991_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "هي",
+   "n_positions": 4,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "هِي",
+     "count": 4,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00005_00",
+      "1_02419_00",
+      "1_03718_00",
+      "1_03720_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "إن",
+   "n_positions": 4,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "إِن",
+     "count": 4,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_07175_00",
+      "0_08292_00",
+      "1_02423_00",
+      "1_03721_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "الأول",
+   "n_positions": 4,
+   "n_forms": 2,
+   "consistency": 0.75,
+   "forms": [
+    {
+     "form": "اِلْأَوَّل",
+     "count": 3,
+     "pct": 0.75,
+     "sample_ids": [
+      "0_08291_00",
+      "1_02414_00",
+      "1_02422_01"
+     ]
+    },
+    {
+     "form": "اِلْأُول",
+     "count": 1,
+     "pct": 0.25,
+     "sample_ids": [
+      "0_07175_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "التاني",
+   "n_positions": 4,
+   "n_forms": 2,
+   "consistency": 0.75,
+   "forms": [
+    {
+     "form": "اِلْتَانِي",
+     "count": 3,
+     "pct": 0.75,
+     "sample_ids": [
+      "0_08291_01",
+      "1_02423_01",
+      "1_03721_01"
+     ]
+    },
+    {
+     "form": "اِلتَّانِي",
+     "count": 1,
+     "pct": 0.25,
+     "sample_ids": [
+      "1_02425_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "عشان",
+   "n_positions": 4,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "عَشَان",
+     "count": 4,
+     "pct": 1.0,
+     "sample_ids": [
+      "1_00989_00",
+      "1_00992_00",
+      "1_02430_00",
+      "1_03721_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "لها",
+   "n_positions": 4,
+   "n_forms": 2,
+   "consistency": 0.75,
+   "forms": [
+    {
+     "form": "لَهَا",
+     "count": 3,
+     "pct": 0.75,
+     "sample_ids": [
+      "1_00989_00",
+      "1_02419_01",
+      "1_03718_01"
+     ]
+    },
+    {
+     "form": "لِهَا",
+     "count": 1,
+     "pct": 0.25,
+     "sample_ids": [
+      "1_03717_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "على",
+   "n_positions": 4,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "عَلَى",
+     "count": 4,
+     "pct": 1.0,
+     "sample_ids": [
+      "1_02411_01",
+      "1_02420_01",
+      "1_02423_01",
+      "1_03714_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "الشباب",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "اِلشَّبَاب",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00001_01",
+      "0_00005_00",
+      "0_00015_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "أي",
+   "n_positions": 3,
+   "n_forms": 2,
+   "consistency": 0.6667,
+   "forms": [
+    {
+     "form": "أَي",
+     "count": 2,
+     "pct": 0.6667,
+     "sample_ids": [
+      "0_00001_01",
+      "1_03718_00"
+     ]
+    },
+    {
+     "form": "أِي",
+     "count": 1,
+     "pct": 0.3333,
+     "sample_ids": [
+      "1_03717_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "واحد",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "وَاحِد",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00005_01",
+      "1_02416_01",
+      "1_03721_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "سنتر",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "سِنْتَر",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_00005_01",
+      "0_00005_01",
+      "0_00015_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "طبعا",
+   "n_positions": 3,
+   "n_forms": 2,
+   "consistency": 0.6667,
+   "forms": [
+    {
+     "form": "طَبْعًا",
+     "count": 2,
+     "pct": 0.6667,
+     "sample_ids": [
+      "0_00005_01",
+      "1_00989_01"
+     ]
+    },
+    {
+     "form": "طِبْعًا",
+     "count": 1,
+     "pct": 0.3333,
+     "sample_ids": [
+      "0_07175_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "الناس",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "اِلنَّاس",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_01400_00",
+      "0_07174_00",
+      "1_02417_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "حاجة",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "حَاجَة",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_01402_01",
+      "1_02422_01",
+      "1_03714_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "الوقت",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "اِلْوَقْت",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_01414_00",
+      "1_02425_00",
+      "1_03721_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "يكون",
+   "n_positions": 3,
+   "n_forms": 2,
+   "consistency": 0.6667,
+   "forms": [
+    {
+     "form": "يِكُون",
+     "count": 2,
+     "pct": 0.6667,
+     "sample_ids": [
+      "0_07175_00",
+      "0_08292_00"
+     ]
+    },
+    {
+     "form": "يِكُوْن",
+     "count": 1,
+     "pct": 0.3333,
+     "sample_ids": [
+      "1_03718_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "تقريبا",
+   "n_positions": 3,
+   "n_forms": 2,
+   "consistency": 0.6667,
+   "forms": [
+    {
+     "form": "تَقْرِيبَا",
+     "count": 2,
+     "pct": 0.6667,
+     "sample_ids": [
+      "0_08291_01",
+      "0_08292_00"
+     ]
+    },
+    {
+     "form": "تَقْرِيْبًا",
+     "count": 1,
+     "pct": 0.3333,
+     "sample_ids": [
+      "0_07179_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "شوية",
+   "n_positions": 3,
+   "n_forms": 2,
+   "consistency": 0.6667,
+   "forms": [
+    {
+     "form": "شُوَيَّة",
+     "count": 2,
+     "pct": 0.6667,
+     "sample_ids": [
+      "0_08291_01",
+      "1_02423_00"
+     ]
+    },
+    {
+     "form": "شُوْيَة",
+     "count": 1,
+     "pct": 0.3333,
+     "sample_ids": [
+      "1_00990_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "بيه",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "بِيه",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_08291_02",
+      "1_00992_01",
+      "1_02422_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "كده",
+   "n_positions": 3,
+   "n_forms": 2,
+   "consistency": 0.6667,
+   "forms": [
+    {
+     "form": "كِدَه",
+     "count": 2,
+     "pct": 0.6667,
+     "sample_ids": [
+      "1_00992_00",
+      "1_03721_01"
+     ]
+    },
+    {
+     "form": "كَدْه",
+     "count": 1,
+     "pct": 0.3333,
+     "sample_ids": [
+      "0_08291_02"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "ممكن",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "مُمْكِن",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "0_08292_00",
+      "1_02410_01",
+      "1_02423_01"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "أهم",
+   "n_positions": 3,
+   "n_forms": 2,
+   "consistency": 0.6667,
+   "forms": [
+    {
+     "form": "أَهْم",
+     "count": 2,
+     "pct": 0.6667,
+     "sample_ids": [
+      "1_00988_01",
+      "1_02425_01"
+     ]
+    },
+    {
+     "form": "أِهْم",
+     "count": 1,
+     "pct": 0.3333,
+     "sample_ids": [
+      "1_02425_00"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "تاني",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "تَانِي",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "1_00992_00",
+      "1_02414_01",
+      "1_02417_02"
+     ]
+    }
+   ]
+  },
+  {
+   "skeleton": "أنا",
+   "n_positions": 3,
+   "n_forms": 1,
+   "consistency": 1.0,
+   "forms": [
+    {
+     "form": "أَنَا",
+     "count": 3,
+     "pct": 1.0,
+     "sample_ids": [
+      "1_00992_01",
+      "1_02417_02",
+      "1_03717_00"
+     ]
+    }
+   ]
+  }
+ ],
+ "top50_summary": {
+  "fully_consistent": 31,
+  "multi_form": 19,
+  "consistency_below_95pct": [
+   {
+    "skeleton": "ده",
+    "consistency": 0.5333,
+    "n_forms": 2,
+    "n_positions": 15
+   },
+   {
+    "skeleton": "اللي",
+    "consistency": 0.5556,
+    "n_forms": 4,
+    "n_positions": 9
+   },
+   {
+    "skeleton": "التقرير",
+    "consistency": 0.4286,
+    "n_forms": 3,
+    "n_positions": 7
+   },
+   {
+    "skeleton": "أو",
+    "consistency": 0.8571,
+    "n_forms": 2,
+    "n_positions": 7
+   },
+   {
+    "skeleton": "بالزبط",
+    "consistency": 0.7143,
+    "n_forms": 3,
+    "n_positions": 7
+   },
+   {
+    "skeleton": "لو",
+    "consistency": 0.8571,
+    "n_forms": 2,
+    "n_positions": 7
+   },
+   {
+    "skeleton": "يعني",
+    "consistency": 0.5714,
+    "n_forms": 2,
+    "n_positions": 7
+   },
+   {
+    "skeleton": "بس",
+    "consistency": 0.5,
+    "n_forms": 2,
+    "n_positions": 6
+   },
+   {
+    "skeleton": "تماما",
+    "consistency": 0.6,
+    "n_forms": 2,
+    "n_positions": 5
+   },
+   {
+    "skeleton": "الأول",
+    "consistency": 0.75,
+    "n_forms": 2,
+    "n_positions": 4
+   },
+   {
+    "skeleton": "التاني",
+    "consistency": 0.75,
+    "n_forms": 2,
+    "n_positions": 4
+   },
+   {
+    "skeleton": "لها",
+    "consistency": 0.75,
+    "n_forms": 2,
+    "n_positions": 4
+   },
+   {
+    "skeleton": "أي",
+    "consistency": 0.6667,
+    "n_forms": 2,
+    "n_positions": 3
+   },
+   {
+    "skeleton": "طبعا",
+    "consistency": 0.6667,
+    "n_forms": 2,
+    "n_positions": 3
+   },
+   {
+    "skeleton": "يكون",
+    "consistency": 0.6667,
+    "n_forms": 2,
+    "n_positions": 3
+   },
+   {
+    "skeleton": "تقريبا",
+    "consistency": 0.6667,
+    "n_forms": 2,
+    "n_positions": 3
+   },
+   {
+    "skeleton": "شوية",
+    "consistency": 0.6667,
+    "n_forms": 2,
+    "n_positions": 3
+   },
+   {
+    "skeleton": "كده",
+    "consistency": 0.6667,
+    "n_forms": 2,
+    "n_positions": 3
+   },
+   {
+    "skeleton": "أهم",
+    "consistency": 0.6667,
+    "n_forms": 2,
+    "n_positions": 3
+   }
+  ]
+ },
+ "awi_family_inventory": {
+  "decision": "NO Tier A rule for اوي (user, 2026-09-30) — all engine forms recorded for post-run consistency analysis",
+  "skeletons_present": {},
+  "skeletons_absent": [
+   "اوي",
+   "اوية",
+   "اوى",
+   "اويه"
+  ]
+ }
+}

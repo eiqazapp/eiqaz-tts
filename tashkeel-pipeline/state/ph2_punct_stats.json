@@ -1,0 +1,358 @@
+{
+ "stage": "المرحلة 2 — تحويل الترقيم (، -> , و ؟ -> ?)",
+ "rule": "deterministic char-map before tashkeel/G2P; all other chars kept",
+ "n_units_total": 21880,
+ "verification": {
+  "failures": 0,
+  "failure_details": [],
+  "checks_passed": [
+   "row count",
+   "unique ids",
+   "length preservation",
+   "only ،->, and ؟->? changed",
+   "letters/spaces/digits untouched"
+  ]
+ },
+ "arabic_comma": {
+  "units": 3173,
+  "occurrences": 4676
+ },
+ "arabic_qmark": {
+  "units": 3439,
+  "occurrences": 4163
+ },
+ "union_units_changed": 6042,
+ "union_pct": 27.61,
+ "split_breakdown": {
+  "train_total": 19723,
+  "train_converted": 5489,
+  "eval_total": 2157,
+  "eval_converted": 553
+ },
+ "overlap_units_both": 570,
+ "char_inventory": [
+  {
+   "char": " ",
+   "codepoint": "U+0020",
+   "name": "space",
+   "total": 285632,
+   "units": 21880,
+   "action": "keep"
+  },
+  {
+   "char": "،",
+   "codepoint": "U+060C",
+   "name": "Arabic comma ،",
+   "total": 4676,
+   "units": 3173,
+   "action": "convert->,"
+  },
+  {
+   "char": "ً",
+   "codepoint": "U+064B",
+   "name": "fathatan ً (raw transfer diacritic)",
+   "total": 4970,
+   "units": 4278,
+   "action": "keep"
+  },
+  {
+   "char": "؟",
+   "codepoint": "U+061F",
+   "name": "Arabic question ؟",
+   "total": 4163,
+   "units": 3439,
+   "action": "convert->?"
+  },
+  {
+   "char": "8",
+   "codepoint": "U+0038",
+   "name": "digit 8",
+   "total": 106,
+   "units": 104,
+   "action": "keep"
+  },
+  {
+   "char": "0",
+   "codepoint": "U+0030",
+   "name": "digit 0",
+   "total": 713,
+   "units": 385,
+   "action": "keep"
+  },
+  {
+   "char": "%",
+   "codepoint": "U+0025",
+   "name": "ASCII percent",
+   "total": 212,
+   "units": 173,
+   "action": "keep"
+  },
+  {
+   "char": "1",
+   "codepoint": "U+0031",
+   "name": "digit 1",
+   "total": 262,
+   "units": 227,
+   "action": "keep"
+  },
+  {
+   "char": "5",
+   "codepoint": "U+0035",
+   "name": "digit 5",
+   "total": 183,
+   "units": 158,
+   "action": "keep"
+  },
+  {
+   "char": "6",
+   "codepoint": "U+0036",
+   "name": "digit 6",
+   "total": 55,
+   "units": 52,
+   "action": "keep"
+  },
+  {
+   "char": "9",
+   "codepoint": "U+0039",
+   "name": "digit 9",
+   "total": 55,
+   "units": 46,
+   "action": "keep"
+  },
+  {
+   "char": "2",
+   "codepoint": "U+0032",
+   "name": "digit 2",
+   "total": 245,
+   "units": 197,
+   "action": "keep"
+  },
+  {
+   "char": ".",
+   "codepoint": "U+002E",
+   "name": "ASCII period",
+   "total": 16657,
+   "units": 11014,
+   "action": "keep"
+  },
+  {
+   "char": "4",
+   "codepoint": "U+0034",
+   "name": "digit 4",
+   "total": 63,
+   "units": 62,
+   "action": "keep"
+  },
+  {
+   "char": "7",
+   "codepoint": "U+0037",
+   "name": "digit 7",
+   "total": 46,
+   "units": 43,
+   "action": "keep"
+  },
+  {
+   "char": "3",
+   "codepoint": "U+0033",
+   "name": "digit 3",
+   "total": 108,
+   "units": 94,
+   "action": "keep"
+  },
+  {
+   "char": "-",
+   "codepoint": "U+002D",
+   "name": "ASCII hyphen",
+   "total": 19,
+   "units": 11,
+   "action": "keep"
+  },
+  {
+   "char": "ّ",
+   "codepoint": "U+0651",
+   "name": "shadda (raw)",
+   "total": 23,
+   "units": 23,
+   "action": "keep"
+  },
+  {
+   "char": ":",
+   "codepoint": "U+003A",
+   "name": "ASCII colon",
+   "total": 796,
+   "units": 776,
+   "action": "keep"
+  },
+  {
+   "char": "!",
+   "codepoint": "U+0021",
+   "name": "ASCII exclam",
+   "total": 81,
+   "units": 77,
+   "action": "keep"
+  },
+  {
+   "char": "\"",
+   "codepoint": "U+0022",
+   "name": "ASCII dquote",
+   "total": 480,
+   "units": 220,
+   "action": "keep"
+  },
+  {
+   "char": "(",
+   "codepoint": "U+0028",
+   "name": "ASCII lparen",
+   "total": 125,
+   "units": 121,
+   "action": "keep"
+  },
+  {
+   "char": ")",
+   "codepoint": "U+0029",
+   "name": "ASCII rparen",
+   "total": 126,
+   "units": 121,
+   "action": "keep"
+  },
+  {
+   "char": ",",
+   "codepoint": "U+002C",
+   "name": "ASCII comma",
+   "total": 652,
+   "units": 504,
+   "action": "keep"
+  },
+  {
+   "char": "+",
+   "codepoint": "U+002B",
+   "name": "ASCII plus",
+   "total": 7,
+   "units": 5,
+   "action": "keep"
+  },
+  {
+   "char": "ُ",
+   "codepoint": "U+064F",
+   "name": "damma (raw)",
+   "total": 14,
+   "units": 13,
+   "action": "keep"
+  },
+  {
+   "char": "َ",
+   "codepoint": "U+064E",
+   "name": "fatha (raw)",
+   "total": 11,
+   "units": 10,
+   "action": "keep"
+  },
+  {
+   "char": "…",
+   "codepoint": "U+2026",
+   "name": "ellipsis …",
+   "total": 7,
+   "units": 7,
+   "action": "keep"
+  },
+  {
+   "char": "–",
+   "codepoint": "U+2013",
+   "name": "en-dash –",
+   "total": 1,
+   "units": 1,
+   "action": "keep"
+  },
+  {
+   "char": "٪",
+   "codepoint": "U+066A",
+   "name": "Arabic percent ٪",
+   "total": 1,
+   "units": 1,
+   "action": "keep"
+  },
+  {
+   "char": "=",
+   "codepoint": "U+003D",
+   "name": "ASCII equals",
+   "total": 4,
+   "units": 2,
+   "action": "keep"
+  },
+  {
+   "char": "ِ",
+   "codepoint": "U+0650",
+   "name": "kasra (raw)",
+   "total": 4,
+   "units": 4,
+   "action": "keep"
+  },
+  {
+   "char": "ْ",
+   "codepoint": "U+0652",
+   "name": "sukun (raw)",
+   "total": 2,
+   "units": 2,
+   "action": "keep"
+  },
+  {
+   "char": "؛",
+   "codepoint": "U+061B",
+   "name": "Arabic semicolon ؛",
+   "total": 5,
+   "units": 5,
+   "action": "keep"
+  },
+  {
+   "char": "ٍ",
+   "codepoint": "U+064D",
+   "name": "kasratan ٍ (raw)",
+   "total": 1,
+   "units": 1,
+   "action": "keep"
+  },
+  {
+   "char": "'",
+   "codepoint": "U+0027",
+   "name": "ASCII quote",
+   "total": 4,
+   "units": 1,
+   "action": "keep"
+  }
+ ],
+ "kept_as_is_note": "؛ ٪ … – تبقى كما هي: خارج جدول الرموز (ids 5-8 فقط ., ? !) وتسقط من الـG2P كسلوك قائم — لا رموز جديدة",
+ "examples": [
+  {
+   "utt": "0_00000_00",
+   "split": "train",
+   "before": "زمان كان الحلم المصري لكتالوج واضح قوي الوظيفة الميري، مكتب تعيين حكومي، مرتب ثابت، وفي ال",
+   "after": "زمان كان الحلم المصري لكتالوج واضح قوي الوظيفة الميري, مكتب تعيين حكومي, مرتب ثابت, وفي ال",
+   "n_comma": 3,
+   "n_qmark": 0
+  },
+  {
+   "utt": "0_00001_00",
+   "split": "train",
+   "before": "النهاردة بقى الكتالوج ده ترمى، والحلم كله بقى في جهاز واحد،",
+   "after": "النهاردة بقى الكتالوج ده ترمى, والحلم كله بقى في جهاز واحد,",
+   "n_comma": 2,
+   "n_qmark": 0
+  },
+  {
+   "utt": "0_00001_01",
+   "split": "train",
+   "before": "اللابتوب بقى هو بوابة الشباب للحرية للشغل من أي مكان، والأهم للقبض بالدولار",
+   "after": "اللابتوب بقى هو بوابة الشباب للحرية للشغل من أي مكان, والأهم للقبض بالدولار",
+   "n_comma": 1,
+   "n_qmark": 0
+  },
+  {
+   "utt": "0_00002_00",
+   "split": "train",
+   "before": "النهاردة هنفتح اللابتوب ده، ونشوف إيه اللي جواب جد هل علم الشغل عن بعد في مصر فعلاً بالجما",
+   "after": "النهاردة هنفتح اللابتوب ده, ونشوف إيه اللي جواب جد هل علم الشغل عن بعد في مصر فعلاً بالجما",
+   "n_comma": 1,
+   "n_qmark": 1
+  }
+ ]
+}

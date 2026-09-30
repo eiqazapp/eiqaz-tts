@@ -1,0 +1,85 @@
+{
+ "engine": "ph3_engine.mjs v5 (guide v2.1 — approved 2026-09-30)",
+ "run_scope": "full run over ph2_input_full.json (21,880 units)",
+ "input_path": "/home/z/my-project/work/ph2_input_full.json",
+ "input_sha256": "171e60ee4c8bf3b037a5edf5b4abe6fd80184afb12b32478a95c306914053adc",
+ "sources": [
+  {
+   "path": "ph3_full_shard_0.jsonl",
+   "sha256": "1e031be9dc7cbbcc638f829ff7451080ce127c35090565cb414925137cf306d0"
+  },
+  {
+   "path": "ph3_full_shard_1.jsonl",
+   "sha256": "4486f7c20eccaafa4ba5e19c99025e377bcc138a5ce5a04314873c9add83c9f0"
+  },
+  {
+   "path": "ph3_full_shard_10.jsonl",
+   "sha256": "5d90ab2144628b7844289828a501d39788d0de41ef29d87c8523999f8015e3ea"
+  },
+  {
+   "path": "ph3_full_shard_11.jsonl",
+   "sha256": "719b59242f85f42088fe4587b73cbf35839e5e5b3ec2ef3dd61b69be866887f1"
+  },
+  {
+   "path": "ph3_full_shard_2.jsonl",
+   "sha256": "bd364eaaa08f3bd3fd6d97241bc288de211a7156e93d57d35806d8ba168e1ae6"
+  },
+  {
+   "path": "ph3_full_shard_3.jsonl",
+   "sha256": "1c613e7f26a304b5ccd9c04f7405498451d6cece344910769fb7d5c0dfed39d5"
+  },
+  {
+   "path": "ph3_full_shard_4.jsonl",
+   "sha256": "4e3fbdd3dc20b803337fa05a1ec544d2f3b37c90c700fbc97b80557748a5b772"
+  },
+  {
+   "path": "ph3_full_shard_5.jsonl",
+   "sha256": "fb3601c5508f4e74998d4e238b378d963ec0872630da79c9e443c5bfded0c038"
+  },
+  {
+   "path": "ph3_full_shard_6.jsonl",
+   "sha256": "4fefa2dc8146c880763f16334fa3b96fdb22c8c67995306f3dcedb4143f78636"
+  },
+  {
+   "path": "ph3_full_shard_7.jsonl",
+   "sha256": "69f1cc335f132ab62aa788d4d6e8ebea3e0f536dd17bdf142f9a45b052f84a3f"
+  },
+  {
+   "path": "ph3_full_shard_8.jsonl",
+   "sha256": "4e3365b89d85f4ed9e8110263cd84a3d4d28b994ff5c038451da446c0badf809"
+  },
+  {
+   "path": "ph3_full_shard_9.jsonl",
+   "sha256": "6e69370306e25e97ea882192049c1053a7957ee9838e90249d4309d21b06fabb"
+  }
+ ],
+ "canonical_output": "/home/z/my-project/work/ph3_full_output.jsonl",
+ "canonical_sha256": "a32c32775190181503fd78608d4bebefd549f2c5beec92b6969d6e5b7e6335e7",
+ "n_input": 21880,
+ "n_records": 116,
+ "n_missing": 21764,
+ "counts": {
+  "ok": 65,
+  "failed": 45,
+  "quarantined": 6
+ },
+ "counts_by_split": {
+  "train": {
+   "ok": 60,
+   "failed": 42,
+   "missing": 19615,
+   "quarantined": 6
+  },
+  "eval": {
+   "ok": 5,
+   "failed": 3,
+   "missing": 2149
+  }
+ },
+ "user_decisions_2026_09_30": [
+  "smoke sample approved as-is",
+  "اوي: NO Tier A rule — record all forms for post-run consistency analysis (this deliverable); no engine/guide change",
+  "0_03547_01: stays in manual-review path — no manual correction enters the full run"
+ ],
+ "precedence": "quarantined > ok (latest) > failed (latest)"
+}

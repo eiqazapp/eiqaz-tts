@@ -1,0 +1,20 @@
+{
+ "engine": "ph3_engine.mjs v3",
+ "guide_path": "/home/z/my-project/work/tashkeel_guide_v1.md",
+ "guide_sha256": "d138f7cd240c8cd031678699cc82c4f6352ced45818e78902f072172ba403943",
+ "prompt_sha256": "956acc9d9c6f06663a7289b535c85779f714e522c5114d8af0c4013b3d794080",
+ "tanween_list_path": "/home/z/my-project/work/tanween_closed_list.json",
+ "tanween_list_sha256": "d33fe252f2cfbb6b207bab7cd0d89fa165049de6010c8861b2d076e8e75a78e3",
+ "model": "glm-4-plus",
+ "batch_size": 10,
+ "max_single_retries": 3,
+ "finished": "2026-09-30T05:23:07.710Z",
+ "punct_rule": "U+060C->, U+061F->?",
+ "gates": [
+  "skeleton+punct two-sided",
+  "tanween closed list 201w",
+  "taa no-haraka (sukun stripped)",
+  "density>=1.2/w floor5",
+  "post-fixes: al_kasra + taa_sukun_strip"
+ ]
+}

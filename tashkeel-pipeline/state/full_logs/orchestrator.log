@@ -1,0 +1,60 @@
+2026-09-30 08:41:07 orchestrator start workers=6 batch=50
+2026-09-30 08:41:07 w1 -> shard 0
+2026-09-30 08:41:07 w2 -> shard 1
+2026-09-30 08:41:07 w5 -> shard 2
+2026-09-30 08:41:07 w3 -> shard 3
+2026-09-30 08:41:07 w4 -> shard 4
+2026-09-30 08:41:07 w6 -> shard 5
+2026-09-30 08:44:48 orchestrator start workers=4 batch=50
+2026-09-30 08:44:48 w1 -> shard 6
+2026-09-30 08:44:48 w2 -> shard 7
+2026-09-30 08:44:48 w4 -> shard 9
+2026-09-30 08:44:48 w3 -> shard 8
+2026-09-30 08:50:11 orchestrator start workers=8 batch=50 grace=300
+2026-09-30 08:50:11 w6 -> shard 0
+2026-09-30 08:50:11 w8 -> shard 1
+2026-09-30 08:50:11 w5 -> shard 3
+2026-09-30 08:50:11 w4 -> shard 2
+2026-09-30 08:50:11 w7 -> shard 4
+2026-09-30 08:50:11 w1 -> shard 5
+2026-09-30 08:50:11 w3 -> shard 6
+2026-09-30 08:50:11 w2 -> shard 7
+2026-09-30 08:54:27 reaped orphan lock 0
+2026-09-30 08:54:27 reaped orphan lock 1
+2026-09-30 08:54:27 reaped orphan lock 2
+2026-09-30 08:54:27 reaped orphan lock 3
+2026-09-30 08:54:27 reaped orphan lock 4
+2026-09-30 08:54:27 reaped orphan lock 5
+2026-09-30 08:54:27 reaped orphan lock 6
+2026-09-30 08:54:27 reaped orphan lock 7
+2026-09-30 08:54:27 chunk start workers=8 sec=540
+2026-09-30 08:54:27 orchestrator start workers=8 batch=50 grace=300
+2026-09-30 08:54:27 w5 -> shard 0
+2026-09-30 08:54:27 w3 -> shard 1
+2026-09-30 08:54:27 w1 -> shard 2
+2026-09-30 08:54:27 w7 -> shard 3
+2026-09-30 08:54:27 w6 -> shard 4
+2026-09-30 08:54:27 w8 -> shard 5
+2026-09-30 08:54:27 w4 -> shard 6
+2026-09-30 08:54:27 w2 -> shard 7
+2026-09-30 09:03:30 chunk end
+2026-09-30 09:52:56 reaped orphan lock 0
+2026-09-30 09:52:56 reaped orphan lock 1
+2026-09-30 09:52:56 reaped orphan lock 2
+2026-09-30 09:52:56 reaped orphan lock 3
+2026-09-30 09:52:56 reaped orphan lock 4
+2026-09-30 09:52:56 reaped orphan lock 5
+2026-09-30 09:52:56 reaped orphan lock 6
+2026-09-30 09:52:56 reaped orphan lock 7
+2026-09-30 09:52:56 chunk start workers=2 sec=540 batch=3
+2026-09-30 09:52:56 orchestrator start workers=2 batch=3 grace=300
+2026-09-30 09:52:56 w1 -> shard 0
+2026-09-30 09:52:56 w2 -> shard 1
+2026-09-30 10:01:59 chunk end
+2026-09-30 10:03:17 reaped orphan lock 0
+2026-09-30 10:03:17 reaped orphan lock 1
+2026-09-30 10:03:17 chunk start workers=2 sec=549 batch=3
+2026-09-30 10:03:17 orchestrator start workers=2 batch=3 grace=300
+2026-09-30 10:03:17 w2 -> shard 0
+2026-09-30 10:03:17 w1 -> shard 1
+2026-09-30 10:12:29 chunk end

@@ -1,0 +1,21 @@
+# ============================================================================
+# NileTTS-4h-Inference — التبعيات المثبتة بنسخ مضبوطة (Windows / CPU فقط)
+# ============================================================================
+# متطلبات التركيب: Python 3.12 (64-bit) — من python.org
+# أمر التركيب (مرة واحدة فقط، من مجلد الحزمة):
+#     python -m pip install -r requirements.txt
+#
+# ملاحظة Windows: عجلة torch على PyPI لنظام Windows هي نسخة CPU تلقائيًا
+# (بلا أي مكونات CUDA). إن أردت الصراحة الكاملة يمكن أيضًا:
+#     python -m pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cpu
+#
+# لا يُنزَّل أي شيء أثناء التشغيل — كل الأوزان (catt_eo.onnx + vocos22.onnx)
+# مضمّنة داخل الحزمة، والـcheckpoint يوضعه المستخدم في checkpoints/.
+# ============================================================================
+
+torch==2.5.1
+onnxruntime==1.20.1
+numpy==2.1.3
+soundfile==0.13.1
+einops==0.8.1
+packaging==24.2

@@ -1,0 +1,420 @@
+input=1368 done=0 quarantined=2 todo=1366 batch=50 tierA=18forms/88pos
+  0_04186_00: quarantined (skipped, no LLM)
+  0_04376_00: quarantined (skipped, no LLM)
+batch 1: units 1-50
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelBatch (file:///home/z/my-project/scripts/ph3_engine.mjs:277:30)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:356:34)
+    [429] waiting 3s before retry 2/5
+input=1368 done=2 quarantined=0 todo=1366 batch=50 tierA=18forms/88pos
+batch 1: units 1-50
+input=1368 done=2 quarantined=0 todo=1366 batch=50 tierA=18forms/88pos
+batch 1: units 1-50
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelBatch (file:///home/z/my-project/scripts/ph3_engine.mjs:277:30)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:356:34)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelBatch (file:///home/z/my-project/scripts/ph3_engine.mjs:277:30)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:356:34)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelBatch (file:///home/z/my-project/scripts/ph3_engine.mjs:277:30)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:356:34)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelBatch (file:///home/z/my-project/scripts/ph3_engine.mjs:277:30)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:356:34)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelBatch (file:///home/z/my-project/scripts/ph3_engine.mjs:277:30)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:356:34)
+  batch-level parse failure: API request failed with status 429: {"error":"Too many requests, please try again later"} -> per-item fallback
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+  0_04015_01: failed (attempts=4)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+  0_04015_02: failed (attempts=4)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 3s before retry 2/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 6s before retry 3/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 12s before retry 4/5
+Failed to make API request: Error: API request failed with status 429: {"error":"Too many requests, please try again later"}
+    at ZAI.createChatCompletion (file:///home/z/.bun/install/global/node_modules/z-ai-web-dev-sdk/dist/index.js:103:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async callLLM (file:///home/z/my-project/scripts/ph3_engine.mjs:231:26)
+    at async tashkeelSingle (file:///home/z/my-project/scripts/ph3_engine.mjs:295:23)
+    at async main (file:///home/z/my-project/scripts/ph3_engine.mjs:389:41)
+    [429] waiting 24s before retry 5/5

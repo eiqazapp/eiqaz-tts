@@ -1,0 +1,892 @@
+{
+ "criterion": "fusha adverb/particle units attested with tanween-fath in the transcripts (direct spoken evidence); conjunction prefix stripped",
+ "n_skeletons": 171,
+ "n_frequent": 32,
+ "n_mid": 29,
+ "n_rare": 110,
+ "units_with_tanween_adverb": 4278,
+ "total_tanween_occ": 4970,
+ "frozen": [
+  {
+   "skel": "جدا",
+   "tan_n": 1369,
+   "total_n": 2154
+  },
+  {
+   "skel": "علا",
+   "tan_n": 751,
+   "total_n": 1065
+  },
+  {
+   "skel": "طبعا",
+   "tan_n": 431,
+   "total_n": 609
+  },
+  {
+   "skel": "تماما",
+   "tan_n": 371,
+   "total_n": 586
+  },
+  {
+   "skel": "مثلا",
+   "tan_n": 302,
+   "total_n": 364
+  },
+  {
+   "skel": "غالبا",
+   "tan_n": 232,
+   "total_n": 301
+  },
+  {
+   "skel": "دايما",
+   "tan_n": 196,
+   "total_n": 243
+  },
+  {
+   "skel": "أصلا",
+   "tan_n": 176,
+   "total_n": 249
+  },
+  {
+   "skel": "تقريبا",
+   "tan_n": 135,
+   "total_n": 182
+  },
+  {
+   "skel": "خصوصا",
+   "tan_n": 114,
+   "total_n": 159
+  },
+  {
+   "skel": "أهلا",
+   "tan_n": 74,
+   "total_n": 90
+  },
+  {
+   "skel": "أولا",
+   "tan_n": 62,
+   "total_n": 92
+  },
+  {
+   "skel": "أبدا",
+   "tan_n": 52,
+   "total_n": 77
+  },
+  {
+   "skel": "أحيانا",
+   "tan_n": 44,
+   "total_n": 59
+  },
+  {
+   "skel": "ورا",
+   "tan_n": 41,
+   "total_n": 150
+  },
+  {
+   "skel": "ثانيا",
+   "tan_n": 38,
+   "total_n": 51
+  },
+  {
+   "skel": "تحديدا",
+   "tan_n": 36,
+   "total_n": 52
+  },
+  {
+   "skel": "حرفيا",
+   "tan_n": 35,
+   "total_n": 62
+  },
+  {
+   "skel": "أخيرا",
+   "tan_n": 31,
+   "total_n": 42
+  },
+  {
+   "skel": "نفسيا",
+   "tan_n": 31,
+   "total_n": 42
+  },
+  {
+   "skel": "ثالثا",
+   "tan_n": 27,
+   "total_n": 36
+  },
+  {
+   "skel": "شكرا",
+   "tan_n": 22,
+   "total_n": 29
+  },
+  {
+   "skel": "بعيدا",
+   "tan_n": 21,
+   "total_n": 33
+  },
+  {
+   "skel": "رابعا",
+   "tan_n": 20,
+   "total_n": 22
+  },
+  {
+   "skel": "بناء",
+   "tan_n": 17,
+   "total_n": 187
+  },
+  {
+   "skel": "حاليا",
+   "tan_n": 17,
+   "total_n": 19
+  },
+  {
+   "skel": "تانيا",
+   "tan_n": 15,
+   "total_n": 25
+  },
+  {
+   "skel": "نسبيا",
+   "tan_n": 15,
+   "total_n": 19
+  },
+  {
+   "skel": "شخصيا",
+   "tan_n": 13,
+   "total_n": 28
+  },
+  {
+   "skel": "عمليا",
+   "tan_n": 13,
+   "total_n": 16
+  },
+  {
+   "skel": "نظريا",
+   "tan_n": 12,
+   "total_n": 13
+  },
+  {
+   "skel": "خامسا",
+   "tan_n": 10,
+   "total_n": 11
+  },
+  {
+   "skel": "عموما",
+   "tan_n": 8,
+   "total_n": 10
+  },
+  {
+   "skel": "ماديا",
+   "tan_n": 8,
+   "total_n": 10
+  },
+  {
+   "skel": "تالتا",
+   "tan_n": 7,
+   "total_n": 7
+  },
+  {
+   "skel": "مؤخرا",
+   "tan_n": 6,
+   "total_n": 7
+  },
+  {
+   "skel": "شهريا",
+   "tan_n": 6,
+   "total_n": 6
+  },
+  {
+   "skel": "سنويا",
+   "tan_n": 6,
+   "total_n": 6
+  },
+  {
+   "skel": "تاريخيا",
+   "tan_n": 5,
+   "total_n": 5
+  },
+  {
+   "skel": "استثماريا",
+   "tan_n": 5,
+   "total_n": 5
+  },
+  {
+   "skel": "يوميا",
+   "tan_n": 4,
+   "total_n": 5
+  },
+  {
+   "skel": "قانونيا",
+   "tan_n": 4,
+   "total_n": 8
+  },
+  {
+   "skel": "عليا",
+   "tan_n": 4,
+   "total_n": 12
+  },
+  {
+   "skel": "نيا",
+   "tan_n": 4,
+   "total_n": 5
+  },
+  {
+   "skel": "عمدا",
+   "tan_n": 4,
+   "total_n": 4
+  },
+  {
+   "skel": "اجتماعيا",
+   "tan_n": 4,
+   "total_n": 9
+  },
+  {
+   "skel": "عالميا",
+   "tan_n": 4,
+   "total_n": 6
+  },
+  {
+   "skel": "تدريجيا",
+   "tan_n": 4,
+   "total_n": 4
+  },
+  {
+   "skel": "أساسا",
+   "tan_n": 4,
+   "total_n": 6
+  },
+  {
+   "skel": "ابدا",
+   "tan_n": 4,
+   "total_n": 7
+  },
+  {
+   "skel": "جزيلا",
+   "tan_n": 4,
+   "total_n": 7
+  },
+  {
+   "skel": "استقرارا",
+   "tan_n": 4,
+   "total_n": 4
+  },
+  {
+   "skel": "غالما",
+   "tan_n": 3,
+   "total_n": 3
+  },
+  {
+   "skel": "علميا",
+   "tan_n": 3,
+   "total_n": 10
+  },
+  {
+   "skel": "نعيما",
+   "tan_n": 3,
+   "total_n": 3
+  },
+  {
+   "skel": "احيانا",
+   "tan_n": 3,
+   "total_n": 5
+  },
+  {
+   "skel": "مباشرة",
+   "tan_n": 3,
+   "total_n": 98
+  },
+  {
+   "skel": "مؤقتا",
+   "tan_n": 3,
+   "total_n": 5
+  },
+  {
+   "skel": "إطلاقا",
+   "tan_n": 3,
+   "total_n": 5
+  },
+  {
+   "skel": "سادسا",
+   "tan_n": 3,
+   "total_n": 4
+  },
+  {
+   "skel": "حالا",
+   "tan_n": 3,
+   "total_n": 4
+  },
+  {
+   "skel": "اصلا",
+   "tan_n": 2,
+   "total_n": 18
+  },
+  {
+   "skel": "غصبا",
+   "tan_n": 2,
+   "total_n": 4
+  },
+  {
+   "skel": "مقدما",
+   "tan_n": 2,
+   "total_n": 2
+  },
+  {
+   "skel": "عاطفيا",
+   "tan_n": 2,
+   "total_n": 3
+  },
+  {
+   "skel": "سابعا",
+   "tan_n": 2,
+   "total_n": 2
+  },
+  {
+   "skel": "صولا",
+   "tan_n": 2,
+   "total_n": 4
+  },
+  {
+   "skel": "ماليا",
+   "tan_n": 2,
+   "total_n": 2
+  },
+  {
+   "skel": "أكاديميا",
+   "tan_n": 2,
+   "total_n": 3
+  },
+  {
+   "skel": "نوعا",
+   "tan_n": 2,
+   "total_n": 2
+  },
+  {
+   "skel": "شيوعا",
+   "tan_n": 2,
+   "total_n": 3
+  },
+  {
+   "skel": "اقتصاديا",
+   "tan_n": 2,
+   "total_n": 2
+  },
+  {
+   "skel": "سليما",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "طبيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "طبيعيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "مجانا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "جدلا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "هيكليا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "ميكانيكيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "تقديريا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "رسميا",
+   "tan_n": 1,
+   "total_n": 3
+  },
+  {
+   "skel": "متوفرا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "تنظيما",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "علاجا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "سعلا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "تقنيا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "جسمانيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "جغرافيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "ربطا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "ظيفيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "جددا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "ضررا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "مرورا",
+   "tan_n": 1,
+   "total_n": 4
+  },
+  {
+   "skel": "حيانا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "الشخصيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "آخيرا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "مستقبلا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "حسابيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "عقليا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "تكنولوجيا",
+   "tan_n": 1,
+   "total_n": 22
+  },
+  {
+   "skel": "صيفا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "تلقائيا",
+   "tan_n": 1,
+   "total_n": 3
+  },
+  {
+   "skel": "حجما",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "جسديا",
+   "tan_n": 1,
+   "total_n": 3
+  },
+  {
+   "skel": "مغالبا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "بدلا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "سياحيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "مؤقطا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "نضوجا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "اخيرا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "معنويا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "تعبا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "جنبا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "إرهاقا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "تعريبا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "بصريا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "صمعيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "يلا",
+   "tan_n": 1,
+   "total_n": 56
+  },
+  {
+   "skel": "عقاريا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "مجازا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "دخلا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "أمانا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "قريبا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "إيجابيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "كليا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "انتشارا",
+   "tan_n": 1,
+   "total_n": 3
+  },
+  {
+   "skel": "قلقا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "عادة",
+   "tan_n": 1,
+   "total_n": 28
+  },
+  {
+   "skel": "بناا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "رسوخا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "جذريا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "جزئيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "جازيلا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "وصولا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "مجددا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "توازنا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "نصا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "جزريا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "ارغا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "منعا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "باتا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "دائما",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "فعلا",
+   "tan_n": 1,
+   "total_n": 3
+  },
+  {
+   "skel": "تالثا",
+   "tan_n": 1,
+   "total_n": 4
+  },
+  {
+   "skel": "غزبا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "قانونا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "إدمانا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "تعقيدا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "سلبا",
+   "tan_n": 1,
+   "total_n": 3
+  },
+  {
+   "skel": "يعمل",
+   "tan_n": 1,
+   "total_n": 95
+  },
+  {
+   "skel": "ما",
+   "tan_n": 1,
+   "total_n": 1871
+  },
+  {
+   "skel": "زمنيا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "رقميا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "ضمنيا",
+   "tan_n": 1,
+   "total_n": 3
+  },
+  {
+   "skel": "تمانا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "إلحاحا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "شأنا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "حذرا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "ذكا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "شيئا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "احتياجا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "إداريا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "بداية",
+   "tan_n": 1,
+   "total_n": 79
+  },
+  {
+   "skel": "عمرانيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "عالا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "أيا",
+   "tan_n": 1,
+   "total_n": 2
+  },
+  {
+   "skel": "بمثلا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "ذاتيا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "بناءا",
+   "tan_n": 1,
+   "total_n": 1
+  },
+  {
+   "skel": "معا",
+   "tan_n": 1,
+   "total_n": 7
+  },
+  {
+   "skel": "طمعا",
+   "tan_n": 1,
+   "total_n": 1
+  }
+ ],
+ "non_tanween_candidates": {
+  "ربما": 0,
+  "أيضا": 0,
+  "كذلك": 1,
+  "إذن": 30,
+  "حسنا": 1,
+  "بالتالي": 15,
+  "أما": 39,
+  "إما": 37,
+  "كليا": 1,
+  "عموما": 10,
+  "بالفعل": 16,
+  "بالتدريج": 10,
+  "على فكرة": 43,
+  "بالمناسبة": 0,
+  "للأسف": 117,
+  "لحسن الحظ": 1,
+  "سوء الحظ": 0,
+  "على الأقل": 29,
+  "على الأكثر": 0,
+  "في النهاية": 71,
+  "في البداية": 20,
+  "في الحقيقة": 39,
+  "بشكل عام": 21,
+  "من ناحية": 35
+ }
+}

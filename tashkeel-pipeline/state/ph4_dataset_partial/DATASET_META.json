@@ -1,0 +1,14 @@
+{
+ "dataset": "ahmedyaseen86/niletts-4h-tashkeel-ai-v1",
+ "visibility": "private (text-only, no audio)",
+ "engine": "ph3_engine.mjs v5.1 (guide v2.1 — approved 2026-09-30; tanween ف-prefix bugfix documented in engine header)",
+ "n_input": 21880,
+ "n_ok": 65,
+ "n_failed": 45,
+ "n_quarantined": 6,
+ "n_missing": 21764,
+ "partial_build": true,
+ "transcripts_csv_sha256": "6c192b817c2f29f2daf9c937d4dd1589970e4cbd67955f7a4e3087862565b09a",
+ "transcripts_jsonl_sha256": "64ea51e482192bace4f6044d19787c4d1550148ea492e401b17eeaf6b33dd727",
+ "inclusion_rule": "status==ok only (§م); failed->review; quarantined->excluded"
+}

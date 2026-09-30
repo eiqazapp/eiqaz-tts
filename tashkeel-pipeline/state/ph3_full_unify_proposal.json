@@ -1,0 +1,422 @@
+{
+ "rule": "guide §م: unify stragglers by majority + document affected words/positions — PROPOSAL ONLY, applied after user approval",
+ "n_words_with_outliers": 19,
+ "n_affected_positions_total": 37,
+ "proposals": [
+  {
+   "skeleton": "ده",
+   "majority_form": "دِه",
+   "majority_count": 8,
+   "outlier_forms": [
+    {
+     "form": "دَه",
+     "count": 7,
+     "sample_ids": [
+      "0_07174_01",
+      "0_07175_00",
+      "0_08291_02",
+      "0_08292_00",
+      "1_02416_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 7,
+   "n_affected_ids_sampled": 5,
+   "affected_ids_sample": [
+    "0_07174_01",
+    "0_07175_00",
+    "0_08291_02",
+    "0_08292_00",
+    "1_02416_00"
+   ]
+  },
+  {
+   "skeleton": "اللي",
+   "majority_form": "اِلْلِي",
+   "majority_count": 5,
+   "outlier_forms": [
+    {
+     "form": "اِللي",
+     "count": 2,
+     "sample_ids": [
+      "1_00989_01",
+      "1_00989_01"
+     ]
+    },
+    {
+     "form": "اِللَّي",
+     "count": 1,
+     "sample_ids": [
+      "0_01400_00"
+     ]
+    },
+    {
+     "form": "اِلْلِّي",
+     "count": 1,
+     "sample_ids": [
+      "1_03718_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 4,
+   "n_affected_ids_sampled": 3,
+   "affected_ids_sample": [
+    "0_01400_00",
+    "1_00989_01",
+    "1_03718_00"
+   ]
+  },
+  {
+   "skeleton": "التقرير",
+   "majority_form": "اِلْتَّقْرِير",
+   "majority_count": 3,
+   "outlier_forms": [
+    {
+     "form": "اِلتَّقْرِيْر",
+     "count": 2,
+     "sample_ids": [
+      "0_00005_01",
+      "0_00017_01"
+     ]
+    },
+    {
+     "form": "اِلْتَّقْرِيْر",
+     "count": 2,
+     "sample_ids": [
+      "1_00990_00",
+      "1_00991_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 4,
+   "n_affected_ids_sampled": 4,
+   "affected_ids_sample": [
+    "0_00005_01",
+    "0_00017_01",
+    "1_00990_00",
+    "1_00991_00"
+   ]
+  },
+  {
+   "skeleton": "أو",
+   "majority_form": "أَو",
+   "majority_count": 6,
+   "outlier_forms": [
+    {
+     "form": "أُو",
+     "count": 1,
+     "sample_ids": [
+      "1_00988_01"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "1_00988_01"
+   ]
+  },
+  {
+   "skeleton": "بالزبط",
+   "majority_form": "بِالزَّبَط",
+   "majority_count": 5,
+   "outlier_forms": [
+    {
+     "form": "بِالزِّبْط",
+     "count": 1,
+     "sample_ids": [
+      "1_02411_00"
+     ]
+    },
+    {
+     "form": "بِاِلزَّبَط",
+     "count": 1,
+     "sample_ids": [
+      "1_03720_01"
+     ]
+    }
+   ],
+   "n_affected_positions": 2,
+   "n_affected_ids_sampled": 2,
+   "affected_ids_sample": [
+    "1_02411_00",
+    "1_03720_01"
+   ]
+  },
+  {
+   "skeleton": "لو",
+   "majority_form": "لُو",
+   "majority_count": 6,
+   "outlier_forms": [
+    {
+     "form": "لَو",
+     "count": 1,
+     "sample_ids": [
+      "0_07175_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "0_07175_00"
+   ]
+  },
+  {
+   "skeleton": "يعني",
+   "majority_form": "يَعْنِي",
+   "majority_count": 4,
+   "outlier_forms": [
+    {
+     "form": "يِعْنِي",
+     "count": 3,
+     "sample_ids": [
+      "0_08291_01",
+      "1_02417_01",
+      "1_02419_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 3,
+   "n_affected_ids_sampled": 3,
+   "affected_ids_sample": [
+    "0_08291_01",
+    "1_02417_01",
+    "1_02419_00"
+   ]
+  },
+  {
+   "skeleton": "بس",
+   "majority_form": "بَس",
+   "majority_count": 3,
+   "outlier_forms": [
+    {
+     "form": "بِس",
+     "count": 3,
+     "sample_ids": [
+      "1_02417_01",
+      "1_03714_01",
+      "1_03714_01"
+     ]
+    }
+   ],
+   "n_affected_positions": 3,
+   "n_affected_ids_sampled": 2,
+   "affected_ids_sample": [
+    "1_02417_01",
+    "1_03714_01"
+   ]
+  },
+  {
+   "skeleton": "تماما",
+   "majority_form": "تَمَامًا",
+   "majority_count": 3,
+   "outlier_forms": [
+    {
+     "form": "تَمَامَا",
+     "count": 2,
+     "sample_ids": [
+      "1_02418_00",
+      "1_03717_01"
+     ]
+    }
+   ],
+   "n_affected_positions": 2,
+   "n_affected_ids_sampled": 2,
+   "affected_ids_sample": [
+    "1_02418_00",
+    "1_03717_01"
+   ]
+  },
+  {
+   "skeleton": "الأول",
+   "majority_form": "اِلْأَوَّل",
+   "majority_count": 3,
+   "outlier_forms": [
+    {
+     "form": "اِلْأُول",
+     "count": 1,
+     "sample_ids": [
+      "0_07175_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "0_07175_00"
+   ]
+  },
+  {
+   "skeleton": "التاني",
+   "majority_form": "اِلْتَانِي",
+   "majority_count": 3,
+   "outlier_forms": [
+    {
+     "form": "اِلتَّانِي",
+     "count": 1,
+     "sample_ids": [
+      "1_02425_01"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "1_02425_01"
+   ]
+  },
+  {
+   "skeleton": "لها",
+   "majority_form": "لَهَا",
+   "majority_count": 3,
+   "outlier_forms": [
+    {
+     "form": "لِهَا",
+     "count": 1,
+     "sample_ids": [
+      "1_03717_01"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "1_03717_01"
+   ]
+  },
+  {
+   "skeleton": "أي",
+   "majority_form": "أَي",
+   "majority_count": 2,
+   "outlier_forms": [
+    {
+     "form": "أِي",
+     "count": 1,
+     "sample_ids": [
+      "1_03717_01"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "1_03717_01"
+   ]
+  },
+  {
+   "skeleton": "طبعا",
+   "majority_form": "طَبْعًا",
+   "majority_count": 2,
+   "outlier_forms": [
+    {
+     "form": "طِبْعًا",
+     "count": 1,
+     "sample_ids": [
+      "0_07175_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "0_07175_00"
+   ]
+  },
+  {
+   "skeleton": "يكون",
+   "majority_form": "يِكُون",
+   "majority_count": 2,
+   "outlier_forms": [
+    {
+     "form": "يِكُوْن",
+     "count": 1,
+     "sample_ids": [
+      "1_03718_01"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "1_03718_01"
+   ]
+  },
+  {
+   "skeleton": "تقريبا",
+   "majority_form": "تَقْرِيبَا",
+   "majority_count": 2,
+   "outlier_forms": [
+    {
+     "form": "تَقْرِيْبًا",
+     "count": 1,
+     "sample_ids": [
+      "0_07179_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "0_07179_00"
+   ]
+  },
+  {
+   "skeleton": "شوية",
+   "majority_form": "شُوَيَّة",
+   "majority_count": 2,
+   "outlier_forms": [
+    {
+     "form": "شُوْيَة",
+     "count": 1,
+     "sample_ids": [
+      "1_00990_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "1_00990_00"
+   ]
+  },
+  {
+   "skeleton": "كده",
+   "majority_form": "كِدَه",
+   "majority_count": 2,
+   "outlier_forms": [
+    {
+     "form": "كَدْه",
+     "count": 1,
+     "sample_ids": [
+      "0_08291_02"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "0_08291_02"
+   ]
+  },
+  {
+   "skeleton": "أهم",
+   "majority_form": "أَهْم",
+   "majority_count": 2,
+   "outlier_forms": [
+    {
+     "form": "أِهْم",
+     "count": 1,
+     "sample_ids": [
+      "1_02425_00"
+     ]
+    }
+   ],
+   "n_affected_positions": 1,
+   "n_affected_ids_sampled": 1,
+   "affected_ids_sample": [
+    "1_02425_00"
+   ]
+  }
+ ]
+}
