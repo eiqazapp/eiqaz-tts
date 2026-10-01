@@ -194,34 +194,34 @@ MODE_CASES = [
     ('قيمة', 'auto', '<', 'خارج B — همزة في auto'),
     ('قسمة', 'auto', '<', 'خارج B — همزة في auto'),
     # -- وضع qaf: أمثلة المستخدم + قائمة Q --
-    ('رقم', 'qaf', '<', 'مثال المستخدم — Q تفوز على B في وضع الفصحى'),
-    ('أرقام', 'qaf', '<', 'مثال المستخدم'),
-    ('قسمة', 'qaf', '<', 'مثال المستخدم'),
-    ('يقسم', 'qaf', '<', 'مثال المستخدم'),
-    ('تقريب', 'qaf', '<', 'مثال المستخدم'),
-    ('تقريبًا', 'qaf', '<', 'ظرف شائع في الشرح'),
-    ('قياس', 'qaf', '<', 'منهج أساسي'),
-    ('مقياس', 'qaf', '<', 'مقياس الرسم — جغرافيا/هندسة'),
-    ('قيمة', 'qaf', '<', 'القيمة المكانية'),
-    ('قاعدة', 'qaf', '<', 'قواعد الحساب'),
-    ('قواعد', 'qaf', '<', 'قواعد اللغة'),
-    ('قانون', 'qaf', '<', 'تعارض Q/B — Q تفوز في وضع الفصحى فقط'),
-    ('قطر', 'qaf', '<', 'قطر الدائرة (والدولة — نفس الهيكل)'),
-    ('المقام', 'qaf', '<', 'مقام الكسر — تعارض مع «في المقام الأول» B: auto=g / qaf=k'),
-    ('مستقيم', 'qaf', '<', 'الخط المستقيم'),
-    ('قيمة العدد تسعة هي تسعة', 'qaf', '<', 'جملة رياضيات — القيمة كلمة القاف الوحيدة'),
+    ('رقم', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('أرقام', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('قسمة', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('يقسم', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('تقريب', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('تقريبًا', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('قياس', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('مقياس', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('قيمة', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('قاعدة', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('قواعد', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('قانون', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('قطر', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('المقام', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('مستقيم', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('قيمة العدد تسعة هي تسعة', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
     ('المطلقة', 'qaf', '<', 'خارج قائمة Q — تبقى همزة (كلمات بعينها فقط)'),
-    ('قوة', 'qaf', '<', 'فيزياء — القوة'),
-    ('طاقة', 'qaf', '<', 'فيزياء — الطاقة'),
-    ('حقوق', 'qaf', '<', 'تربية مدنية'),
-    ('القسمة', 'qaf', '<', 'ال+ قسمة'),
-    ('ويقسم', 'qaf', '<', 'و+ يقسم'),
+    ('قوة', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('طاقة', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('حقوق', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('القسمة', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
+    ('ويقسم', 'qaf', 'v', 'P14: [g] مضمون (طبقة توكن معزولة — الإنتاج الكامل يزرع الموثق خامًا عميقًا عبر prepare)'),
     # -- وضع qaf: ليست كل كلمة قاف! --
     ('قمر', 'qaf', '<', 'خارج القائمتين — تبقى همزة (كلمات بعينها فقط)'),
     ('قال', 'qaf', '<', 'خارج القائمتين — همزة'),
     ('حقيقة', 'qaf', '<', 'C تبقى همزة حتى في وضع الفصحى'),
     ('قراءة', 'qaf', '<', 'C تبقى همزة'),
-    ('القرآن', 'qaf', '<', 'PATCH 11: عائلة قرآن انضمت لقائمة Q — qaf يمرّها خامًا (لا كاف — PATCH 13)'),
+    ('القرآن', 'qaf', 'v', 'P14: المعرفة OOD → [g] مضمون (لا زرع يُسمع همزة)'),
     ('قرش', 'qaf', 'v', 'B غير المتقاطعة تبقى [g] في وضع الفصحى'),
     ('قيراط', 'qaf', 'v', 'B غير المتقاطعة'),
     # -- فرض الهمزة شاملًا --
@@ -420,7 +420,8 @@ def main():
     r = infer.prepare_text_rich('رقم', 'always', 'egy', 'auto')
     p9('plant: رقم (B) لا يُزرع في auto', not r['qaf_planted'], r['text'])
     r = infer.prepare_text_rich('قيمة', 'never', 'egy', 'qaf')
-    p9('plant: قيمة خام في qaf تُزرع (tier2)', r['text'] == 'قِيمَةُ', r['text'])
+    p9('plant: قيمة خام في qaf → لا زرع tier2 ([g] — P14)',
+       r['text'] == 'قيمة' and not r['qaf_planted'], r['text'])
     r = infer.prepare_text_rich('قيمة', 'never', 'egy', 'auto')
     p9('plant: قيمة خام في auto لا زرع (tier2)', not r['qaf_planted'], r['text'])
     r = infer.prepare_text_rich('قطعة', 'never', 'egy', 'g')
@@ -441,13 +442,13 @@ def main():
     p9('fix: {ق} مع native → خام',
        infer.fix_qaf('qiTEpF', 'auto', 'egy', {'qTEp': 'q'},
                      {'qTEp'}) == 'qiTEpF')
-    p9('fix: {ق} بلا native → خام طبيعي (PATCH 13 — لا كاف)',
+    p9('fix: {ق} بلا native → [g] مضمون (PATCH 14 — لا همزة/لا كاف)',
        infer.fix_qaf('qiTEpF', 'auto', 'egy',
-                     {'qTEp': 'q'}) == 'qiTEpF')
+                     {'qTEp': 'q'}) == 'jiTEpF')
     p9('fix: qaf + native → خام (أصيلة)',
        infer.fix_qaf('qiTEpF', 'qaf', 'egy', None, {'qTEp'}) == 'qiTEpF')
-    p9('fix: qaf بلا native → خام (PATCH 13)',
-       infer.fix_qaf('qAEdp', 'qaf', 'egy') == 'qAEdp')
+    p9('fix: qaf بلا native → [g] مضمون (PATCH 14)',
+       infer.fix_qaf('qAEdp', 'qaf', 'egy') == 'jAEdp')
     p9('fix: B في auto → j', 'j' in infer.fix_qaf('Alrqm', 'auto', 'egy'))
     p9('fix: حارس بقرأ قبل العلامات',
        'j' not in infer.fix_qaf('bqr>', 'g', 'egy', {'bqr>': 'g'}))
@@ -505,9 +506,11 @@ def main():
 
     # 3) صيغة قطر المحدثة قُطْرًا (الشكل العميق المقيس في run1)
     r = infer.prepare_text_rich('قَطَرَ', 'never', 'egy', 'qaf')
-    p10('قطر في qaf تُزرع بصيغة قُطْرًا', r['text'] == 'قُطْرًا', r['text'])
+    p10('قطر في qaf لا تُزرع (tier2-همزية → [g] عبر fix_qaf — P14)',
+       r['text'] == 'قَطَرَ' and not r['qaf_planted'], r['text'])
     r = infer.prepare_text_rich('قَطَرَ{ق}', 'never', 'egy', 'auto')
-    p10('علامة {ق} تزرع قُطْرًا رغم tier2', r['text'] == 'قُطْرًا', r['text'])
+    p10('علامة {ق} لقطر tier2 → لا زرع ([g] عبر fix_qaf — P14)',
+       r['text'] == 'قَطَرَ' and not r['qaf_planted'], r['text'])
     p10('fix_qaf: native قطر خام في qaf',
         infer.fix_qaf('qaTr', 'qaf', 'egy', None, {'qTr'}) == 'qaTr')
 
@@ -538,9 +541,9 @@ def main():
     r = infer.prepare_text_rich(fail_sent, 'always', 'egy', 'auto')
     # PATCH 12: المعرفة (القرآن) لا تُزرع — زرعها OOD (صفر مواضع بالتعريف
     # في corpus §3-أ) كان يُسمع همزة؛ الآن [k] حتمي (بوابة QAF_Q_AFFIX_OK)
-    p11('full: القرآن بالتعريف تُزرع أفضل-جهد الآن (PATCH 13)',
-       any(pl['skel'] == 'Alqr|n' and pl['was'].startswith('ال')
-           for pl in r['qaf_planted']),
+    p11('full: القرآن بالتعريف لا تُزرع — OOD → [g] (PATCH 14)',
+       not any(pl['skel'] == 'Alqr|n' for pl in r['qaf_planted'])
+       and any(pl['skel'] == 'qSS' for pl in r['qaf_planted']),
        str(r['qaf_planted']))
     p11('full: قصص مزروعة قِصَصٍ',
        any(pl['skel'] == 'qSS' and pl['now'] == 'قِصَصٍ'
@@ -557,18 +560,18 @@ def main():
     clean_p11, acts_p11 = infer.parse_qaf_markers('نقرأه{ق}')
     p11('parse: نقرأه{ق} → nqr>p', acts_p11.get('nqr>p') == 'q',
        str(acts_p11))
-    p11('fix: نقرأه{ق} → خام طبيعي (PATCH 13 — لا كاف)',
+    p11('fix: نقرأه{ق} → [g] مضمون (PATCH 14 — لا همزة/لا كاف)',
        infer.fix_qaf('naqora>ahu', 'auto', 'egy',
-                     {'nqr>p': 'q'}) == 'naqora>ahu')
+                     {'nqr>p': 'q'}) == 'najora>ahu')
     p11('fix: نقرأه{ء} يصل أيضًا (ه↔ة)',
        infer.fix_qaf('naqora>ahu', 'auto', 'egy',
                      {'nqr>p': 'h'}) == 'naqora>ahu')
 
     # 3) السياسة (PATCH 13): {ق} = أصيلة مزروعة أو خام طبيعي — لا كاف أبدًا
     # (سكّل باكوالتير qbArp: الحركات aui تُنزع قبل المطابقة)
-    p11('fix: {ق} لكلمة بلا معجم → خام (لا كاف)',
+    p11('fix: {ق} لكلمة بلا معجم → [g] مضمون (P14)',
        infer.fix_qaf('qubArp', 'auto', 'egy',
-                     {'qbArp': 'q'}) == 'qubArp')
+                     {'qbArp': 'q'}) == 'jubArp')
     p11('fix: {ق} مجردة native → خام (لا مسبوقة)',
        infer.fix_qaf('quro|nK', 'auto', 'egy', {'qr|n': 'q'},
                      {'qr|n'}) == 'quro|nK')
@@ -634,23 +637,26 @@ def main():
 
     # 2) المسبوقة المعرفة — PATCH 13: زرع أفضل-جهد (لا كاف أبدًا)
     r = infer.prepare_text_rich('القرآن{ق} كتاب عظيم', 'always', 'egy', 'auto')
-    p12('زرع أفضل-جهد: القرآن{ق} (معرفة) تُزرع الْقُرْآن',
-       any(pl['skel'] == 'Alqr|n' for pl in r['qaf_planted'])
-       and 'Aloquro|n' in infer.fix_qaf(
+    p12('القرآن{ق} (معرفة OOD) → [g] مضمون (PATCH 14)',
+       not any(pl['skel'] == 'Alqr|n' for pl in r['qaf_planted'])
+       and 'Alojuro|n' in infer.fix_qaf(
            a2b(r['text']), 'auto', 'egy', r['qaf_actions'] or None,
            r['qaf_native'] or None), r['text'])
-    p12('حارس التسريب: المسبوقة غير المزروعة خام (لا كاف — P13)',
+    p12('حارس التسريب: المسبوقة غير المزروعة → [g] (P14)',
        infer.fix_qaf('Aloquro|n', 'auto', 'egy', {'qr|n': 'q'},
-                     {'qr|n'}) == 'Aloquro|n')
-    p12('حارس التسريب: المسبوقة في qaf خام أيضًا (P13)',
+                     {'qr|n'}) == 'Alojuro|n')
+    p12('حارس التسريب: المسبوقة في qaf → [g] أيضًا (P14)',
        infer.fix_qaf('Aloquro|n', 'qaf', 'egy', None,
-                     {'qr|n'}) == 'Aloquro|n')
+                     {'qr|n'}) == 'Alojuro|n')
     p12('زرع: القطعة{ق} (معرفة بتعرض corpus) تُزرع',
        (lambda rr: any(pl['skel'] == 'AlqTEp' and pl['was'].startswith('ال')
                        for pl in rr['qaf_planted']))(
            infer.prepare_text_rich('القطعة{ق} كبيرة', 'always', 'egy',
                                    'auto')), '')
-    p12('زرع: القسم{ق} (معرفة qsm∈AFFIX_OK) خام',
+    p12('القسم{ق} (معرفة، qsm tier2) → [g] مضمون (P14)',
+       infer.fix_qaf('Aloqisomi', 'auto', 'egy', {'qsm': 'q'},
+                     None) == 'Alojisomi')
+    p12('القسم{ق} مع native (لو زُرعت مستقبلًا) → خام',
        infer.fix_qaf('Aloqisomi', 'auto', 'egy', {'qsm': 'q'},
                      {'Alqsm'}) == 'Aloqisomi')
 
@@ -705,14 +711,14 @@ def main():
     r = infer.prepare_text_rich(user2, 'always', 'egy', 'auto')
     fixed = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
                           r['qaf_actions'] or None, r['qaf_native'] or None)
-    p12('جملة المستخدم 2: كل معرفة مزروعة خام (لا كاف — P13)',
-       'Alokuro|n' not in fixed and 'Aloquro|n' in fixed, fixed[:60])
+    p12('جملة المستخدم 2: كل معرفة OOD → [g] (لا كاف — P14)',
+       'Alokuro|n' not in fixed and 'Alojuro|n' in fixed, fixed[:60])
     p12('جملة المستخدم 2: قصص/قرآنا مزروعتان native',
        {'qSS', 'qr|n'} <= set(r['qaf_native']),
        f"native={sorted(r['qaf_native'])}")
-    p12('جملة المستخدم 2: نقرأه/يقرأ/قرآننا → خام طبيعي (P13)',
-       'naqora>uhu' in fixed and 'yaqora>u' in fixed
-       and 'quro|nanaA' in fixed, '')
+    p12('جملة المستخدم 2: نقرأه/يقرأ/قرآننا → [g] (P14)',
+       'najora>uhu' in fixed and 'yajora>u' in fixed
+       and 'juro|nanaA' in fixed, '')
     p12('جملة المستخدم 2: بلا لصق (كل الكلمات سليمة)',
        'قرآننقرأه' not in r['text'] and 'قُرْآنٍنَقْرَأَهُ' not in r['text'],
        r['text'][:50])
@@ -747,25 +753,27 @@ def main():
     # 1) يوم القيامة{ق} — حالة المستخدم الحرفية (كانت «الكيامة»)
     r = infer.prepare_text_rich('ننتظر يوم القيامة{ق} بفارغ الصبر',
                                 'always', 'egy', 'auto')
-    p13('قيامة: يوم القيامة{ق} تُزرع الْقِيَامَة (كسرة قاف)',
-       any(pl['skel'] == 'AlqyAmp' and 'قِيَامَة' in pl['now']
-           for pl in r['qaf_planted']), str(r['qaf_planted']))
+    p13('قيامة: يوم القيامة{ق} لا تُزرع — قياسي OOD (P14)',
+       not any(pl['skel'] == 'AlqyAmp' for pl in r['qaf_planted']),
+       str(r['qaf_planted']))
     fixed13 = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
                             r['qaf_actions'] or None, r['qaf_native'] or None)
-    p13('قيامة: لا كاف (توكن القاف q خام)',
-       'AloqiyaAmap' in fixed13 and 'AlokiyaAmap' not in fixed13, fixed13[:60])
+    p13('قيامة: [g] مضمون — لا كاف ولا همزة (P14)',
+       'AlojiyaAmap' in fixed13 and 'AlokiyaAmap' not in fixed13
+       and 'AloqiyaAmap' not in fixed13, fixed13[:60])
     r = infer.prepare_text_rich('القيامة{ق} الكبرى', 'always', 'egy', 'auto')
-    p13('قيامة: المعرفة منفردة تُزرع أيضًا',
-       any(pl['skel'] == 'AlqyAmp' for pl in r['qaf_planted']),
-       str(r['qaf_planted']))
+    p13('قيامة: المعرفة منفردة → [g] أيضًا (P14)',
+       'jiyaAmap' in infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                                   r['qaf_actions'] or None,
+                                   r['qaf_native'] or None), '')
 
     # 2) حارس الالتباس المعجمي: قلب{ق} لا تصبح كلبًا أبدًا
-    p13('حارس الالتباس: قلب{ق} → qalobi خام (لا كلب!)',
+    p13('حارس الالتباس: قلب{ق} → jalobi [g] (لا كلب ولا همزة — P14)',
        infer.fix_qaf('qalobi', 'auto', 'egy',
-                     {'qlb': 'q'}) == 'qalobi')
-    p13('حارس الالتباس: قلبي{ق} → qalobiy خام',
+                     {'qlb': 'q'}) == 'jalobi')
+    p13('حارس الالتباس: قلبي{ق} → jalobiy [g] (P14)',
        infer.fix_qaf('qalobiy', 'auto', 'egy',
-                     {'qlby': 'q'}) == 'qalobiy')
+                     {'qlby': 'q'}) == 'jalobiy')
     p13('حارس الالتباس: msa قلب → <alob (لا كلب)',
        infer.fix_qaf('qalob', 'auto', 'msa') == '<alob')
 
@@ -778,15 +786,18 @@ def main():
     p13('corpus: الحقيقة{ق} (معرفة 115 موضعًا) خام TRUST',
        'AlHqyqp' in r['qaf_native'], f"native={r['qaf_native']}")
     r = infer.prepare_text_rich('بيقول{ق} كلام كتير', 'always', 'egy', 'auto')
-    p13('corpus: بيقول{ق} (شكل corpus الموثق) يُزرع',
-       any(pl['skel'] == 'byqwl' for pl in r['qaf_planted']),
+    p13('corpus: بيقول{ق} عامية → [g] مضمون (لا زرع — P14)',
+       not any(pl['skel'] == 'byqwl' for pl in r['qaf_planted'])
+       and 'ajuwlu' in infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                                     r['qaf_actions'] or None,
+                                     r['qaf_native'] or None),
        str(r['qaf_planted']))
 
     # 4) حظر الكاف الشامل — مسح كل المسارات
     sweep = [
         ('naqora>ahu', 'auto', 'egy', {'nqr>p': 'q'}, None),   # علامة OOD
         ('raqom', 'qaf', 'egy', None, None),                    # وضع qaf
-        ('Aloquro|n', 'qaf', 'egy', None, {'qr|n'}),            # مسبوقة qaf
+        ('Aloquro|n', 'qaf', 'egy', None, {'qr|n'}),            # مسبوقة qaf → [g]
         ('qAEdp', 'qaf', 'egy', None, None),                    # Q بلا شكل
     ]
     no_k = all('k' not in infer.fix_qaf(b, m, d, a, n2)
@@ -853,6 +864,146 @@ def main():
             print(f'{("[P13] " + _n):<44s} {"PASS" if _ok else "FAIL":<11s} '
                   f'{_w[:52]}')
 
+
+    # ------------- PATCH 14 (2026-10-02): إصلاح الباتش 13 — بديل [g]
+    # المضمون للـOOD (لا همزة ولا كاف مع {ق} أبدًا) + دمج المقاطع ------
+    p14_cases = []
+
+    def p14(name, ok, why=''):
+        p14_cases.append((name, bool(ok), why))
+
+    # 1) حالات المستخدم الرابعة حرفيًا — لا همزة مع {ق} في أي مسار
+    r = infer.prepare_text_rich('يوم القيامة{ق} يوم عظيم', 'always',
+                                'egy', 'auto')
+    fx = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                       r['qaf_actions'] or None, r['qaf_native'] or None)
+    p14('يوم القيامة{ق} → [g] مضمون (لا همزة/لا كاف)',
+       'AlojiyaAmap' in fx and 'AloqiyaAmap' not in fx, fx[:50])
+    r = infer.prepare_text_rich('القرآن{ق} كتاب عظيم', 'always', 'egy', 'auto')
+    fx = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                       r['qaf_actions'] or None, r['qaf_native'] or None)
+    p14('القرآن{ق} (معرفة OOD) → [g] = نطق المصريين للقاف الرسمية',
+       'Alojuro|n' in fx, fx[:40])
+
+    # 2) الموثق يظل خامًا عميقًا (بلا انحدار لما كان يعمل)
+    r = infer.prepare_text_rich('قرآن{ق} كتاب عظيم', 'always', 'egy', 'auto')
+    fx = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                       r['qaf_actions'] or None, r['qaf_native'] or None)
+    p14('قرآن{ق} المجردة → مزروعة خامًا عميقًا (corpus قُرْآنٍ)',
+       'quro|n' in fx and 'juro|n' not in fx, fx[:40])
+    r = infer.prepare_text_rich('يتدبر قرآنا{ق} كريما', 'always', 'egy',
+                                'auto')
+    p14('قرآنا{ق} → مزروعة قُرْآنَ خامًا (شكل corpus)',
+       any(pl['now'] == 'قُرْآنَ' for pl in r['qaf_planted']),
+       str(r['qaf_planted']))
+    r = infer.prepare_text_rich('في القرآن{ق} قصص{ق} وحكم كثيرة',
+                                'always', 'egy', 'auto')
+    p14('قصص{ق} → مزروعة قِصَصٍ خامًا (corpus ×35)',
+       any(pl['now'] == 'قِصَصٍ' for pl in r['qaf_planted'])
+       and 'qiSaS' in infer.fix_qaf(
+           a2b(r['text']), 'auto', 'egy', r['qaf_actions'] or None,
+           r['qaf_native'] or None), str(r['qaf_planted']))
+    r = infer.prepare_text_rich('القطعة{ق} كبيرة', 'always', 'egy', 'auto')
+    p14('القطعة{ق} → شكل corpus الحرفي اِلْقِطْعَة خامًا',
+       any(pl['now'] == 'اِلْقِطْعَة' for pl in r['qaf_planted']),
+       str(r['qaf_planted']))
+    r = infer.prepare_text_rich('الحقيقة{ق} مؤلمة', 'always', 'egy', 'auto')
+    p14('الحقيقة{ق} → خام TRUST (النطق المتعلم)',
+       'AlHqyqp' in r['qaf_native'], f"native={r['qaf_native']}")
+    r = infer.prepare_text_rich('وقطعة{ق} قماش', 'always', 'egy', 'auto')
+    p14('وقطعة{ق} (سابقة اتصال تحفظ التسلسل) → مزروعة خامًا',
+       any(pl['now'].endswith('قِطْعَةً') for pl in r['qaf_planted']),
+       str(r['qaf_planted']))
+
+    # 3) OOD مختلفة → [g] مضمون
+    for wrd, buck in (('قرآننا', 'joro|ninaA'), ('يقرأ', 'yujora>a'),
+                      ('نقرأه', 'najora>ahu'), ('قيامة', 'jiyaAmapi')):
+        r = infer.prepare_text_rich(f'{wrd}{{ق}}', 'always', 'egy', 'auto')
+        fx = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                           r['qaf_actions'] or None,
+                           r['qaf_native'] or None)
+        p14(f'{wrd}{{ق}} → [g] مضمون (لا همزة/لا كاف)',
+           buck in fx, fx[:36])
+    r = infer.prepare_text_rich('القيمة{ق} المكانية', 'always', 'egy', 'auto')
+    fx = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                       r['qaf_actions'] or None, r['qaf_native'] or None)
+    p14('القيمة{ق} (عامية قاستت همزة run1) → [g] لا زرع همزي',
+       'Alojiymap' in fx, fx[:40])
+
+    # 4) لا انحدار: auto بلا علامة + الجملة العاملة القديمة
+    p14('لا انحدار: قمر auto بلا علامة → خام',
+       infer.fix_qaf('qamar', 'auto', 'egy') == 'qamar')
+    p14('لا انحدار: قرآن auto B → جيم',
+       'j' in infer.fix_qaf('quro|n', 'auto', 'egy'))
+    r = infer.prepare_text_rich(
+        'قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد قال{ء} شكرًا',
+        'always', 'egy', 'auto')
+    fx = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                       r['qaf_actions'] or None, r['qaf_native'] or None)
+    p14('لا انحدار: الجملة العاملة (قطعة خام + رقم جيم + قال خام)',
+       'qiToEapF' in fx and 'rajomi' in fx and 'qaAla' in fx, fx[:60])
+
+    # 5) وضع qaf: الموثق خام، والباقي [g] (لا زرع tier2 همزي)
+    r = infer.prepare_text_rich('قسمة كثيرة', 'always', 'egy', 'qaf')
+    p14('qaf: قسمة tier1 → native خام عميق (env_deep داخل التوزيع)',
+       'qsmp' in r['qaf_native'] and not r['qaf_planted'],
+       f"native={r['qaf_native']} planted={r['qaf_planted']}")
+    r = infer.prepare_text_rich('قطر الدائرة', 'always', 'egy', 'qaf')
+    p14('qaf: قطر tier2-همزية → لا زرع (fix_qaf يمنحها [g])',
+       not any('قُطْرًا' == pl['now'] for pl in r['qaf_planted']),
+       str(r['qaf_planted']))
+
+    # 6) توحيد النبرة (PATCH 14): دمج الجمل + حد الكسب الضيق
+    try:
+        import webapp
+        from webapp import _unify_chunks_tone, split_into_chunks, CHUNK_GAP_S
+        import numpy as np
+        sr = 22050
+        t = np.arange(sr, dtype='float32') / sr
+        # (أ) حد الكسب: مقطع شديد الهدوء لا يُعزز أكثر من 2.5×
+        w_loud = 0.10 * np.sin(2 * np.pi * 220 * t)
+        w_quiet = 0.002 * np.sin(2 * np.pi * 220 * t)
+        _, ti = _unify_chunks_tone([w_quiet.copy(), w_loud.copy(),
+                                    w_loud.copy()])
+        p14('نبرة: مقطع هادئ جدًا كسبه ≤ 2.5 (لا 4×)',
+           max(ti['rms_gains']) <= 2.5 + 1e-9, str(ti['rms_gains']))
+        # (ب) مقطعان متقاربان يتعادلان (ضمن الحد)
+        w1 = 0.04 * np.sin(2 * np.pi * 220 * t)
+        w2 = 0.05 * np.sin(2 * np.pi * 220 * t)
+        _, ti2 = _unify_chunks_tone([w1.copy(), w2.copy()])
+        p14('نبرة: المقاطع المتقاربة تتعادل',
+           0.85 < ti2['rms_gains'][0] <= 1.25, str(ti2['rms_gains']))
+        # (ج) دمج الجمل: نص متعدد الجمل → مقاطع أقل بكثير من عدد الجمل
+        multi = '. '.join(['جملة تجريبية قصيرة رقم كذا هنا'] * 8) + '.'
+        ch = split_into_chunks(multi, 'egy', infer.get_tokenizer('auto'))
+        p14('نبرة: دمج الجمل القصيرة في مقاطع أطول (8 جمل → ≤ 3)',
+           1 <= len(ch) <= 3, f"n_chunks={len(ch)}")
+        # (د) كل مقطع مدمج ≤ 90% من سقف التدريب
+        toks_ms, _, ids_of = infer.get_tokenizer('auto')
+        mx = max(len(ids_of(toks_ms(infer.keep_arabic_only(c))))
+                 for c in ch)
+        p14('نبرة: المقطع المدمج ≤ 144 توكن (0.9 × 160)',
+           mx <= 144, f"max_tokens={mx}")
+        # (هـ) الوسم لا ينفصل بعد الدمج
+        tagged = ('جملة أولى قصيرة جدًا هنا. ' * 3 + 'وفي آخرها القرآن {ق} عظيم')
+        ch2 = split_into_chunks(tagged, 'egy', infer.get_tokenizer('auto'))
+        p14('نبرة: الوسم يبقى ملتصقًا بكلمته بعد الدمج',
+           all(' {ق}' not in c for c in ch2)
+           and any('القرآن{ق}' in c for c in ch2),
+           str([c[-20:] for c in ch2]))
+    except Exception as e:  # noqa: BLE001
+        p14('نبرة (تخطي — استيراد webapp)', False, str(e))
+
+    n_pass += sum(1 for _n, _ok, _w in p14_cases if _ok)
+    n_fail += sum(1 for _n, _ok, _w in p14_cases if not _ok)
+    p14_rows = [{'name': _n, 'verdict': 'PASS' if _ok else 'FAIL', 'why': _w}
+                for _n, _ok, _w in p14_cases]
+    if not args.quiet:
+        print()
+        for _n, _ok, _w in p14_cases:
+            print(f'{("[P14] " + _n):<46s} {"PASS" if _ok else "FAIL":<11s} '
+                  f'{_w[:50]}')
+
     total = len(rows)
     by_class = {}
     for c in 'ABC':
@@ -869,8 +1020,10 @@ def main():
         'n_p11_cases': len(p11_rows),
         'n_p12_cases': len(p12_rows),
         'n_p13_cases': len(p13_rows),
+        'n_p14_cases': len(p14_rows),
         'p12_cases_fail': sum(r['verdict'] == 'FAIL' for r in p12_rows),
         'p13_cases_fail': sum(r['verdict'] == 'FAIL' for r in p13_rows),
+        'p14_cases_fail': sum(r['verdict'] == 'FAIL' for r in p14_rows),
         'p11_cases_fail': sum(r['verdict'] == 'FAIL' for r in p11_rows),
         'p10_cases_fail': sum(r['verdict'] == 'FAIL' for r in p10_rows),
         'p9_cases_fail': sum(r['verdict'] == 'FAIL' for r in p9_rows),
@@ -906,11 +1059,22 @@ def main():
             "للموثوقة خامًا (حقيقة 197 موضعًا + قياس run1)؛ ربط الوسم بكلمته "
             "قبل تقسيم الويب"),
         'policy_modes': (
-            "PATCH 7 + 13 — auto: السلوك المعتمد دون تغيير | qaf: قائمة Q "
-            "مزروعة خامًا أصيلة (المعجمان)، الباقي خام طبيعي — لا كاف أبدًا "
+            "PATCH 7 + 14 — auto: السلوك المعتمد دون تغيير | qaf: الموثق "
+            "مزروع خامًا أصيلة (verified/tier1/قرآن/قصص + corpus الحرفية)، "
+            "والباقي [g] مضمون — لا همزة ولا كاف أبدًا "
             "| hamza: كل قاف '<' | g: كل قاف 'v' | حارس بقرأ يعمل في كل "
             "الأوضاع | msa: كل قاف خام '<' (توكن q غير مدرّب — كان تقريب k "
             "محظورًا PATCH 13)"),
+        'policy_p14': (
+            "PATCH 14 (2026-10-02، إصلاح الباتش 13 بعد تقرير المستخدم "
+            "الرابع «أصبحت جميعها تنطق همزة») — العلامة {ق}: زرع الموثق فقط "
+            "(TRUST أو شكل corpus حرفي بعائلة DEEP_OK أو مجردة DEEP_OK بلا "
+            "تعريف) خامًا عميقًا؛ وكل OOD → جيم عميقة [g] مضمونة (توكن v): "
+            "لا همزة ولا كاف في أي مسار. [g] = نوعية الصوت التي وافق عليها "
+            "المستخدم في الأشكال المزروعة المؤكدة (قياس run1 = g) ونطق "
+            "المصريين للقاف الرسمية (القرآن/القاهرة في قائمة B نفسها). "
+            "النبرة: دمج الجمل حتى 0.9×سقف التدريب (أقل صفريات إعراب) + "
+            "كسب تعادل RMS بحد 0.4–2.5 (كان 0.25–4.0 يرفع ضجيج النهاية)"),
         'policy_decision': (
             "مراجعة المستخدم 2026-10-01: الفئة B فقط ثابتة [g]؛ حقيقة/دقيق/"
             "قراءة/قرأ وعائلاتها عادت للافتراضي [ʔ] حفاظًا على السلوك المتعلّم "
@@ -950,22 +1114,26 @@ def main():
         print(f"  PATCH 13 (لا كاف أبدًا + قيامة + معجم corpus + النبرة): "
               f"{len(p13_rows) - summary['p13_cases_fail']}/{len(p13_rows)}"
               f" PASS")
+        print(f"  PATCH 14 (بديل [g] المضمون + دمج المقاطع + كسب 2.5): "
+              f"{len(p14_rows) - summary['p14_cases_fail']}/{len(p14_rows)}"
+              f" PASS")
         print(f"  مسار msa المُصلَح: "
               f"{len(msa_rows) - summary['msa_cases_fail']}/{len(msa_rows)}"
               f" PASS")
         print('\nملاحظة: فئة C = نطق متغير — عادت للافتراضي [ʔ] بقرار مراجعة '
               'المستخدم (2026-10-01)، وتشمل حارس «بقرأ» التقدمية (PATCH 6b). '
               'أوضاع PATCH 7 إضافية فوق السلوك المعتمد — الافتراض auto بلا '
-              'أي تغيير؛ وضع qaf قائمة مغلقة ليست كل كلمة قاف؛ القاف '
-              'الفصحى [q] الحقيقية تحتاج إعادة تدريب (توكن q غير مدرّب — '
-              '0/1.59M) — لا تقريب كاف بعد PATCH 13.')
+              'أي تغيير؛ وضع qaf الموثق فقط؛ القاف الفصحى [q] الحقيقية '
+              'تحتاج إعادة تدريب (توكن q غير مدرّب — 0/1.59M) — لا تقريب '
+              'كاف بعد PATCH 13 ولا همزة مع {ق} بعد PATCH 14 (بديل [g] '
+              'المضمون).')
 
     if args.json:
         with open(args.json, 'w', encoding='utf-8') as f:
             json.dump({'summary': summary, 'rows': rows,
                        'p9_rows': p9_rows, 'p10_rows': p10_rows,
                        'p11_rows': p11_rows, 'p12_rows': p12_rows,
-                       'p13_rows': p13_rows,
+                       'p13_rows': p13_rows, 'p14_rows': p14_rows,
                        'mode_rows': mode_rows, 'msa_rows': msa_rows}, f,
                       ensure_ascii=False, indent=1)
         if not args.quiet:

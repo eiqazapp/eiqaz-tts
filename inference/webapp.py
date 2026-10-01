@@ -202,6 +202,23 @@ def split_into_chunks(raw_text, dialect, tok_fns,
                         cur_n += wn
                 if cur:
                     chunks.append(' '.join(cur))
+
+    # PATCH 14 (2026-10-02، تقرير المستخدم الرابع: «نمط المتحدث لم يتم
+    # توحيده في الجمل الطويلة»): دمج الجمل القصيرة المتجاورة في مقاطع
+    # أطول (حتى 90% من سقف التدريب). كل حد مقطع يُصفِّر إعراب الجملة
+    # ويبدأ نغمة جديدة — تقليل عدد المقاطع = تقليل عدد صفريات النبرة =
+    # نمط متحدث موحّد أكثر عبر النص الطويل كله. النموذج دُرِّب على وحدات
+    # متعددة الجمل حتى السقف نفسه (160 توكن) فالدمج داخل التوزيع تمامًا
+    # — الجملة الأخيرة الصغيرة لا تُولَّد وحدها بنبرة معزولة شاذة.
+    merge_cap = int(max_tokens * 0.9) if max_tokens >= 20 else max_tokens
+    merged14 = []
+    for c in chunks:
+        if merged14 and _n_tokens_of(
+                merged14[-1] + ' ' + c, dialect, tok_fns) <= merge_cap:
+            merged14[-1] = merged14[-1] + ' ' + c
+        else:
+            merged14.append(c)
+    chunks = merged14
     return [c for c in chunks if infer._AR_LETTERS.search(
         infer.keep_arabic_only(c))]
 
@@ -237,6 +254,12 @@ def _unify_chunks_tone(waves):
         return None, info
 
     # 1) تعادل الجهارة (RMS) نحو وسيط المقاطع — فقط للتعدد
+    # PATCH 14: حد الكسب ضُيّق من [0.25, 4.0] إلى [0.4, 2.5] — تعزيز 4×
+    # كان يرفع أرضية ضجيج المُصوِّت في المقاطع الهادئة (الجمل الأخيرة
+    # ذات الطاقة المتدنية) فسمعها المستخدم «نبرة سيئة جدًا في نهاية الحديث
+    # ومختلفة». كسب ±(4–8)dB لطيف محفوظ للجهارة، وما عدا ذلك يبقى
+    # طبيعيًا — والدمج الأطول للمقاطع (split_into_chunks) يعالج جذر
+    # اختلاف النبرة نفسه.
     rms = [float(np.sqrt(np.mean(np.square(w)))) if len(w) else 0.0
            for w in waves]
     if n > 1:
@@ -246,7 +269,7 @@ def _unify_chunks_tone(waves):
             for i in range(n):
                 g = 1.0
                 if rms[i] > 1e-6:
-                    g = min(max(target / rms[i], 0.25), 4.0)
+                    g = min(max(target / rms[i], 0.4), 2.5)
                     waves[i] = (waves[i] * g).astype('float32')
                 gains.append(round(g, 2))
         info['rms_gains'] = gains
