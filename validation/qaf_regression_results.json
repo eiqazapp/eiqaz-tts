@@ -1,7 +1,7 @@
 {
  "summary": {
   "total": 87,
-  "pass": 87,
+  "pass": 135,
   "fail": 0,
   "suspicious": 0,
   "by_class": {
@@ -18,9 +18,14 @@
     "fail": 0
    }
   },
+  "n_mode_cases": 44,
+  "n_msa_cases": 4,
+  "mode_cases_fail": 0,
+  "msa_cases_fail": 0,
   "policy": "A→'<' (قاهري [ʔ])، B→'v' ([g] ثابت)، C→'<' (متغير → افتراضي [ʔ] — PATCH 6b)",
-  "policy_decision": "مراجعة المستخدم 2026-10-01: الفئة B فقط ثابتة [g]؛ حقيقة/دقيق/قراءة/قرأ وعائلاتها عادت للافتراضي [ʔ] حفاظًا على السلوك المتعلّم (874 سماعًا لعائلة حقيقة)؛ حارس مستقل لصيغة «بقرأ» التقدمية",
-  "root_cause": "EGY_TOKEN_MAP q→'<' غير مشروطة في toks_egy (infer.py + نواة التدريب) — عولجت في الاستدلال بـPATCH 6 (QAF_G_SKELETONS + fix_qaf_g في infer.py)"
+  "policy_modes": "PATCH 7 — auto: السلوك المعتمد دون تغيير | qaf: قائمة Q (81 هيكلًا) → 'k' قاف فصحى تقريبية، الباقي كما auto | hamza: كل قاف '<' | g: كل قاف 'v' | حارس بقرأ يعمل في كل الأوضاع | msa: كل قاف 'k' تقريبًا (كانت توكن خام غير مدرّب)",
+  "policy_decision": "مراجعة المستخدم 2026-10-01: الفئة B فقط ثابتة [g]؛ حقيقة/دقيق/قراءة/قرأ وعائلاتها عادت للافتراضي [ʔ] حفاظًا على السلوك المتعلّم (874 سماعًا لعائلة حقيقة)؛ حارس مستقل لصيغة «بقرأ» التقدمية؛ وفي القرار نفسه: أوضاع نطق القاف (auto/qaf/hamza/g) + قائمة Q لفصحى المصطلحات التعليمية (تقريب [k] — القاف الأصيلة مؤجلة كمشروع إعادة تدريب مستقل)",
+  "root_cause": "EGY_TOKEN_MAP q→'<' غير مشروطة في toks_egy (infer.py + نواة التدريب) — عولجت في الاستدلال بـPATCH 6 (QAF_G_SKELETONS + fix_qaf_g في infer.py)، ثم عُمّمت بـPATCH 7 (fix_qaf بأوضاع auto/qaf/hamza/g + إصلاح مسار msa)"
  },
  "rows": [
   {
@@ -4797,6 +4802,529 @@
     4,
     1
    ]
+  }
+ ],
+ "mode_rows": [
+  {
+   "input": "رقم",
+   "mode": "auto",
+   "note": "B سارية في auto — قرار معتمد دون تغيير",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v"
+   ]
+  },
+  {
+   "input": "قانون",
+   "mode": "auto",
+   "note": "B سارية في auto",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v"
+   ]
+  },
+  {
+   "input": "القرآن",
+   "mode": "auto",
+   "note": "B سارية في auto (قرار مُعاد تأكيده 2026-10-01)",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v"
+   ]
+  },
+  {
+   "input": "قيمة",
+   "mode": "auto",
+   "note": "خارج B — همزة في auto",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "قسمة",
+   "mode": "auto",
+   "note": "خارج B — همزة في auto",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "رقم",
+   "mode": "qaf",
+   "note": "مثال المستخدم — Q تفوز على B في وضع الفصحى",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "أرقام",
+   "mode": "qaf",
+   "note": "مثال المستخدم",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قسمة",
+   "mode": "qaf",
+   "note": "مثال المستخدم",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "يقسم",
+   "mode": "qaf",
+   "note": "مثال المستخدم",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "تقريب",
+   "mode": "qaf",
+   "note": "مثال المستخدم",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "تقريبًا",
+   "mode": "qaf",
+   "note": "ظرف شائع في الشرح",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قياس",
+   "mode": "qaf",
+   "note": "منهج أساسي",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "مقياس",
+   "mode": "qaf",
+   "note": "مقياس الرسم — جغرافيا/هندسة",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قيمة",
+   "mode": "qaf",
+   "note": "القيمة المكانية",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قاعدة",
+   "mode": "qaf",
+   "note": "قواعد الحساب",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قواعد",
+   "mode": "qaf",
+   "note": "قواعد اللغة",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قانون",
+   "mode": "qaf",
+   "note": "تعارض Q/B — Q تفوز في وضع الفصحى فقط",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قطر",
+   "mode": "qaf",
+   "note": "قطر الدائرة (والدولة — نفس الهيكل)",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "المقام",
+   "mode": "qaf",
+   "note": "مقام الكسر — تعارض مع «في المقام الأول» B: auto=g / qaf=k",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "مستقيم",
+   "mode": "qaf",
+   "note": "الخط المستقيم",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قيمة العدد تسعة هي تسعة",
+   "mode": "qaf",
+   "note": "جملة رياضيات — القيمة كلمة القاف الوحيدة",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "المطلقة",
+   "mode": "qaf",
+   "note": "خارج قائمة Q — تبقى همزة (كلمات بعينها فقط)",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "قوة",
+   "mode": "qaf",
+   "note": "فيزياء — القوة",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "طاقة",
+   "mode": "qaf",
+   "note": "فيزياء — الطاقة",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "حقوق",
+   "mode": "qaf",
+   "note": "تربية مدنية",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k",
+    "k"
+   ]
+  },
+  {
+   "input": "القسمة",
+   "mode": "qaf",
+   "note": "ال+ قسمة",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "ويقسم",
+   "mode": "qaf",
+   "note": "و+ يقسم",
+   "verdict": "PASS",
+   "why": "القاف → 'k' كما يتوقع الوضع",
+   "expected": "k",
+   "got": [
+    "k"
+   ]
+  },
+  {
+   "input": "قمر",
+   "mode": "qaf",
+   "note": "خارج القائمتين — تبقى همزة (كلمات بعينها فقط)",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "قال",
+   "mode": "qaf",
+   "note": "خارج القائمتين — همزة",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "حقيقة",
+   "mode": "qaf",
+   "note": "C تبقى همزة حتى في وضع الفصحى",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<",
+    "<"
+   ]
+  },
+  {
+   "input": "قراءة",
+   "mode": "qaf",
+   "note": "C تبقى همزة",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "القرآن",
+   "mode": "qaf",
+   "note": "يبقى على قرار B [g] — لا قاف فصحى للقرآن في الوضع التعليمي",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v"
+   ]
+  },
+  {
+   "input": "قرش",
+   "mode": "qaf",
+   "note": "B غير المتقاطعة تبقى [g] في وضع الفصحى",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v"
+   ]
+  },
+  {
+   "input": "قيراط",
+   "mode": "qaf",
+   "note": "B غير المتقاطعة",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v"
+   ]
+  },
+  {
+   "input": "رقم",
+   "mode": "hamza",
+   "note": "فرض الهمزة يتجاوز B",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "القرآن",
+   "mode": "hamza",
+   "note": "فرض الهمزة يتجاوز B",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "قانون",
+   "mode": "hamza",
+   "note": "فرض الهمزة يتجاوز B",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "قمر",
+   "mode": "g",
+   "note": "فرض الجيم شامل",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v"
+   ]
+  },
+  {
+   "input": "قال",
+   "mode": "g",
+   "note": "فرض الجيم شامل",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v"
+   ]
+  },
+  {
+   "input": "حقيقة",
+   "mode": "g",
+   "note": "فرض الجيم يتجاوز C",
+   "verdict": "PASS",
+   "why": "القاف → 'v' كما يتوقع الوضع",
+   "expected": "v",
+   "got": [
+    "v",
+    "v"
+   ]
+  },
+  {
+   "input": "بقرأ",
+   "mode": "auto",
+   "note": "الحارس في auto",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "بقرأ",
+   "mode": "qaf",
+   "note": "الحارس في وضع الفصحى",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "بقرأ",
+   "mode": "g",
+   "note": "الحارس يمنع فرض الجيم عن بقرأ (خطأ صوتي ثابت)",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  },
+  {
+   "input": "بيقرأ",
+   "mode": "g",
+   "note": "الحارس بعد سابقة الباء",
+   "verdict": "PASS",
+   "why": "القاف → '<' كما يتوقع الوضع",
+   "expected": "<",
+   "got": [
+    "<"
+   ]
+  }
+ ],
+ "msa_rows": [
+  {
+   "input": "القرآن كتاب عظيم",
+   "mode": "auto",
+   "note": "msa: كل قاف فصحى تقريبية — كان q خام",
+   "verdict": "PASS",
+   "why": "باكوالتير بعد fix_qaf: Alkr|n ktAb EZym…",
+   "buck_fixed": "Alkr|n ktAb EZym"
+  },
+  {
+   "input": "قال المعلم",
+   "mode": "auto",
+   "note": "msa auto: قاف فصحى",
+   "verdict": "PASS",
+   "why": "باكوالتير بعد fix_qaf: kAl AlmElm…",
+   "buck_fixed": "kAl AlmElm"
+  },
+  {
+   "input": "رقم خمسة",
+   "mode": "hamza",
+   "note": "msa فرض همزة",
+   "verdict": "PASS",
+   "why": "باكوالتير بعد fix_qaf: r<m xmsp…",
+   "buck_fixed": "r<m xmsp"
+  },
+  {
+   "input": "قال المعلم",
+   "mode": "g",
+   "note": "msa فرض جيم",
+   "verdict": "PASS",
+   "why": "باكوالتير بعد fix_qaf: jAl AlmElm…",
+   "buck_fixed": "jAl AlmElm"
   }
  ]
 }

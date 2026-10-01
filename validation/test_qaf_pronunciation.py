@@ -33,6 +33,14 @@ test_qaf_pronunciation.py — اختبار ظاهرة فقدان القاف في
      على قرأ): بقرأ/بتقرأ/بيقرأ/بيتقرأ = [ʔ] دائمًا بغض النظر عن أي
      معجم — إصلاح خطأ منطق نزع السوابق التلقائي.
 
+== PATCH 7 (2026-10-01: أوضاع نطق القاف + الفئة Q فصحى المصطلحات) ==
+وضع نصي/واجهة لكل توليد (--qaf / خيار الواجهة): auto (الافتراضي —
+السلوك المعتمد الساري دون أي تغيير) | qaf (فصحى المصطلحات التعليمية:
+قائمة Q مغلقة 81 هيكلًا → قاف فصحى تقريبية [k] — ليست كل كلمة) |
+hamza (فرض الهمزة شاملًا) | g (فرض الجيم شاملًا). حارس بقرأ يعمل في
+كل الأوضاع. مسار الفصحى msa أُصلح أيضًا (توكن q غير المدرّب 0/1.59M
+كان يُمرَّر خامًا — الآن قاف فصحى تقريبية [k] لكل الكلمات).
+
 == أساس التصنيف (ليس تخمينًا من شكل التوكن) ==
 فئة النطق المستهدف لكل كلمة مستندة إلى:
   1. اللهجة القاهرية القياسية: الافتراض ق→[ʔ] (همزة)، مع استثناءات
@@ -164,6 +172,71 @@ CLASS_DESC = {
          'PATCH 6b) — يشمل حارس «بقرأ» التقدمية',
 }
 
+# ------------------------------------------------------------------ PATCH 7 --
+# حالات أوضاع القاف: (المدخل، الوضع، التوكن المتوقع، الملاحظة)
+# المتوقع: 'v' = جيم [g] | 'k' = قاف فصحى تقريبية | '<' = همزة [ʔ]
+MODE_CASES = [
+    # -- الوضع الافتراضي auto = السلوك المعتمد (بلا أي تغيير) --
+    ('رقم', 'auto', 'v', 'B سارية في auto — قرار معتمد دون تغيير'),
+    ('قانون', 'auto', 'v', 'B سارية في auto'),
+    ('القرآن', 'auto', 'v', 'B سارية في auto (قرار مُعاد تأكيده 2026-10-01)'),
+    ('قيمة', 'auto', '<', 'خارج B — همزة في auto'),
+    ('قسمة', 'auto', '<', 'خارج B — همزة في auto'),
+    # -- وضع qaf: أمثلة المستخدم + قائمة Q --
+    ('رقم', 'qaf', 'k', 'مثال المستخدم — Q تفوز على B في وضع الفصحى'),
+    ('أرقام', 'qaf', 'k', 'مثال المستخدم'),
+    ('قسمة', 'qaf', 'k', 'مثال المستخدم'),
+    ('يقسم', 'qaf', 'k', 'مثال المستخدم'),
+    ('تقريب', 'qaf', 'k', 'مثال المستخدم'),
+    ('تقريبًا', 'qaf', 'k', 'ظرف شائع في الشرح'),
+    ('قياس', 'qaf', 'k', 'منهج أساسي'),
+    ('مقياس', 'qaf', 'k', 'مقياس الرسم — جغرافيا/هندسة'),
+    ('قيمة', 'qaf', 'k', 'القيمة المكانية'),
+    ('قاعدة', 'qaf', 'k', 'قواعد الحساب'),
+    ('قواعد', 'qaf', 'k', 'قواعد اللغة'),
+    ('قانون', 'qaf', 'k', 'تعارض Q/B — Q تفوز في وضع الفصحى فقط'),
+    ('قطر', 'qaf', 'k', 'قطر الدائرة (والدولة — نفس الهيكل)'),
+    ('المقام', 'qaf', 'k', 'مقام الكسر — تعارض مع «في المقام الأول» B: auto=g / qaf=k'),
+    ('مستقيم', 'qaf', 'k', 'الخط المستقيم'),
+    ('قيمة العدد تسعة هي تسعة', 'qaf', 'k', 'جملة رياضيات — القيمة كلمة القاف الوحيدة'),
+    ('المطلقة', 'qaf', '<', 'خارج قائمة Q — تبقى همزة (كلمات بعينها فقط)'),
+    ('قوة', 'qaf', 'k', 'فيزياء — القوة'),
+    ('طاقة', 'qaf', 'k', 'فيزياء — الطاقة'),
+    ('حقوق', 'qaf', 'k', 'تربية مدنية'),
+    ('القسمة', 'qaf', 'k', 'ال+ قسمة'),
+    ('ويقسم', 'qaf', 'k', 'و+ يقسم'),
+    # -- وضع qaf: ليست كل كلمة قاف! --
+    ('قمر', 'qaf', '<', 'خارج القائمتين — تبقى همزة (كلمات بعينها فقط)'),
+    ('قال', 'qaf', '<', 'خارج القائمتين — همزة'),
+    ('حقيقة', 'qaf', '<', 'C تبقى همزة حتى في وضع الفصحى'),
+    ('قراءة', 'qaf', '<', 'C تبقى همزة'),
+    ('القرآن', 'qaf', 'v', 'يبقى على قرار B [g] — لا قاف فصحى للقرآن في الوضع التعليمي'),
+    ('قرش', 'qaf', 'v', 'B غير المتقاطعة تبقى [g] في وضع الفصحى'),
+    ('قيراط', 'qaf', 'v', 'B غير المتقاطعة'),
+    # -- فرض الهمزة شاملًا --
+    ('رقم', 'hamza', '<', 'فرض الهمزة يتجاوز B'),
+    ('القرآن', 'hamza', '<', 'فرض الهمزة يتجاوز B'),
+    ('قانون', 'hamza', '<', 'فرض الهمزة يتجاوز B'),
+    # -- فرض الجيم شاملًا --
+    ('قمر', 'g', 'v', 'فرض الجيم شامل'),
+    ('قال', 'g', 'v', 'فرض الجيم شامل'),
+    ('حقيقة', 'g', 'v', 'فرض الجيم يتجاوز C'),
+    # -- حارس بقرأ في كل الأوضاع (PATCH 6b مستقل) --
+    ('بقرأ', 'auto', '<', 'الحارس في auto'),
+    ('بقرأ', 'qaf', '<', 'الحارس في وضع الفصحى'),
+    ('بقرأ', 'g', '<', 'الحارس يمنع فرض الجيم عن بقرأ (خطأ صوتي ثابت)'),
+    ('بيقرأ', 'g', '<', 'الحارس بعد سابقة الباء'),
+]
+
+# حالات مسار الفصحى msa (PATCH 7 — إصلاح التوكن غير المدرّب):
+# (المدخل، الوضع، القاف المتوقعة في باكوالتير بعد fix_qaf)
+MSA_CASES = [
+    ('القرآن كتاب عظيم', 'auto', 'k', 'msa: كل قاف فصحى تقريبية — كان q خام'),
+    ('قال المعلم', 'auto', 'k', 'msa auto: قاف فصحى'),
+    ('رقم خمسة', 'hamza', '<', 'msa فرض همزة'),
+    ('قال المعلم', 'g', 'j', 'msa فرض جيم'),
+]
+
 
 # ---------------------------------------------------------------- pipeline --
 def load_pipeline():
@@ -184,12 +257,13 @@ def load_pipeline():
             phonemes_to_tokens, tokens_to_ids, egy_map)
 
 
-def trace(raw, infer, a2b, b2p, p2t, ids_of, egy_map, vocalize='auto'):
+def trace(raw, infer, a2b, b2p, p2t, ids_of, egy_map, vocalize='auto',
+          qaf_mode='auto'):
     """يتبع النص عبر المسار الإنتاجي: تنظيف → تشكيل catt → ترميز → معرفات.
 
-    الترميز المصري يُستخرج من infer.toks_egy نفسها (المكان الفعلي لـPATCH 6)،
-    والتوكنز الفصحى من infer.toks_ms لتحديد مواضع q المرجعية. بنية الطولين
-    متطابقة بالتصميم (فرق q/j لا يغيّر بنية التوكنز)."""
+    الترميز المصري يُستخرج من infer.toks_egy نفسها (المكان الفعلي لـPATCH 6
+    + أوضاع PATCH 7 — تُبنى بـ get_tokenizer(qaf_mode))، والتوكنز الفصحى
+    من infer.toks_ms لتحديد مواضع q المرجعية (المرجع الخام بلا إصلاح)."""
     text = ' '.join(raw.split())
     clean = infer.keep_arabic_only(text)
     density, _ = infer.diacritic_density(clean)
@@ -199,7 +273,7 @@ def trace(raw, infer, a2b, b2p, p2t, ids_of, egy_map, vocalize='auto'):
         processed = ' '.join(infer.catt_vocalize(clean).split())
     else:
         processed = clean
-    toks_ms_fn, toks_egy_fn, _ids = infer.get_tokenizer()
+    toks_ms_fn, toks_egy_fn, _ids = infer.get_tokenizer(qaf_mode)
     toks_ms_l = toks_ms_fn(processed)
     toks_egy_l = toks_egy_fn(processed)
     entry = {
@@ -231,6 +305,19 @@ def evaluate(entry, cls):
             f"القاف → '{uniq}' بينما الفئة {cls} تتوقع '{want}'")
 
 
+def evaluate_mode(entry, want):
+    """حكم حالات أوضاع PATCH 7 — نفس منطق evaluate بمعيار الوضع."""
+    if entry.get('structure_mismatch') is not None:
+        return 'FAIL', ('اختلاف بنية التوكنز — خرق لأمان PATCH 6/7')
+    if not entry['q_positions']:
+        return 'SUSPICIOUS', 'لا يوجد توكن q للمقارنة (راجع يدويًا)'
+    got = [entry['tokens_egy'][i] for i in entry['q_positions']]
+    if all(t == want for t in got):
+        return 'PASS', f"القاف → '{want}' كما يتوقع الوضع"
+    uniq = '/'.join(dict.fromkeys(got))
+    return 'FAIL', f"القاف → '{uniq}' بينما الوضع يتوقع '{want}'"
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[1])
     ap.add_argument('--json', default=None, help='حفظ النتائج JSON')
@@ -260,6 +347,39 @@ def main():
         if not args.quiet:
             print(f'{raw[:22]:<24s} {cls} {verdict:<11s} {why[:64]}')
 
+    # ------------------ PATCH 7: حالات الأوضاع ------------------
+    mode_rows = []
+    for raw, mode, want, note in MODE_CASES:
+        e = trace(raw, infer, a2b, b2p, p2t, ids_of, egy_map,
+                  vocalize='never', qaf_mode=mode)
+        verdict, why = evaluate_mode(e, want)
+        n_pass += verdict == 'PASS'
+        n_fail += verdict == 'FAIL'
+        n_susp += verdict == 'SUSPICIOUS'
+        mode_rows.append({'input': raw, 'mode': mode, 'note': note,
+                          'verdict': verdict, 'why': why,
+                          'expected': want,
+                          'got': [e['tokens_egy'][i] for i in e['q_positions']]})
+        if not args.quiet:
+            print(f'{raw[:22]:<24s} [{mode:<5s}] {verdict:<11s} {why[:58]}')
+
+    # ------------------ PATCH 7: مسار الفصحى msa ------------------
+    msa_rows = []
+    for raw, mode, want, note in MSA_CASES:
+        buck_fixed = infer.fix_qaf(a2b(raw), mode, 'msa')
+        verdict = 'PASS' if 'q' not in buck_fixed and want in buck_fixed else 'FAIL'
+        # البديل المرفوض: توكن q خام (غير مدرّب) في أي وضع
+        got_q = 'q' in buck_fixed
+        why = (f"باكوالتير بعد fix_qaf: {buck_fixed[:40]}…"
+               if not got_q else 'توكن q خام غير مدرّب ما زال موجودًا!')
+        n_pass += verdict == 'PASS'
+        n_fail += verdict == 'FAIL'
+        msa_rows.append({'input': raw, 'mode': mode, 'note': note,
+                         'verdict': verdict, 'why': why,
+                         'buck_fixed': buck_fixed})
+        if not args.quiet:
+            print(f'{raw[:22]:<24s} [msa/{mode:<5s}] {verdict:<11s} {why[:56]}')
+
     total = len(rows)
     by_class = {}
     for c in 'ABC':
@@ -269,29 +389,54 @@ def main():
     summary = {
         'total': total, 'pass': n_pass, 'fail': n_fail, 'suspicious': n_susp,
         'by_class': by_class,
+        'n_mode_cases': len(mode_rows),
+        'n_msa_cases': len(msa_rows),
+        'mode_cases_fail': sum(r['verdict'] == 'FAIL' for r in mode_rows),
+        'msa_cases_fail': sum(r['verdict'] == 'FAIL' for r in msa_rows),
         'policy': ("A→'<' (قاهري [ʔ])، B→'v' ([g] ثابت)، "
                    "C→'<' (متغير → افتراضي [ʔ] — PATCH 6b)"),
+        'policy_modes': (
+            "PATCH 7 — auto: السلوك المعتمد دون تغيير | qaf: قائمة Q (81 "
+            "هيكلًا) → 'k' قاف فصحى تقريبية، الباقي كما auto | hamza: كل "
+            "قاف '<' | g: كل قاف 'v' | حارس بقرأ يعمل في كل الأوضاع | msa: "
+            "كل قاف 'k' تقريبًا (كانت توكن خام غير مدرّب)"),
         'policy_decision': (
             "مراجعة المستخدم 2026-10-01: الفئة B فقط ثابتة [g]؛ حقيقة/دقيق/"
             "قراءة/قرأ وعائلاتها عادت للافتراضي [ʔ] حفاظًا على السلوك المتعلّم "
-            "(874 سماعًا لعائلة حقيقة)؛ حارس مستقل لصيغة «بقرأ» التقدمية"),
+            "(874 سماعًا لعائلة حقيقة)؛ حارس مستقل لصيغة «بقرأ» التقدمية؛ "
+            "وفي القرار نفسه: أوضاع نطق القاف (auto/qaf/hamza/g) + قائمة Q "
+            "لفصحى المصطلحات التعليمية (تقريب [k] — القاف الأصيلة مؤجلة "
+            "كمشروع إعادة تدريب مستقل)"),
         'root_cause': ("EGY_TOKEN_MAP q→'<' غير مشروطة في toks_egy "
                        "(infer.py + نواة التدريب) — عولجت في الاستدلال بـ"
-                       "PATCH 6 (QAF_G_SKELETONS + fix_qaf_g في infer.py)"),
+                       "PATCH 6 (QAF_G_SKELETONS + fix_qaf_g في infer.py)، "
+                       "ثم عُمّمت بـPATCH 7 (fix_qaf بأوضاع auto/qaf/"
+                       "hamza/g + إصلاح مسار msa)"),
     }
     if not args.quiet:
         print('\n' + '=' * 76)
-        print(f"الملخص: {n_pass}/{total} PASS | {n_fail} FAIL | {n_susp} SUSPICIOUS")
+        print(f"الملخص: {n_pass}/{n_pass + n_fail + n_susp} PASS | "
+              f"{n_fail} FAIL | {n_susp} SUSPICIOUS")
         for c in 'ABC':
             s = by_class[c]
             print(f"  الفئة {c} ({CLASS_DESC[c][:38]}...): "
                   f"{s['n'] - s['fail']}/{s['n']} PASS")
+        print(f"  أوضاع PATCH 7 (auto/qaf/hamza/g): "
+              f"{len(mode_rows) - summary['mode_cases_fail']}/{len(mode_rows)}"
+              f" PASS")
+        print(f"  مسار msa المُصلَح: "
+              f"{len(msa_rows) - summary['msa_cases_fail']}/{len(msa_rows)}"
+              f" PASS")
         print('\nملاحظة: فئة C = نطق متغير — عادت للافتراضي [ʔ] بقرار مراجعة '
-              'المستخدم (2026-10-01)، وتشمل حارس «بقرأ» التقدمية (PATCH 6b).')
+              'المستخدم (2026-10-01)، وتشمل حارس «بقرأ» التقدمية (PATCH 6b). '
+              'أوضاع PATCH 7 إضافية فوق السلوك المعتمد — الافتراض auto بلا '
+              'أي تغيير؛ وضع qaf قائمة مغلقة (81 هيكلًا) ليست كل كلمة قاف؛ '
+              'القاف الفصحى تقريب [k] (توكن q غير مدرّب — 0/1.59M).')
 
     if args.json:
         with open(args.json, 'w', encoding='utf-8') as f:
-            json.dump({'summary': summary, 'rows': rows}, f,
+            json.dump({'summary': summary, 'rows': rows,
+                       'mode_rows': mode_rows, 'msa_rows': msa_rows}, f,
                       ensure_ascii=False, indent=1)
         if not args.quiet:
             print(f'\nحُفظت النتائج: {args.json}')

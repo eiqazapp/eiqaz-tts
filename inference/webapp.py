@@ -210,10 +210,12 @@ def run_job(job_id, params):
     job = JOBS[job_id]
     t0 = time.time()
     tmp_dir = None
+    qaf_mode = params.get('qaf') or 'auto'
+    det_partial = bool(params.get('det_partial'))
     try:
         with GEN_LOCK:
             job['status'] = 'running'
-            tok_fns = infer.get_tokenizer()
+            tok_fns = infer.get_tokenizer(qaf_mode)
 
             # ----- checkpoint -----
             ckpt_name = params['checkpoint']
@@ -257,11 +259,13 @@ def run_job(job_id, params):
                 job['chunk'] = i + 1
                 job['msg'] = f'جاري توليد المقطع {i + 1} من {len(chunks)}'
                 text, _ = infer.prepare_text(chunk_raw, voc_mode,
-                                             params['dialect'])
+                                             params['dialect'], qaf_mode,
+                                             det_partial)
                 tmp_wav = os.path.join(tmp_dir, f'chunk_{i:03d}.wav')
                 n_tok, _ = infer.synthesize(
                     model, text, params['dialect'], params['speaker'],
-                    params['pace'], tmp_wav, params['denoise'])
+                    params['pace'], tmp_wav, params['denoise'],
+                    qaf_mode=qaf_mode)
                 n_tokens_total += n_tok
                 w, _ = sf.read(tmp_wav, dtype='float32')
                 waves.append(w)
@@ -298,6 +302,8 @@ def run_job(job_id, params):
                 'saved_to': os.path.basename(saved),
                 'elapsed': round(time.time() - t0, 1),
                 'wav': wav_bytes,
+                'qaf': qaf_mode,
+                'det_partial': det_partial,
                 'msg': 'تم التوليد بنجاح',
             })
     except SystemExit as e:
@@ -490,6 +496,10 @@ class Handler(BaseHTTPRequestHandler):
                 vocalize = data.get('vocalize') or 'auto'
                 if vocalize not in ('auto', 'always', 'never'):
                     vocalize = 'auto'
+                qaf = data.get('qaf') or 'auto'
+                if qaf not in getattr(infer, 'QAF_MODES', ('auto',)):
+                    qaf = 'auto'
+                det_partial = bool(data.get('det_partial', False))
                 try:
                     denoise = float(data.get('denoise', 0.005))
                 except (TypeError, ValueError):
@@ -518,6 +528,7 @@ class Handler(BaseHTTPRequestHandler):
                         'dialect': dialect, 'pace': pace,
                         'vocalize': vocalize, 'denoise': denoise,
                         'split': split, 'checkpoint': ckpt,
+                        'qaf': qaf, 'det_partial': det_partial,
                     },
                 }
                 with JOBS_LOCK:

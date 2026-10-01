@@ -1,0 +1,834 @@
+{
+ "meta": {
+  "name": "QAF_Q_SKELETONS (الفئة Q — سجل فصحى/تعليمي)",
+  "version": "q-v1.0",
+  "date": "2026-10-01",
+  "purpose": "كلمات ببعينها (قائمة مغلقة) تُنطق بالقاف الأصيلة [q] في سياق التعليم والمصطلحات المنهجية والسجل الفصيح — لا تُطبَّق على كل كلمة تحتوي قافًا. تُفعَّل فقط في وضع «qaf» (فصحى المصطلحات) ولا تغيّر الوضع الافتراضي auto المعتمد إطلاقًا.",
+  "sources": [
+   "أمثلة المستخدم الصريحة (رقم، أرقام، قسمة، يقسم، تقريب)",
+   "مصطلحات مناهج مصر: رياضيات/علوم/لغة/اجتماعيات (قاعدة معرفية)",
+   "qaf_audit_full.json: إحصاء corpus نيلتس — 31,294 موضع قاف وأعلى 60 هيكلًا كلها عامية بالهمزة؛ لا سجل فصحى في العامية",
+   "البحث الويب مؤجل (حصة API مستنفدة 429) — قابل للتوسيع لاحقًا"
+  ],
+  "conflict_policy": "الكلمات المشتركة مع B (رقم/أرقام/ترقيم/قانون عائلاته/مقام): في وضع auto تبقى على قرار B ([g]) دون تغيير (قرار معتمد ساري)؛ وفي وضع qaf (فصحى المصطلحات) تفوز Q بالقاف الفصحى. الوضعان منفصلان تمامًا.",
+  "sound_note": "في النموذج الحالي (from-scratch، توكن q غير مدرَّب: 0/1.59M) تُقرَّب القاف الفصحى بأقرب صوت مدرَّب [k] (كاف ثقيلة). القاف الأصيلة الحقيقية uvular /q/ تتطلب إعادة تدريب — المشروع المؤجل المستقل.",
+  "n_words": 81,
+  "n_skeletons": 81,
+  "n_conflicts_with_B": 10
+ },
+ "entries": [
+  {
+   "word_ar": "رقم",
+   "buckwalter": "rqm",
+   "skel": "rqm",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثال المستخدم — عدد",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "رقمة",
+   "buckwalter": "rqmp",
+   "skel": "rqmp",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "عائلة رقم",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "رقمين",
+   "buckwalter": "rqmyn",
+   "skel": "rqmyn",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثنى رقم",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "أرقام",
+   "buckwalter": ">rqAm",
+   "skel": ">rqAm",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثال المستخدم — جمع رقم",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "ترقيم",
+   "buckwalter": "trqym",
+   "skel": "trqym",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "عائلة رقم — مصدر",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "قسم",
+   "buckwalter": "qsm",
+   "skel": "qsm",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثال المستخدم (القسمة) + أقسام الدرس",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قسمة",
+   "buckwalter": "qsmp",
+   "skel": "qsmp",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثال المستخدم — عملية القسمة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قسمين",
+   "buckwalter": "qsmyn",
+   "skel": "qsmyn",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثنى قسمة/قسم",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "أقسام",
+   "buckwalter": ">qsAm",
+   "skel": ">qsAm",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "جمع قسم",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "يقسم",
+   "buckwalter": "yqsm",
+   "skel": "yqsm",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثال المستخدم — فعل القسمة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقسم",
+   "buckwalter": "tqsm",
+   "skel": "tqsm",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "صيغة المؤنث/المخاطب",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "نقسم",
+   "buckwalter": "nqsm",
+   "skel": "nqsm",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "صيغة المتكلم",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قسمت",
+   "buckwalter": "qsmt",
+   "skel": "qsmt",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "ماضي القسمة",
+   "conflicts_with_B": false,
+   "also": []
+  },
+  {
+   "word_ar": "تقسيم",
+   "buckwalter": "tqsym",
+   "skel": "tqsym",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مصدر — عملية التقسيم",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قابل",
+   "buckwalter": "qAbl",
+   "skel": "qAbl",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "قابل للقسمة (قابلية القسمة)",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقريب",
+   "buckwalter": "tqryb",
+   "skel": "tqryb",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثال المستخدم — تقريب الناتج",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقريبًا",
+   "buckwalter": "tqrybFA",
+   "skel": "tqrybA",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "ظرف التقطير الشائع",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقريبي",
+   "buckwalter": "tqryby",
+   "skel": "tqryby",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "ناتج تقريبي",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقريبية",
+   "buckwalter": "tqrybyp",
+   "skel": "tqrybyp",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "قيمة تقريبية",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قرّب",
+   "buckwalter": "qr~b",
+   "skel": "qrb",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "أمر/ماضي التقريب",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقدير",
+   "buckwalter": "tqdyr",
+   "skel": "tqdyr",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "التقدير التقريبي — منهج",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقديري",
+   "buckwalter": "tqdyry",
+   "skel": "tqdyry",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "ناتج تقديري",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقديم",
+   "buckwalter": "tqdym",
+   "skel": "tqdym",
+   "category": "lang",
+   "category_ar": "لغة/نحو",
+   "rationale": "تقديم/تأخير — نحو + ترتيب",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قدّر",
+   "buckwalter": "qd~r",
+   "skel": "qdr",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "قدّر القيمة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قياس",
+   "buckwalter": "qyAs",
+   "skel": "qyAs",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "وحدة القياس — منهج أساسي",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "مقياس",
+   "buckwalter": "mqyAs",
+   "skel": "mqyAs",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "المقياس/مقياس الرسم — هندسة وجغرافيا",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "يقيس",
+   "buckwalter": "yqys",
+   "skel": "yqys",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "فعل القياس",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "تقيس",
+   "buckwalter": "tqys",
+   "skel": "tqys",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "صيغة القياس",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قيمة",
+   "buckwalter": "qymp",
+   "skel": "qymp",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "القيمة المكانية/المطلقة — أساس الأعداد",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قيم",
+   "buckwalter": "qym",
+   "skel": "qym",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "جمع قيمة — القيم والدوال",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قاعدة",
+   "buckwalter": "qAEdp",
+   "skel": "qAEdp",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "قاعدة/قواعد الحساب + قاعدة كيميائية",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قواعد",
+   "buckwalter": "qwAEd",
+   "skel": "qwAEd",
+   "category": "lang",
+   "category_ar": "لغة/نحو",
+   "rationale": "قواعد اللغة/القواعد العامة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قانون",
+   "buckwalter": "qAnwn",
+   "skel": "qAnwn",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "قانون الجذور/النسب — فصحى المنهج",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "قانوني",
+   "buckwalter": "qAnwny",
+   "skel": "qAnwny",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "الإطار القانوني",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "قانونية",
+   "buckwalter": "qAnwnyp",
+   "skel": "qAnwnyp",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "صفة قانونية",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "قوانين",
+   "buckwalter": "qwAnyn",
+   "skel": "qwAnyn",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "جمع قانون",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "قطر",
+   "buckwalter": "qTr",
+   "skel": "qTr",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "قطر الدائرة (وقطر الدولة — نفس الهيكل)",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "أقطار",
+   "buckwalter": ">qTAr",
+   "skel": ">qTAr",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "جمع قطر",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "مقام",
+   "buckwalter": "mqAm",
+   "skel": "mqAm",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مقام الكسر — تعارض مع B «في المقام الأول»: Q تفوز في وضع الفصحى فقط",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "مقامات",
+   "buckwalter": "mqAmAt",
+   "skel": "mqAmAt",
+   "category": "lang",
+   "category_ar": "لغة/نحو",
+   "rationale": "مقامات الأدب",
+   "conflicts_with_B": true
+  },
+  {
+   "word_ar": "مستقيم",
+   "buckwalter": "mstqym",
+   "skel": "mstqym",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "الخط المستقيم — هندسة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "استقامة",
+   "buckwalter": "AstqAmp",
+   "skel": "AstqAmp",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "الاستقامة — هندسة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قائم",
+   "buckwalter": "qA}m",
+   "skel": "qA}m",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "المثلث القائم الزاوية",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قائمة",
+   "buckwalter": "qA}mp",
+   "skel": "qA}mp",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "صفة المؤنث + القائمة (list) — سجل فصيح",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "علاقة",
+   "buckwalter": "ElAqp",
+   "skel": "ElAqp",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "العلاقات والدوال — جبر",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "علاقات",
+   "buckwalter": "ElAqAt",
+   "skel": "ElAqAt",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "جمع علاقة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "منطق",
+   "buckwalter": "mnTq",
+   "skel": "mnTq",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "المنطق الرياضي",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قوة",
+   "buckwalter": "qwp",
+   "skel": "qwp",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "القوة — فيزياء أساسية",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قوى",
+   "buckwalter": "qwY",
+   "skel": "qwY",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "جمع قوة — القوى والأزواج",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "طاقة",
+   "buckwalter": "TAqp",
+   "skel": "TAqp",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "الطاقة الحركية/الكهربائية — فيزياء",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "طاقات",
+   "buckwalter": "TAqAt",
+   "skel": "TAqAt",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "جمع طاقة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قدرة",
+   "buckwalter": "qdrp",
+   "skel": "qdrp",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "القدرة (power) — فيزياء/كهرباء",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قدرات",
+   "buckwalter": "qdrAt",
+   "skel": "qdrAt",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "جمع قدرة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "مقاومة",
+   "buckwalter": "mqAwmp",
+   "skel": "mqAwmp",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "المقاومة الكهربائية — فيزياء",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "مقاومات",
+   "buckwalter": "mqAwmAt",
+   "skel": "mqAwmAt",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "جمع مقاومة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "انقسام",
+   "buckwalter": "AnqsAm",
+   "skel": "AnqsAm",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "الانقسام المتساوي/المنصف — أحياء",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "ينقسم",
+   "buckwalter": "ynqsm",
+   "skel": "ynqsm",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "فعل الانقسام",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قلب",
+   "buckwalter": "qlb",
+   "skel": "qlb",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "القلب — تشريح (في سياق الدرس)",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قلوب",
+   "buckwalter": "qlwb",
+   "skel": "qlwb",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "جمع قلب",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "لقاح",
+   "buckwalter": "lqAH",
+   "skel": "lqAH",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "اللقاح — أحياء/صحة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "إقليم",
+   "buckwalter": "<qlym",
+   "skel": "<qlym",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "الإقليم المناخي — جغرافيا",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "أقاليم",
+   "buckwalter": ">qAlym",
+   "skel": ">qAlym",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "جمع إقليم",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قارة",
+   "buckwalter": "qArp",
+   "skel": "qArp",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "القارات السبع — جغرافيا",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قارات",
+   "buckwalter": "qArAt",
+   "skel": "qArAt",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "جمع قارة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قطب",
+   "buckwalter": "qTb",
+   "skel": "qTb",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "القطب الشمالي/الجنوبي — جغرافيا",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قطبين",
+   "buckwalter": "qTbyn",
+   "skel": "qTbyn",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "مثنى قطب",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "حقوق",
+   "buckwalter": "Hqwq",
+   "skel": "Hqwq",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "الحقوق والواجبات — تربية مدنية",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "اقتصاد",
+   "buckwalter": "AqtSAd",
+   "skel": "AqtSAd",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "الاقتصاد — اجتماعيات",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "اقتصادي",
+   "buckwalter": "AqtSAdy",
+   "skel": "AqtSAdy",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "صفة اقتصادي",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "ثقافة",
+   "buckwalter": "^qAfp",
+   "skel": "^qAfp",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "الثقافة — سجل فصيح",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "ثقافي",
+   "buckwalter": "^qAfy",
+   "skel": "^qAfy",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "صفة ثقافي",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "استقلال",
+   "buckwalter": "AstqlAl",
+   "skel": "AstqlAl",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "استقلال مصر — تاريخ",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قناة",
+   "buckwalter": "qnAp",
+   "skel": "qnAp",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "قناة السويس — تاريخ/جغرافيا",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قنوات",
+   "buckwalter": "qnwAt",
+   "skel": "qnwAt",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "جمع قناة",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قطاع",
+   "buckwalter": "qTAE",
+   "skel": "qTAE",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "القطاع الاقتصادي/العام",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قطاعات",
+   "buckwalter": "qTAEAt",
+   "skel": "qTAEAt",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "جمع قطاع",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "توقيت",
+   "buckwalter": "twqyt",
+   "skel": "twqyt",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "التوقيت المحلي/الغرينتش — جغرافيا",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قضية",
+   "buckwalter": "qDyp",
+   "skel": "qDyp",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "القضايا الاجتماعية — سجل فصيح",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قضايا",
+   "buckwalter": "qDAyA",
+   "skel": "qDAyA",
+   "category": "civic",
+   "category_ar": "اجتماعيات/سجل فصيح",
+   "rationale": "جمع قضية",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "استقصاء",
+   "buckwalter": "AstqSA'",
+   "skel": "AstqSA'",
+   "category": "sci",
+   "category_ar": "علوم/جغرافيا",
+   "rationale": "الاستقصاء العلمي — منهج العلوم",
+   "conflicts_with_B": false
+  },
+  {
+   "word_ar": "استقراء",
+   "buckwalter": "AstqrA'",
+   "skel": "AstqrA'",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "الاستقراء الرياضي — رياضيات متقدمة",
+   "conflicts_with_B": false
+  }
+ ],
+ "skeletons": [
+  "<qlym",
+  ">qAlym",
+  ">qTAr",
+  ">qsAm",
+  ">rqAm",
+  "AnqsAm",
+  "AqtSAd",
+  "AqtSAdy",
+  "AstqAmp",
+  "AstqSA'",
+  "AstqlAl",
+  "AstqrA'",
+  "ElAqAt",
+  "ElAqp",
+  "Hqwq",
+  "TAqAt",
+  "TAqp",
+  "^qAfp",
+  "^qAfy",
+  "lqAH",
+  "mnTq",
+  "mqAm",
+  "mqAmAt",
+  "mqAwmAt",
+  "mqAwmp",
+  "mqyAs",
+  "mstqym",
+  "nqsm",
+  "qAEdp",
+  "qAbl",
+  "qAnwn",
+  "qAnwny",
+  "qAnwnyp",
+  "qArAt",
+  "qArp",
+  "qA}m",
+  "qA}mp",
+  "qDAyA",
+  "qDyp",
+  "qTAE",
+  "qTAEAt",
+  "qTb",
+  "qTbyn",
+  "qTr",
+  "qdr",
+  "qdrAt",
+  "qdrp",
+  "qlb",
+  "qlwb",
+  "qnAp",
+  "qnwAt",
+  "qrb",
+  "qsm",
+  "qsmp",
+  "qsmt",
+  "qsmyn",
+  "qwAEd",
+  "qwAnyn",
+  "qwY",
+  "qwp",
+  "qyAs",
+  "qym",
+  "qymp",
+  "rqm",
+  "rqmp",
+  "rqmyn",
+  "tqdym",
+  "tqdyr",
+  "tqdyry",
+  "tqryb",
+  "tqrybA",
+  "tqryby",
+  "tqrybyp",
+  "tqsm",
+  "tqsym",
+  "tqys",
+  "trqym",
+  "twqyt",
+  "ynqsm",
+  "yqsm",
+  "yqys"
+ ]
+}
