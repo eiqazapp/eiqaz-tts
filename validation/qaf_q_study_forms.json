@@ -1,0 +1,267 @@
+{
+ "meta": {
+  "name": "QAF_Q_STUDY_FORMS — معجم الأشكال المدروسة للقاف الأصيلة",
+  "version": "study-v2.0-final",
+  "date": "2026-10-01",
+  "mechanism": "زرع الشكل المطابق للتدريب: التدريب شُكِّل بـcatt على جُمل corpus نفسه، فمخرج catt داخل الجملة هو توزيع التدريب حرفيًا؛ المنفردة تسقط للفتحة (OOD) فتُنطق همزة. الزرع يستدعي النطق المتعلَّم. مؤكد سمعيًا من المستخدم: قطعة/قِطْعَةً → قاف أصيلة.",
+  "env_rule": "deep = كسرة/ضمة/تنوين كسر-ضم على القاف (قِ/قُ) → الشكل قابل للزرع؛ plain = فتحة/سكون (قَ/قْ) → لا زرع (سلوك أصيل أو [k] في وضع qaf). قاعدة مستنتجة من الأدلة المؤكدة، قابلة للتنقيح بنتائج qaf_experiment.py على جهاز المستخدم.",
+  "tiers": {
+   "verified": "زرع في auto+qaf داخل الجملة والمنفرد (تأكيد سمعي)",
+   "tier1": "زرع في auto+qaf (أسماء غير ملتبسة، شكل corpus مكسور)",
+   "tier2": "زرع في qaf + علامة {ق} فقط (ملتبسة بفعل/عامية غالبة/بحثية)"
+  },
+  "sentence_rule": "داخل جملة متعددة الكلمات: لا تُزرع الهياكل الملتبسة بأفعال (qTE/qsm/yqsm) إلا بعلامة {ق} — catt يعطي القراءة السياقية الصحيحة (قَطَعَ فعلًا). المنفرد (≤2 كلمات): تُزرع كل الطبقات.",
+  "sources": [
+   "corpus نيلتس عبر catt داخل جمل حقيقية (qaf_study_build.py)",
+   "جمل حاملة بأسلوب المعلم + تحقق catt مباشر",
+   "بحث الويب 2026-10-01: talkinarabic.com (قائمة مصرية لكلمات القاف) + Wikipedia Egyptian Arabic phonology + r/learn_arabic",
+   "تجربة المستخدم qaf_experiment.py (تأكيد قطعة/قِطْعَةً)"
+  ],
+  "n_entries": 29,
+  "n_verified": 2,
+  "n_tier1": 16,
+  "n_tier2": 11,
+  "dropped": {
+   "qsmt": "قسمت — الحصاد قُسِمَتْ (مبني للمجهول) ≠ قصد القائمة (ماضي القسمة)",
+   "tqys": "تقيس — الحصاد بِتَقِيُّسِ = تقييس كلمة مختلفة (التباس الشدة)",
+   "qym": "قيم — الحصاد الْقَيِّمُ = القيِّم كلمة مختلفة",
+   "qrb": "قرّب — الحصاد قُرْبٌ (اسم) ≠ قرّب (فعل) المقصود",
+   "tqsym": "تقسيم — تَقْسِيمُ قافها ساكنة (مدقق البيئي) → غير قابلة للزرع؛ تبقى على [k] في وضع qaf",
+   "yqsm": "يقسم — يَقْسِمُ قافها ساكنة (يَفْعِلُ) → غير قابلة للزرع؛ تبقى على [k] في وضع qaf"
+  }
+ },
+ "entries": {
+  "qTEp": {
+   "word_ar": "قطعة",
+   "study_form": "قِطْعَةً",
+   "tier": "verified",
+   "env": "deep",
+   "definite_form": "قِطْعَة",
+   "provenance": "corpus ×36 بالشكل نفسه داخل الجمل + تأكيد المستخدم"
+  },
+  "qTE": {
+   "word_ar": "قطع",
+   "study_form": "قِطَعٍ",
+   "tier": "verified",
+   "env": "deep",
+   "definite_form": "قِطَع",
+   "provenance": "تجربة المستخدم (خام_مدروس) + corpus الْقِطَعِ/قِطَعِ ×4 — ملتبس بالفعل قَطَعَ لذا لا يُزرع داخل جملة إلا بعلامة {ق}"
+  },
+  "qTEtyn": {
+   "word_ar": "قطعتين",
+   "study_form": "قِطْعَتَيْنِ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قِطْعَتَيْن",
+   "provenance": "corpus ×2"
+  },
+  "qTAE": {
+   "word_ar": "قطاع",
+   "study_form": "قِطَاعُ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قِطَاع",
+   "provenance": "corpus وَالْقِطَاعُ"
+  },
+  "qTAEAt": {
+   "word_ar": "قطاعات",
+   "study_form": "قِطَاعَاتِ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قِطَاعَات",
+   "provenance": "corpus قِطَاعَاتِ"
+  },
+  "qsmp": {
+   "word_ar": "قسمة",
+   "study_form": "قِسْمَةَ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قِسْمَة",
+   "provenance": "corpus الْقِسْمَةَ + تجربة قِسْمَةً"
+  },
+  "qsmyn": {
+   "word_ar": "قسمين",
+   "study_form": "قِسْمَيْنِ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قِسْمَيْن",
+   "provenance": "carrier ×2 + الْقِسْمَيْنِ"
+  },
+  "qyAs": {
+   "word_ar": "قياس",
+   "study_form": "قِيَاسُ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قِيَاس",
+   "provenance": "corpus قِيَاسِ + carrier قِيَاسُ"
+  },
+  "yqys": {
+   "word_ar": "يقيس",
+   "study_form": "يَقِيسُ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "يَقِيس",
+   "provenance": "corpus وَيَقِيسُ"
+  },
+  "mnTq": {
+   "word_ar": "منطق",
+   "study_form": "مَنْطِقِ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "مَنْطِق",
+   "provenance": "corpus بِالْمَنْطِقِ"
+  },
+  "mstqym": {
+   "word_ar": "مستقيم",
+   "study_form": "مُسْتَقِيمُ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "مُسْتَقِيم",
+   "provenance": "corpus الْمُسْتَقِيمُ"
+  },
+  "AnqsAm": {
+   "word_ar": "انقسام",
+   "study_form": "انْقِسَامُ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "انْقِسَام",
+   "provenance": "corpus الِانْقِسَامُ"
+  },
+  "Hqwq": {
+   "word_ar": "حقوق",
+   "study_form": "حُقُوقُ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "حُقُوق",
+   "provenance": "corpus الْحُقُوقُ + تجربة حُقُوقًا"
+  },
+  "twqyt": {
+   "word_ar": "توقيت",
+   "study_form": "تَوْقِيتٌ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "تَوْقِيت",
+   "provenance": "corpus تَوْقِيتٌ"
+  },
+  "qTb": {
+   "word_ar": "قطب",
+   "study_form": "قُطْبٌ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قُطْب",
+   "provenance": "carrier قُطْبٌ/قُطْبٍ"
+  },
+  "qTbyn": {
+   "word_ar": "قطبين",
+   "study_form": "قُطْبَيْنِ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قُطْبَيْن",
+   "provenance": "carrier ×2"
+  },
+  "qTr": {
+   "word_ar": "قطر",
+   "study_form": "قُطْرَ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قُطْر",
+   "provenance": "corpus الْقُطْرَ + تجربة قُطْرًا"
+  },
+  "qdrAt": {
+   "word_ar": "قدرات",
+   "study_form": "قُدُرَاتِ",
+   "tier": "tier1",
+   "env": "deep",
+   "definite_form": "قُدُرَات",
+   "provenance": "corpus الْقُدُرَاتِ ×2"
+  },
+  "qsm": {
+   "word_ar": "قسم",
+   "study_form": "قِسْمٌ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "قِسْم",
+   "provenance": "corpus قِسْمٌ — ملتبس بالفعل قَسَمَ → جملةً بالعلامة فقط"
+  },
+  "qSp": {
+   "word_ar": "قصة",
+   "study_form": "قِصَّةِ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "قِصَّة",
+   "provenance": "research talkinarabic + corpus الْقِصَّةِ — عامية غالبة (hits=200)"
+  },
+  "qwp": {
+   "word_ar": "قوة",
+   "study_form": "قُوَّةٍ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "قُوَّة",
+   "provenance": "corpus بِقُوَّةٍ — عامية غالبة (hits=175)"
+  },
+  "qymp": {
+   "word_ar": "قيمة",
+   "study_form": "قِيمَةُ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "قِيمَة",
+   "provenance": "corpus الْقِيمَةُ — عامية غالبة (hits=492)"
+  },
+  "qdrp": {
+   "word_ar": "قدرة",
+   "study_form": "قُدْرَةٍ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "قُدْرَة",
+   "provenance": "corpus قُدْرَةٍ (hits=145)"
+  },
+  "qlwb": {
+   "word_ar": "قلوب",
+   "study_form": "قُلُوبُ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "قُلُوب",
+   "provenance": "corpus الْقُلُوبُ — تشريح عامي"
+  },
+  "qwY": {
+   "word_ar": "قوى",
+   "study_form": "قُوَى",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "قُوَى",
+   "provenance": "corpus الْقُوَى ×2"
+  },
+  "qyAm": {
+   "word_ar": "قيام",
+   "study_form": "قِيَامُ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "قِيَام",
+   "provenance": "research ديني + corpus الْقِيَامُ"
+  },
+  "tEqyd": {
+   "word_ar": "تعقيد",
+   "study_form": "تَعْقِيدِ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "تَعْقِيد",
+   "provenance": "research talkinarabic + corpus التَّعْقِيدِ"
+  },
+  "$qyq": {
+   "word_ar": "شقيق",
+   "study_form": "شَقِيقٌ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "شَقِيق",
+   "provenance": "research سجل فصيح + carrier"
+  },
+  "trqym": {
+   "word_ar": "ترقيم",
+   "study_form": "تَرْقِيمٌ",
+   "tier": "tier2",
+   "env": "deep",
+   "definite_form": "تَرْقِيم",
+   "provenance": "carrier — B∩Q: في auto قرار B [g] ساري؛ الزرع في qaf فقط"
+  }
+ }
+}

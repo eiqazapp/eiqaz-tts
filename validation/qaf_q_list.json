@@ -1,20 +1,30 @@
 {
  "meta": {
   "name": "QAF_Q_SKELETONS (الفئة Q — سجل فصحى/تعليمي)",
-  "version": "q-v1.0",
-  "date": "2026-10-01",
+  "version": "q-v2.0",
+  "date": "2026-10-01 (v2: بعد تأكيد القاف الأصيلة)",
   "purpose": "كلمات ببعينها (قائمة مغلقة) تُنطق بالقاف الأصيلة [q] في سياق التعليم والمصطلحات المنهجية والسجل الفصيح — لا تُطبَّق على كل كلمة تحتوي قافًا. تُفعَّل فقط في وضع «qaf» (فصحى المصطلحات) ولا تغيّر الوضع الافتراضي auto المعتمد إطلاقًا.",
   "sources": [
    "أمثلة المستخدم الصريحة (رقم، أرقام، قسمة، يقسم، تقريب)",
    "مصطلحات مناهج مصر: رياضيات/علوم/لغة/اجتماعيات (قاعدة معرفية)",
    "qaf_audit_full.json: إحصاء corpus نيلتس — 31,294 موضع قاف وأعلى 60 هيكلًا كلها عامية بالهمزة؛ لا سجل فصحى في العامية",
-   "البحث الويب مؤجل (حصة API مستنفدة 429) — قابل للتوسيع لاحقًا"
+   "البحث الويب مؤجل (حصة API مستنفدة 429) — قابل للتوسيع لاحقًا",
+   "بحث الويب 2026-10-01 (بعد عودة الحصة): talkinarabic.com «Egyptian Arabic words where Qaf is still pronounced» + Wikipedia Egyptian Arabic phonology (ديني + جذر ث-ق-ف + تفريق المترادفات) + r/learn_arabic («الكلمة الفصحى الشائعة تُنطق قافًا» — سجل مستعار)",
+   "validation/qaf_q_study_forms.json (study-v2.0): الأشكال المدروسة المحصودة من corpus عبر catt — 29 هيكلًا (verified=2 tier1=16 tier2=11) مع 6 محذوفات ملتبسة و1 استبعاد homograph (قوي/أوي)"
   ],
   "conflict_policy": "الكلمات المشتركة مع B (رقم/أرقام/ترقيم/قانون عائلاته/مقام): في وضع auto تبقى على قرار B ([g]) دون تغيير (قرار معتمد ساري)؛ وفي وضع qaf (فصحى المصطلحات) تفوز Q بالقاف الفصحى. الوضعان منفصلان تمامًا.",
-  "sound_note": "في النموذج الحالي (from-scratch، توكن q غير مدرَّب: 0/1.59M) تُقرَّب القاف الفصحى بأقرب صوت مدرَّب [k] (كاف ثقيلة). القاف الأصيلة الحقيقية uvular /q/ تتطلب إعادة تدريب — المشروع المؤجل المستقل.",
-  "n_words": 81,
-  "n_skeletons": 81,
-  "n_conflicts_with_B": 10
+  "sound_note": "القاف الأصيلة الآن متاحة بلا إعادة تدريب عبر زرع الأشكال المدروسة (اكتشاف 2026-10-01 المؤكد سمعيًا: التدريب شُكِّل بـcatt على جُمل corpus نفسه → زرع الشكل المطابق يستدعي النطق المتعلم). التوكن يبقى '<' كما في التدريب. غير المتحقق من كلمات Q يُقرَّب [k] في وضع qaf.",
+  "n_words": 98,
+  "n_skeletons": 98,
+  "n_conflicts_with_B": 10,
+  "activation": "PATCH 9: في وضع auto تُزرع الأشكال المدروسة للطبقتين verified/tier1 (قاف أصيلة متعلمة)؛ وفي وضع qaf تُزرع القائمة كاملة ذات الأشكال deep والباقي تقريب [k]. طلب المستخدم الصريح 2026-10-01: «تطبيق هذا على جميع الكلمات التي يجب أن تنطق ق أصيلة في فصحى في اللهجة المصرية + خيار الكتابة النصي لا وضع» → علامات {ق}/{ء}/{ج}.",
+  "excluded": [
+   {
+    "word_ar": "قوي",
+    "skel": "qwy",
+    "reason": "homograph مع «أوي» العامية (intensifier) — ويكيبيديا تؤكد التفرقة سياقية فقط؛ corpus: 287 موضعًا أغلبها العامية. المتاح: وضع qaf (تقريب [k]) أو إعادة التدريب."
+   }
+  ]
  },
  "entries": [
   {
@@ -746,6 +756,176 @@
    "category_ar": "رياضيات/حساب",
    "rationale": "الاستقراء الرياضي — رياضيات متقدمة",
    "conflicts_with_B": false
+  },
+  {
+   "word_ar": "قطع",
+   "buckwalter": "qTE",
+   "skel": "qTE",
+   "category": "verified",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "تأكيد المستخدم السمعي 2026-10-01 + corpus — الشكل المدروس قِطَعٍ",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "قطعة",
+   "buckwalter": "qTEp",
+   "skel": "qTEp",
+   "category": "verified",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "تأكيد المستخدم السمعي 2026-10-01 — corpus ×36 بالشكل قِطْعَةً (كانت فجوة حرجة: ليست في q-v1.0!)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "قطعتين",
+   "buckwalter": "qTEtyn",
+   "skel": "qTEtyn",
+   "category": "math",
+   "category_ar": "رياضيات/حساب",
+   "rationale": "مثنى عائلة قطع (درس المستخدم)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "قصة",
+   "buckwalter": "qSp",
+   "skel": "qSp",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "talkinarabic.com (قائمة مصرية) — متغيرة في العامية",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "قرية",
+   "buckwalter": "qryp",
+   "skel": "qryp",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "talkinarabic — قاف مفتوحة (قَرْيَة)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "معقد",
+   "buckwalter": "mEqd",
+   "skel": "mEqd",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "talkinarabic",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "تعقيد",
+   "buckwalter": "tEqyd",
+   "skel": "tEqyd",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "talkinarabic — قاف مكسورة (تَعْقِيد)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "عبقري",
+   "buckwalter": "Ebqry",
+   "skel": "Ebqry",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "talkinarabic",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "اعتقد",
+   "buckwalter": "AEtqd",
+   "skel": "AEtqd",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "talkinarabic — قاف مكسورة (أَعْتَقِدُ)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "ثقافة",
+   "buckwalter": "vqAfp",
+   "skel": "vqAfp",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "talkinarabic + Wikipedia (جذر ث-ق-ف — مصدران مستقلان)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "مثقف",
+   "buckwalter": "mvqf",
+   "skel": "mvqf",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "talkinarabic + Wikipedia",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "تثقيف",
+   "buckwalter": "tvqyf",
+   "skel": "tvqyf",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "Wikipedia (جذر ث-ق-ف)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "القاهرة",
+   "buckwalter": "qAhrp",
+   "skel": "qAhrp",
+   "category": "research",
+   "category_ar": "أعلام",
+   "rationale": "talkinarabic — قاف مفتوحة (الْقَاهِرَة)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "تقوى",
+   "buckwalter": "twqY",
+   "skel": "twqY",
+   "category": "research",
+   "category_ar": "ديني",
+   "rationale": "Wikipedia (الكلمات الدينية تحتفظ بالقاف)",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "قيام",
+   "buckwalter": "qyAm",
+   "skel": "qyAm",
+   "category": "research",
+   "category_ar": "ديني",
+   "rationale": "صلاة القيام — قاف مكسورة",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "قيامة",
+   "buckwalter": "qyAlp",
+   "skel": "qyAlp",
+   "category": "research",
+   "category_ar": "ديني",
+   "rationale": "يوم القيامة — قاف مكسورة",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
+  },
+  {
+   "word_ar": "شقيق",
+   "buckwalter": "$qyq",
+   "skel": "$qyq",
+   "category": "research",
+   "category_ar": "سجل فصيح",
+   "rationale": "شَقِيق — قاف مكسورة",
+   "conflicts_with_B": false,
+   "source": "web_research_2026_10_01"
   }
  ],
  "skeletons": [

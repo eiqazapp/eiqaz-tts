@@ -255,17 +255,27 @@ def run_job(job_id, params):
             tmp_dir = tempfile.mkdtemp(prefix='nile_web_')
             waves = []
             n_tokens_total = 0
+            qaf_planted_all = []
+            qaf_un_deep_all = []
+            qaf_actions = None
+            qaf_native = None
             for i, chunk_raw in enumerate(chunks):
                 job['chunk'] = i + 1
                 job['msg'] = f'جاري توليد المقطع {i + 1} من {len(chunks)}'
-                text, _ = infer.prepare_text(chunk_raw, voc_mode,
-                                             params['dialect'], qaf_mode,
-                                             det_partial)
+                res = infer.prepare_text_rich(chunk_raw, voc_mode,
+                                              params['dialect'], qaf_mode,
+                                              det_partial)
+                text = res['text']
+                qaf_planted_all.extend(res['qaf_planted'])
+                qaf_un_deep_all.extend(res['qaf_un_deep'])
+                qaf_actions = res['qaf_actions'] or None
+                qaf_native = res['qaf_native'] or None
                 tmp_wav = os.path.join(tmp_dir, f'chunk_{i:03d}.wav')
                 n_tok, _ = infer.synthesize(
                     model, text, params['dialect'], params['speaker'],
                     params['pace'], tmp_wav, params['denoise'],
-                    qaf_mode=qaf_mode)
+                    qaf_mode=qaf_mode, qaf_word_actions=qaf_actions,
+                    qaf_native_skel=qaf_native)
                 n_tokens_total += n_tok
                 w, _ = sf.read(tmp_wav, dtype='float32')
                 waves.append(w)
@@ -303,6 +313,8 @@ def run_job(job_id, params):
                 'elapsed': round(time.time() - t0, 1),
                 'wav': wav_bytes,
                 'qaf': qaf_mode,
+                'qaf_planted': qaf_planted_all,
+                'qaf_un_deep': qaf_un_deep_all,
                 'det_partial': det_partial,
                 'msg': 'تم التوليد بنجاح',
             })

@@ -380,6 +380,92 @@ def main():
         if not args.quiet:
             print(f'{raw[:22]:<24s} [msa/{mode:<5s}] {verdict:<11s} {why[:56]}')
 
+    # ------------------ PATCH 9 (2026-10-01): العلامات + زرع الأشكال --------
+    p9_cases = []
+
+    def p9(name, ok, why=''):
+        p9_cases.append((name, bool(ok), why))
+
+    # 1) تحليل علامات النص
+    clean_m, acts_m = infer.parse_qaf_markers(
+        'قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وقال{ء} شكرًا')
+    p9('parse: نزع العلامات من النص', '{' not in clean_m and '}' not in clean_m,
+       clean_m)
+    p9('parse: قطعة=q', acts_m.get('qTEp') == 'q', str(acts_m))
+    p9('parse: رقم=g', acts_m.get('rqm') == 'g', str(acts_m))
+    p9('parse: قال=h', acts_m.get('qAl') == 'h', str(acts_m))
+    clean_m2, acts_m2 = infer.parse_qaf_markers('القسمة{q} وقال {ء} وبقطعة{g}')
+    p9('parse: لاتيني q + مسافة + سابقة',
+       acts_m2.get('qsmp') == 'q' and acts_m2.get('qAl') == 'h'
+       and acts_m2.get('bqTEp') == 'g', str(acts_m2))
+
+    # 2) زرع الأشكال المدروسة (سلوك الإنتاج)
+    r = infer.prepare_text_rich('قطعة', 'always', 'egy', 'auto')
+    p9('plant: قطعة منفردة → الشكل المدروس', r['text'] == 'قِطْعَةً', r['text'])
+    p9('plant: native=qTEp', r['qaf_native'] == frozenset({'qTEp'}),
+       str(r['qaf_native']))
+    r = infer.prepare_text_rich('قطع', 'always', 'egy', 'auto')
+    p9('plant: قطع منفردة → الشكل المدروس', r['text'] == 'قِطَعٍ', r['text'])
+    r = infer.prepare_text_rich('رقم', 'always', 'egy', 'auto')
+    p9('plant: رقم (B) لا يُزرع في auto', not r['qaf_planted'], r['text'])
+    r = infer.prepare_text_rich('قيمة', 'never', 'egy', 'qaf')
+    p9('plant: قيمة خام في qaf تُزرع (tier2)', r['text'] == 'قِيمَةُ', r['text'])
+    r = infer.prepare_text_rich('قيمة', 'never', 'egy', 'auto')
+    p9('plant: قيمة خام في auto لا زرع (tier2)', not r['qaf_planted'], r['text'])
+    r = infer.prepare_text_rich('قطعة', 'never', 'egy', 'g')
+    p9('plant: وضع g بلا زرع تلقائي', not r['qaf_planted'], r['text'])
+    r = infer.prepare_text_rich('قطعة{ق}', 'always', 'egy', 'g')
+    p9('plant: العلامة {ق} تفوز على وضع g', r['text'] == 'قِطْعَةً', r['text'])
+    r = infer.prepare_text_rich('قِطْعَةً{ء}', 'never', 'egy', 'auto')
+    p9('plant: {ء} تنزع كسرة القاف', r['text'] == 'قَطْعَةً', r['text'])
+    r = infer.prepare_text_rich('قسمنا قطع قماش كتير', 'always', 'egy', 'auto')
+    p9('sentence: قطع الملتبسة بفعل تُتخطى داخل الجملة',
+       not r['qaf_planted'], r['text'])
+
+    # 3) fix_qaf مع أفعال العلامات و native
+    p9('fix: {ء} تجاوز B للكلمة المحددة',
+       'j' not in infer.fix_qaf('Alrqm', 'auto', 'egy', {'rqm': 'h'}))
+    p9('fix: {ج} تجبر الجيم',
+       'j' in infer.fix_qaf('qism', 'auto', 'egy', {'qsm': 'g'}))
+    p9('fix: {ق} تمر القاف خامًا',
+       infer.fix_qaf('qiTEpF', 'auto', 'egy', {'qTEp': 'q'}) == 'qiTEpF')
+    p9('fix: qaf + native → خام (أصيلة)',
+       infer.fix_qaf('qiTEpF', 'qaf', 'egy', None, {'qTEp'}) == 'qiTEpF')
+    p9('fix: qaf بلا native → k', 'k' in infer.fix_qaf('qAEdp', 'qaf', 'egy'))
+    p9('fix: B في auto → j', 'j' in infer.fix_qaf('Alrqm', 'auto', 'egy'))
+    p9('fix: حارس بقرأ قبل العلامات',
+       'j' not in infer.fix_qaf('bqr>', 'g', 'egy', {'bqr>': 'g'}))
+    p9('fix: msa {ء} → همزة',
+       infer.fix_qaf('qAl', 'auto', 'msa', {'qAl': 'h'}) == '<Al')
+
+    # 4) المسار الكامل: جملة الأشكال الثلاثة
+    mixed = 'قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد قال{ء} شكرًا'
+    r = infer.prepare_text_rich(mixed, 'always', 'egy', 'auto')
+    p9('full: قطعة مزروعة بالعلامة داخل الجملة',
+       any(pl['skel'] == 'qTEp' for pl in r['qaf_planted']),
+       str(r['qaf_planted']))
+    _, toks_fn_p9, _ = infer.get_tokenizer(
+        'auto', r['qaf_actions'] or None, r['qaf_native'] or None)
+    toks_p9 = toks_fn_p9(r['text'])
+    p9('full: لا توكن q خام غير مدرّب في المخرج', 'q' not in toks_p9,
+       str(toks_p9[:24]))
+    buck_p9 = a2b(r['text'])
+    fixed_p9 = infer.fix_qaf(buck_p9, 'auto', 'egy', r['qaf_actions'])
+    p9('full: رقم → جيم في باكوالتير المُصلَح', 'rajomi' in fixed_p9,
+       fixed_p9[:60])
+    p9('full: علامات النص لم تصل النص النهائي',
+       '{' not in r['text'] and '}' not in r['text'], r['text'][:60])
+
+    n_pass += sum(1 for _n, _ok, _w in p9_cases if _ok)
+    n_fail += sum(1 for _n, _ok, _w in p9_cases if not _ok)
+    p9_rows = [{'name': _n, 'verdict': 'PASS' if _ok else 'FAIL', 'why': _w}
+               for _n, _ok, _w in p9_cases]
+    if not args.quiet:
+        print()
+        for _n, _ok, _w in p9_cases:
+            print(f'{("[P9] " + _n):<34s} {"PASS" if _ok else "FAIL":<11s} '
+                  f'{_w[:52]}')
+
     total = len(rows)
     by_class = {}
     for c in 'ABC':
@@ -391,10 +477,17 @@ def main():
         'by_class': by_class,
         'n_mode_cases': len(mode_rows),
         'n_msa_cases': len(msa_rows),
+        'n_p9_cases': len(p9_rows),
+        'p9_cases_fail': sum(r['verdict'] == 'FAIL' for r in p9_rows),
         'mode_cases_fail': sum(r['verdict'] == 'FAIL' for r in mode_rows),
         'msa_cases_fail': sum(r['verdict'] == 'FAIL' for r in msa_rows),
         'policy': ("A→'<' (قاهري [ʔ])، B→'v' ([g] ثابت)، "
                    "C→'<' (متغير → افتراضي [ʔ] — PATCH 6b)"),
+        'policy_p9': (
+            "PATCH 9 — زرع الأشكال المدروسة (29 هيكلا: verified=2 "
+            "tier1=16 tier2=11) + علامات النص {ق}/{ء}/{ج} تخلط "
+            "الأشكال الثلاثة في الجملة الواحدة؛ الملتبسة بأفعال تُزرع "
+            "منفردة/بعلامة فقط؛ قرار B ساري في auto"),
         'policy_modes': (
             "PATCH 7 — auto: السلوك المعتمد دون تغيير | qaf: قائمة Q (81 "
             "هيكلًا) → 'k' قاف فصحى تقريبية، الباقي كما auto | hamza: كل "
@@ -424,6 +517,9 @@ def main():
         print(f"  أوضاع PATCH 7 (auto/qaf/hamza/g): "
               f"{len(mode_rows) - summary['mode_cases_fail']}/{len(mode_rows)}"
               f" PASS")
+        print(f"  PATCH 9 (علامات + زرع الأشكال): "
+              f"{len(p9_rows) - summary['p9_cases_fail']}/{len(p9_rows)}"
+              f" PASS")
         print(f"  مسار msa المُصلَح: "
               f"{len(msa_rows) - summary['msa_cases_fail']}/{len(msa_rows)}"
               f" PASS")
@@ -436,6 +532,7 @@ def main():
     if args.json:
         with open(args.json, 'w', encoding='utf-8') as f:
             json.dump({'summary': summary, 'rows': rows,
+                       'p9_rows': p9_rows,
                        'mode_rows': mode_rows, 'msa_rows': msa_rows}, f,
                       ensure_ascii=False, indent=1)
         if not args.quiet:

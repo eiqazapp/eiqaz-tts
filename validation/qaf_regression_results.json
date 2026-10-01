@@ -1,7 +1,7 @@
 {
  "summary": {
   "total": 87,
-  "pass": 135,
+  "pass": 162,
   "fail": 0,
   "suspicious": 0,
   "by_class": {
@@ -20,9 +20,12 @@
   },
   "n_mode_cases": 44,
   "n_msa_cases": 4,
+  "n_p9_cases": 27,
+  "p9_cases_fail": 0,
   "mode_cases_fail": 0,
   "msa_cases_fail": 0,
   "policy": "A→'<' (قاهري [ʔ])، B→'v' ([g] ثابت)، C→'<' (متغير → افتراضي [ʔ] — PATCH 6b)",
+  "policy_p9": "PATCH 9 — زرع الأشكال المدروسة (29 هيكلا: verified=2 tier1=16 tier2=11) + علامات النص {ق}/{ء}/{ج} تخلط الأشكال الثلاثة في الجملة الواحدة؛ الملتبسة بأفعال تُزرع منفردة/بعلامة فقط؛ قرار B ساري في auto",
   "policy_modes": "PATCH 7 — auto: السلوك المعتمد دون تغيير | qaf: قائمة Q (81 هيكلًا) → 'k' قاف فصحى تقريبية، الباقي كما auto | hamza: كل قاف '<' | g: كل قاف 'v' | حارس بقرأ يعمل في كل الأوضاع | msa: كل قاف 'k' تقريبًا (كانت توكن خام غير مدرّب)",
   "policy_decision": "مراجعة المستخدم 2026-10-01: الفئة B فقط ثابتة [g]؛ حقيقة/دقيق/قراءة/قرأ وعائلاتها عادت للافتراضي [ʔ] حفاظًا على السلوك المتعلّم (874 سماعًا لعائلة حقيقة)؛ حارس مستقل لصيغة «بقرأ» التقدمية؛ وفي القرار نفسه: أوضاع نطق القاف (auto/qaf/hamza/g) + قائمة Q لفصحى المصطلحات التعليمية (تقريب [k] — القاف الأصيلة مؤجلة كمشروع إعادة تدريب مستقل)",
   "root_cause": "EGY_TOKEN_MAP q→'<' غير مشروطة في toks_egy (infer.py + نواة التدريب) — عولجت في الاستدلال بـPATCH 6 (QAF_G_SKELETONS + fix_qaf_g في infer.py)، ثم عُمّمت بـPATCH 7 (fix_qaf بأوضاع auto/qaf/hamza/g + إصلاح مسار msa)"
@@ -4802,6 +4805,143 @@
     4,
     1
    ]
+  }
+ ],
+ "p9_rows": [
+  {
+   "name": "parse: نزع العلامات من النص",
+   "verdict": "PASS",
+   "why": "قسّمنا قطعة قماش على رقم أطفال وقال شكرًا"
+  },
+  {
+   "name": "parse: قطعة=q",
+   "verdict": "PASS",
+   "why": "{'qTEp': 'q', 'rqm': 'g', 'qAl': 'h', 'wqAl': 'h'}"
+  },
+  {
+   "name": "parse: رقم=g",
+   "verdict": "PASS",
+   "why": "{'qTEp': 'q', 'rqm': 'g', 'qAl': 'h', 'wqAl': 'h'}"
+  },
+  {
+   "name": "parse: قال=h",
+   "verdict": "PASS",
+   "why": "{'qTEp': 'q', 'rqm': 'g', 'qAl': 'h', 'wqAl': 'h'}"
+  },
+  {
+   "name": "parse: لاتيني q + مسافة + سابقة",
+   "verdict": "PASS",
+   "why": "{'Alqsmp': 'q', 'qsmp': 'q', 'qAl': 'h', 'wqAl': 'h', 'bqTEp': 'g', 'wbqTEp': 'g'}"
+  },
+  {
+   "name": "plant: قطعة منفردة → الشكل المدروس",
+   "verdict": "PASS",
+   "why": "قِطْعَةً"
+  },
+  {
+   "name": "plant: native=qTEp",
+   "verdict": "PASS",
+   "why": "frozenset({'qTEp'})"
+  },
+  {
+   "name": "plant: قطع منفردة → الشكل المدروس",
+   "verdict": "PASS",
+   "why": "قِطَعٍ"
+  },
+  {
+   "name": "plant: رقم (B) لا يُزرع في auto",
+   "verdict": "PASS",
+   "why": "رَقَمَ"
+  },
+  {
+   "name": "plant: قيمة خام في qaf تُزرع (tier2)",
+   "verdict": "PASS",
+   "why": "قِيمَةُ"
+  },
+  {
+   "name": "plant: قيمة خام في auto لا زرع (tier2)",
+   "verdict": "PASS",
+   "why": "قيمة"
+  },
+  {
+   "name": "plant: وضع g بلا زرع تلقائي",
+   "verdict": "PASS",
+   "why": "قطعة"
+  },
+  {
+   "name": "plant: العلامة {ق} تفوز على وضع g",
+   "verdict": "PASS",
+   "why": "قِطْعَةً"
+  },
+  {
+   "name": "plant: {ء} تنزع كسرة القاف",
+   "verdict": "PASS",
+   "why": "قَطْعَةً"
+  },
+  {
+   "name": "sentence: قطع الملتبسة بفعل تُتخطى داخل الجملة",
+   "verdict": "PASS",
+   "why": "قَسَمْنَا قَطَعَ قُمَاشٍ كَتَيْرِ"
+  },
+  {
+   "name": "fix: {ء} تجاوز B للكلمة المحددة",
+   "verdict": "PASS",
+   "why": ""
+  },
+  {
+   "name": "fix: {ج} تجبر الجيم",
+   "verdict": "PASS",
+   "why": ""
+  },
+  {
+   "name": "fix: {ق} تمر القاف خامًا",
+   "verdict": "PASS",
+   "why": ""
+  },
+  {
+   "name": "fix: qaf + native → خام (أصيلة)",
+   "verdict": "PASS",
+   "why": ""
+  },
+  {
+   "name": "fix: qaf بلا native → k",
+   "verdict": "PASS",
+   "why": ""
+  },
+  {
+   "name": "fix: B في auto → j",
+   "verdict": "PASS",
+   "why": ""
+  },
+  {
+   "name": "fix: حارس بقرأ قبل العلامات",
+   "verdict": "PASS",
+   "why": ""
+  },
+  {
+   "name": "fix: msa {ء} → همزة",
+   "verdict": "PASS",
+   "why": ""
+  },
+  {
+   "name": "full: قطعة مزروعة بالعلامة داخل الجملة",
+   "verdict": "PASS",
+   "why": "[{'was': 'قِطْعَةَ', 'now': 'قِطْعَةً', 'skel': 'qTEp'}]"
+  },
+  {
+   "name": "full: لا توكن q خام غير مدرّب في المخرج",
+   "verdict": "PASS",
+   "why": "['<', 'a', 's', 'a', 'm', 'n', 'aa', '_+_', '<', 'i', 'T', 'E', 'a', 't', 'a', 'n', '_+_', '<', 'u', 'm', 'aa', '$', 'i', 'n']"
+  },
+  {
+   "name": "full: رقم → جيم في باكوالتير المُصلَح",
+   "verdict": "PASS",
+   "why": "qasamonaA qiToEapF qumaA$K EalaY rajomi >aTofaAlK wakul~u wa"
+  },
+  {
+   "name": "full: علامات النص لم تصل النص النهائي",
+   "verdict": "PASS",
+   "why": "قَسَمْنَا قِطْعَةً قُمَاشٍ عَلَى رَقْمِ أَطْفَالٍ وَكُلُّ وَ"
   }
  ],
  "mode_rows": [

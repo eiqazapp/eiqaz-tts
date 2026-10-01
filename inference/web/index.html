@@ -254,6 +254,15 @@
     </h2>
     <textarea id="text" placeholder="اكتب أو الصق النص العربي هنا&#10;مثال: السلام عليكم يا صديقي، إزيك النهارده؟"
               spellcheck="false"></textarea>
+      <div class="mode-note on" id="markerNote" style="margin-top:6px">
+        <b>علامات نطق القاف (خيار نصي — داخل الجملة نفسها):</b>
+        اكتب بعد الكلمة مباشرة <b>{ق}</b> = قاف أصيلة فصحى · <b>{ء}</b> = همزة ·
+        <b>{ج}</b> = جيم [g] — تُخلط معًا في جملة واحدة:
+        «قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد قال{ء} شكرًا».
+        بلا علامة: الوضع المختار يقرر (زرع الأشكال المدروسة تلقائيًا
+        لكلمات الفصحى في التلقائي). العلامة تُنزع قبل التوليد ولا تصل
+        النموذج أبدًا.
+      </div>
     <div class="examples" id="examples"></div>
     <div class="char-hint" id="charHint">0 حرفًا</div>
     <div class="preview-info" id="previewInfo"></div>
@@ -307,8 +316,8 @@
         <label>نطق القاف
           <span class="sub">(الافتراضي: تلقائي معتمد — لا يغيّر شيئًا)</span></label>
         <select id="qaf">
-          <option value="auto" selected>تلقائي معتمد (رقم/قانون/القرآن → جيم [g] — الباقي همزة)</option>
-          <option value="qaf">فصحى المصطلحات — تعليمي (رقم/قسمة/تقريب/قياس... → قاف فصحى)</option>
+          <option value="auto" selected>تلقائي معتمد + زرع الأشكال المدروسة (قطعة/قسمة/قياس → قاف أصيلة متعلمة)</option>
+          <option value="qaf">فصحى المصطلحات — تعليمي (القائمة كاملة: زرع أصيل + تقريب [k])</option>
           <option value="hamza">همزة [ʔ] دائمًا — كل الكلمات</option>
           <option value="g">جيم [g] دائمًا — كل الكلمات (كنطق g في good)</option>
         </select>
@@ -319,12 +328,12 @@
           فيها قاف</b>؛ عامية الكلام تبقى همزة/جيم. للمعلم التعليمي.
         </div>
         <div class="mode-note" id="qafNoteK">
-          <b>ملاحظة صوتية صادقة:</b> توكن القاف q غير مدرّب (0 من 1.59M)
-          ويُقرَّب في هذا الوضع بكاف ثقيلة [k]. اكتشاف 2026-10-01: للنموذج
-          تحقيقات انفجارية عميقة <b>متعلَّمة لبعض الكلمات</b> (قطع/قطعة —
-          تظهر بالتشكيل المطابق للتدريب، وتتغير بين المتحدثَين) — قيد
-          التحقيق بـ qaf_experiment.py. القاف الأصيلة الشاملة تبقى مشروع
-          إعادة تدريب مؤجلًا.
+          <b>القاف الأصيلة (اكتشاف 2026-10-01 — مؤكد سمعيًا من المستخدم):</b>
+          التدريب نفسه شُكِّل بـcatt على جُمل الـcorpus، فزرعُ الشكل المطابق للتدريب
+          (قِطْعَةً) يستدعي <b>النطق الأصيل المتعلِّم</b> — مؤكد لقطعة/قطع، ومزرع
+          تلقائيًا لقائمة الأشكال المدروسة (29 هيكلًا: قسمة/قياس/حقوق/منطق/قيمة/قصة...).
+          غير المتحقق منه في وضع qaf يُقرَّب بكاف [k]. القاف الأصيلة الشاملة لكل
+          كلمة تبقى مشروع إعادة تدريب مؤجلًا.
         </div>
       </div>
       <div class="field">
@@ -656,6 +665,14 @@ async function fetchAudio(jobId, info){
     '<span>المقاطع: <b>' + info.n_chunks + '</b></span>' +
     '<span>المتحدث: <b>' + (state.speaker === 0 ? 'ذكر' : 'أنثى') + '</b></span>' +
     '<span>نطق القاف: <b>' + qafLabel(info.qaf) + '</b></span>' +
+    (info.qaf_planted && info.qaf_planted.length
+      ? '<span style="color:#065f46">قاف مزروعة: <b>' +
+        info.qaf_planted.map(function(p){return p.was + '→' + p.now;}).join(' · ') + '</b></span>'
+      : '') +
+    (info.qaf_un_deep && info.qaf_un_deep.length
+      ? '<span style="color:#92400e">نزع كسرة {ء}: <b>' +
+        info.qaf_un_deep.map(function(u){return u.was + '→' + u.now;}).join(' · ') + '</b></span>'
+      : '') +
     (info.det_partial
       ? '<span style="color:#b45309">التصحيح الجزئي: <b>مفعّل (ليس بديلًا عن tashkeel-ai)</b></span>'
       : '') +
@@ -669,6 +686,8 @@ async function fetchAudio(jobId, info){
     meta: info.duration + ' ث · ' + (state.speaker === 0 ? 'ذكر' : 'أنثى') +
       ' · ' + info.n_chunks + ' مقطع' +
       (info.qaf && info.qaf !== 'auto' ? ' · قاف: ' + qafLabel(info.qaf) : '') +
+      (info.qaf_planted && info.qaf_planted.length
+        ? ' · قاف مزروعة: ' + info.qaf_planted.length : '') +
       (info.det_partial ? ' · تصحيح جزئي' : ''),
     url: url, name: info.saved_to || 'nile_tts.wav'
   });

@@ -25,6 +25,13 @@ qaf_experiment.py — عدة تجربة «اكتشاف القاف الأصيلة
   كاف_k      : msa (كل قاف→[k] تقريبًا)   → الخيار الحالي في وضع qaf
   جيم_g      : egy + g (كل قاف→جيم [g])
   افتراضي    : egy + auto (السلوك المعتمد: B→[g] والباقي '<')
+  (بعد PATCH 9: auto يزرع تلقائيًا — المنفرد المجرد يُزرع لشكله المدروس)
+
+PATCH 9 (2026-10-01 — بعد تأكيد المستخدم «قطعة/قِطْعَةً ق أصيلة»):
+  + جمل الأشكال الثلاثة (علامات النص {ق}/{ء}/{ج}) في جملة واحدة
+  + وضع --study-all: توليد كل معجم QAF_Q_STUDY_FORMS (29 هيكلًا) مزروعًا
+    منفردًا + تصنيف آلي → نتائجه هي حلقة ترقية الطبقات (verified/tier1)
+    — شغّله وأرسل جدول النتائج لتُرقّى الكلمات المؤكدة.
 
 التصنيف الصوتي الآلي لكل ملف (كلمة قاف-ابتدائية = موضع معلوم):
   لا انفجار في موضع القاف → 'ء' (همزة)
@@ -112,6 +119,13 @@ LISTEN_SENTENCES = [
     ('درس-قطعة', 'طيب، لو معانا عشرين قطعة حلوى، وعايزين نوزعهم على خمسة أطفال بالتساوي، كل طفل هياخد كام قطعة؟', 'egy', 'auto'),
     ('درس-قطع', 'يعني كل طفل هياخد أربع قطع.', 'egy', 'auto'),
     ('درس-قسمة', 'النهارده هنتكلم عن القسمة. القسمة ببساطة هي إننا نوزع حاجة بالتساوي.', 'egy', 'auto'),
+    ('ثلاثة-أشكال-بعلامات',
+     'قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد قال{ء} شكرًا',
+     'egy', 'auto'),
+    ('ثلاثة-أشكال-بلا-علامات',
+     'قسّمنا قطعة قماش على رقم أطفال وكل واحد قال شكرًا', 'egy', 'auto'),
+    ('معلم-قياس', 'هناخد المسطرة ونعمل قياس للمستطيل، وهو مستقيم أضلاعه',
+     'egy', 'auto'),
     ('قرآن-مجردة-auto', 'قرآن', 'egy', 'auto'),
     ('قرآن-معرفة-auto', 'القرآن', 'egy', 'auto'),
     ('قرآن-مجردة-خام', 'قرآن', 'egy', 'hamza'),
@@ -224,6 +238,9 @@ def main():
     ap.add_argument('--speaker', type=int, default=0, choices=(0, 1))
     ap.add_argument('--skip-listen', action='store_true',
                     help='توليد جمل الاستماع السياقية')
+    ap.add_argument('--study-all', action='store_true',
+                    help='PATCH 9: توليد كل معجم الأشكال المدروسة (29 هيكلا) '
+                         'مزروعا منفردا + تصنيف آلي — حلقة ترقية الطبقات')
     ap.add_argument('--out', default=None, help='مجلد المخرجات')
     args = ap.parse_args()
 
@@ -289,6 +306,32 @@ def main():
             except Exception as e:                     # noqa: BLE001
                 listen[label] = {'error': str(e)}
 
+    # PATCH 9: التحقق الشامل لمعجم الأشكال المدروسة (حلقة الترقية)
+    study_all = {}
+    if args.study_all:
+        print('[+] --study-all: معجم الأشكال المدروسة كاملا ...')
+        for skel, form in sorted(infer.QAF_Q_STUDY_FORMS.items()):
+            wav = os.path.join(out_dir, f'study_{skel}.wav')
+            tier = ('verified' if skel in infer.QAF_Q_VERIFIED else
+                    'tier1' if skel in infer.QAF_Q_TIER1 else 'tier2')
+            try:
+                text, _ = infer.prepare_text(form, 'never', 'egy', 'hamza',
+                                             det_partial=False)
+                infer.synthesize(model, text, 'egy', args.speaker, 1.0,
+                                 wav, 0.005, qaf_mode='hamza')
+                cls = classify_word_wav(wav)
+                study_all[skel] = {'form': form, 'tier': tier,
+                                   'wav': os.path.basename(wav),
+                                   'verdict': cls['verdict'],
+                                   'detail': cls['detail']}
+                print(f"  {skel:<10} {form:<14} [{tier:<8}]"
+                      f" -> {cls['verdict']}")
+            except SystemExit as e:
+                study_all[skel] = {'form': form, 'error': str(e.code)}
+            except Exception as e:                     # noqa: BLE001
+                study_all[skel] = {'form': form,
+                                   'error': f'{type(e).__name__}: {e}'}
+
     summary = {
         'n_words': len(words), 'n_files': n_files,
         'speaker': args.speaker,
@@ -305,12 +348,17 @@ def main():
     with open(os.path.join(out_dir, 'results.json'), 'w',
               encoding='utf-8') as f:
         json.dump({'summary': summary, 'words': results,
-                   'listen': listen}, f, ensure_ascii=False, indent=1)
+                   'listen': listen, 'study_all': study_all}, f,
+                  ensure_ascii=False, indent=1)
 
     print('\n' + '=' * 78)
     print(f'تم: {n_files} ملف صوت في {summary["elapsed_s"]}s → {out_dir}')
     print('اقرأ الجدول أعلاه ثم استمع للملفات وقارن أذنك مع التصنيف الآلي.')
     print('دلائل «q?» في خام_مدروس (وليس خام_منفرد) = تأكيد فرضية زرع الشكل.')
+    if study_all:
+        nq = sum(1 for v in study_all.values() if v.get('verdict') == 'q?')
+        print(f'--study-all: {nq}/{len(study_all)} هيكلا صنف q? (مرشح ترقية'
+              ' إلى verified — أرسل النتائج)')
     print('النتائج الكاملة: results.json — أرسلها أو أخبرني بالخلاصة.')
     print('التصنيفات: ء = لا انفجار | g = مجهور/فتحة قصيرة | '
           'q? = صامت بفتحة طويلة (انفجار عميق) | ambiguous = راجع سمعيًا')
