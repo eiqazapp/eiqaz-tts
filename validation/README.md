@@ -50,20 +50,21 @@ PATCH 8 (طبقة التصحيح الجزئي كخيار معلَّل مطفأ �
 
 ## بوابات الانحدار الدائمة
 
-- **`test_qaf_pronunciation.py`** — نطق القاف (172/172 حاليًا):
+- **`test_qaf_pronunciation.py`** — نطق القاف (190/190 حاليًا):
   الفئات A/B/C (47/22/18 — قرار PATCH 6b المعتمد) + أوضاع PATCH 7
-  (auto/qaf/hamza/g — 44 حالة) + علامات وزرع PATCH 9 (27 حالة) +
-  ترقية طبقات PATCH 10 (10 حالات) + مسار msa المُصلَح (4 حالات). النتيجة
-  الرسمية في `qaf_regression_results.json`.
+  (auto/qaf/hamza/g — 44 حالة) + علامات وزرع PATCH 9 (28 حالة) +
+  ترقية طبقات PATCH 10 (10 حالات) + جملة المستخدم وضمان {ق} وإصلاح
+  ه↔ة وعائلة قرآن/قصص — PATCH 11 (18 حالة) + مسار msa المُصلَح
+  (4 حالات). النتيجة الرسمية في `qaf_regression_results.json`.
 - **`test_det_layer.py`** — تكامل طبقة التصحيح الجزئي (21/21): البوابات
   الهيكلية على catt حي + الأمان §ل-5 + الملصق والأرقام الإلزامية
   (45.2% أساسي / 57.9% ثانوي).
-- **`qaf_q_list.json`** — التوثيق الكامل لقائمة Q (81 هيكلًا: الكلمة /
+- **`qaf_q_list.json`** — التوثيق الكامل لقائمة Q (104 هياكل — مطابقة للكود 1:1 بعد مزامنة PATCH 11: الكلمة /
   الفئة / المبرر / تعارض B / سياسة التقريب [k]).
 - **`qaf_experiment.py` + `QAF_NATIVE_DISCOVERY.md`** — اكتشاف 2026-10-01
 qaf_study_build.py / qaf_study_finalize.py: حصاد الأشكال المدروسة
   (corpus عبر catt + جمل حاملة + بحث الويب) → qaf_q_study_forms.json
-  (study-v2.0: 29 هيكلًا بطبقات verified/tier1/tier2 + محذوفات موثقة) —
+  (study-v2.2: 35 هيكلاً بطبقات verified/tier1/tier2 — منها عائلة قرآن وقصص PATCH 11 + محذوفات موثقة) —
   أساس PATCH 9. سجلات البحث: work/qaf_research/ (websearch*.json +
   صفحات talkinarabic/Wikipedia).
 qaf_experiment.py: + جمل الأشكال الثلاثة (علامات النص) + وضع --study-all

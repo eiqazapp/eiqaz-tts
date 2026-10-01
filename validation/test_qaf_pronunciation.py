@@ -221,7 +221,7 @@ MODE_CASES = [
     ('قال', 'qaf', '<', 'خارج القائمتين — همزة'),
     ('حقيقة', 'qaf', '<', 'C تبقى همزة حتى في وضع الفصحى'),
     ('قراءة', 'qaf', '<', 'C تبقى همزة'),
-    ('القرآن', 'qaf', 'v', 'يبقى على قرار B [g] — لا قاف فصحى للقرآن في الوضع التعليمي'),
+    ('القرآن', 'qaf', 'k', 'PATCH 11: عائلة قرآن انضمت لقائمة Q — qaf يقرّبها [k] (وبالزرع/العلامة أصيلة خام)'),
     ('قرش', 'qaf', 'v', 'B غير المتقاطعة تبقى [g] في وضع الفصحى'),
     ('قيراط', 'qaf', 'v', 'B غير المتقاطعة'),
     # -- فرض الهمزة شاملًا --
@@ -438,8 +438,12 @@ def main():
        'j' not in infer.fix_qaf('Alrqm', 'auto', 'egy', {'rqm': 'h'}))
     p9('fix: {ج} تجبر الجيم',
        'j' in infer.fix_qaf('qism', 'auto', 'egy', {'qsm': 'g'}))
-    p9('fix: {ق} تمر القاف خامًا',
-       infer.fix_qaf('qiTEpF', 'auto', 'egy', {'qTEp': 'q'}) == 'qiTEpF')
+    p9('fix: {ق} مع native → خام',
+       infer.fix_qaf('qiTEpF', 'auto', 'egy', {'qTEp': 'q'},
+                     {'qTEp'}) == 'qiTEpF')
+    p9('fix: {ق} بلا native → تقريب k (PATCH 11)',
+       infer.fix_qaf('qiTEpF', 'auto', 'egy',
+                     {'qTEp': 'q'}) == 'kiTEpF')
     p9('fix: qaf + native → خام (أصيلة)',
        infer.fix_qaf('qiTEpF', 'qaf', 'egy', None, {'qTEp'}) == 'qiTEpF')
     p9('fix: qaf بلا native → k', 'k' in infer.fix_qaf('qAEdp', 'qaf', 'egy'))
@@ -521,6 +525,87 @@ def main():
             print(f'{("[P10] " + _n):<34s} {"PASS" if _ok else "FAIL":<11s} '
                   f'{_w[:52]}')
 
+    # ------------- PATCH 11 (2026-10-02): جملة المستخدم الفاشلة ---------
+    p11_cases = []
+
+    def p11(name, ok, why=''):
+        p11_cases.append((name, bool(ok), why))
+
+    # 1) جملة المستخدم حرفيًا — كل كلمة {ق} تخرج من الهمزة العرضية
+    fail_sent = ('القرآن{ق} كتاب عظيم، وكل قرآن{ق} نقرأه{ق} يذكرنا بآيات '
+                 'القرآن، وفي القرآن{ق} قصص{ق} وحكم كثيرة')
+    r = infer.prepare_text_rich(fail_sent, 'always', 'egy', 'auto')
+    p11('full: القرآن مزروعة بالعلامة (×3)',
+       sum(1 for pl in r['qaf_planted'] if pl['skel'] == 'qr|n') == 3,
+       str(r['qaf_planted']))
+    p11('full: قصص مزروعة قِصَصٍ',
+       any(pl['skel'] == 'qSS' and pl['now'] == 'قِصَصٍ'
+           for pl in r['qaf_planted']), str(r['qaf_planted']))
+    p11('full: native يشمل qr|n و qSS',
+       {'qr|n', 'qSS'} <= set(r['qaf_native']), str(r['qaf_native']))
+    _, toks_p11, _ = infer.get_tokenizer(
+        'auto', r['qaf_actions'] or None, r['qaf_native'] or None)
+    toks_p11 = toks_p11(r['text'])
+    p11('full: لا توكن q خام في المخرج النهائي', 'q' not in toks_p11,
+       str(toks_p11[:30]))
+
+    # 2) نقرأه{ق} — العلامة تصل التوكنات (إصلاح ه↔ة) وتُقرّب [k]
+    clean_p11, acts_p11 = infer.parse_qaf_markers('نقرأه{ق}')
+    p11('parse: نقرأه{ق} → nqr>p', acts_p11.get('nqr>p') == 'q',
+       str(acts_p11))
+    p11('fix: نقرأه{ق} → تقريب k (لا همزة عرضية)',
+       infer.fix_qaf('naqora>ahu', 'auto', 'egy',
+                     {'nqr>p': 'q'}) == 'nakora>ahu')
+    p11('fix: نقرأه{ء} يصل أيضًا (ه↔ة)',
+       infer.fix_qaf('naqora>ahu', 'auto', 'egy',
+                     {'nqr>p': 'h'}) == 'naqora>ahu')
+
+    # 3) السياسة الحتمية: {ق} = أصيلة مزروعة أو [k] — أبدًا ليست همزة عرضية
+    # (سكّل باكوالتير qbArp: الحركات aui تُنزع قبل المطابقة)
+    p11('fix: {ق} لكلمة بلا معجم → k',
+       'k' in infer.fix_qaf('qubArp', 'auto', 'egy', {'qbArp': 'q'}))
+    p11('fix: {ق} مزروعة native → خام',
+       infer.fix_qaf('Aloquro|n', 'auto', 'egy', {'qr|n': 'q'},
+                     {'qr|n'}) == 'Aloquro|n')
+    p11('fix: رقمه (ه↔ة) يطابق B الآن → j',
+       'j' in infer.fix_qaf('Alrqmh', 'auto', 'egy'))
+    p11('fix: رقمه{ء} يجاوز B الآن (وصل الهيكل)',
+       'j' not in infer.fix_qaf('Alrqmh', 'auto', 'egy', {'rqmp': 'h'}))
+
+    # 4) قرار B ساري بلا علامة — لا انحدار في auto
+    r = infer.prepare_text_rich('القرآن كتاب عظيم', 'always', 'egy', 'auto')
+    p11('auto بلا علامة: القرآن B → [g] (لا انحدار)',
+       not r['qaf_planted'] and 'j' in infer.fix_qaf(
+           a2b(r['text']), 'auto', 'egy'), r['text'])
+    r = infer.prepare_text_rich('قصص كثيرة', 'always', 'egy', 'auto')
+    p11('auto بلا علامة: قصص لا تُزرع (tier2)', not r['qaf_planted'],
+       r['text'])
+    r = infer.prepare_text_rich('قصص كثيرة', 'always', 'egy', 'qaf')
+    p11('qaf بلا علامة: قصص native (catt قِصَصٌ deep → تخطٍّ PATCH 9)',
+       'qSS' in r['qaf_native'],
+       f"planted={r['qaf_planted']} native={r['qaf_native']} {r['text']}")
+    p11('qaf بلا علامة (plain): قصص{ق} العلامة تزرع قِصَصٍ رغم deep',
+       (lambda rr: rr['text'].split()[0] == 'قِصَصٍ')(
+           infer.prepare_text_rich('قصص{ق} كثيرة', 'always', 'egy', 'qaf')), '')
+    p11('qaf: القرآن native خام (Q تفوق B)',
+       infer.fix_qaf('Aloquro|n', 'qaf', 'egy', None,
+                     {'qr|n'}) == 'Aloquro|n')
+
+    # 5) msa: {ق} = تقريب [k] في كل وضع (العلامة تتفوق — qur|n = قُرْآن بالمدة)
+    p11('msa: {ق} → k',
+       infer.fix_qaf('qur|n', 'hamza', 'msa',
+                     {'qr|n': 'q'}) == 'kur|n')
+
+    n_pass += sum(1 for _n, _ok, _w in p11_cases if _ok)
+    n_fail += sum(1 for _n, _ok, _w in p11_cases if not _ok)
+    p11_rows = [{'name': _n, 'verdict': 'PASS' if _ok else 'FAIL', 'why': _w}
+               for _n, _ok, _w in p11_cases]
+    if not args.quiet:
+        print()
+        for _n, _ok, _w in p11_cases:
+            print(f'{("[P11] " + _n):<34s} {"PASS" if _ok else "FAIL":<11s} '
+                  f'{_w[:52]}')
+
     total = len(rows)
     by_class = {}
     for c in 'ABC':
@@ -534,6 +619,8 @@ def main():
         'n_msa_cases': len(msa_rows),
         'n_p9_cases': len(p9_rows),
         'n_p10_cases': len(p10_rows),
+        'n_p11_cases': len(p11_rows),
+        'p11_cases_fail': sum(r['verdict'] == 'FAIL' for r in p11_rows),
         'p10_cases_fail': sum(r['verdict'] == 'FAIL' for r in p10_rows),
         'p9_cases_fail': sum(r['verdict'] == 'FAIL' for r in p9_rows),
         'mode_cases_fail': sum(r['verdict'] == 'FAIL' for r in mode_rows),
@@ -551,6 +638,13 @@ def main():
             "قطر تحدثت إلى قُطْرًا (قاست q? عميقًا 46ms). معايرة: قياس g على "
             "المزروع لا ينزل من auto (قطعة قاست g وأذن المستخدم أصيلة — "
             "مجهور مؤخر)؛ فقط ء ينزل و q? يرقّي"),
+        'policy_p11': (
+            "PATCH 11 (2026-10-02، جملة المستخدم «القرآن{ق}... قصص{ق}») — "
+            "+عائلة قرآن (5 هياكل) + قصص للمعجم tier2 بأشكال corpus "
+            "موثقة (قُرْآنٍ/قِصَصٍ)؛ إصلاح ه↔ة بين طبقتي النص والتوكنات "
+            "(علامات نقرأه{ق}/رقمه{ء} كانت تضيع)؛ السياسة الحتمية: علامة "
+            "{ق} = أصيلة مزروعة (معجم) أو تقريب [k] — لا همزة عرضية أبدًا "
+            "(كانت {ق} تخطي B ثم تُنطق همزة خام)"),
         'policy_modes': (
             "PATCH 7 — auto: السلوك المعتمد دون تغيير | qaf: قائمة Q (81 "
             "هيكلًا) → 'k' قاف فصحى تقريبية، الباقي كما auto | hamza: كل "
@@ -586,6 +680,9 @@ def main():
         print(f"  PATCH 10 (ترقية run1 للطبقات): "
               f"{len(p10_rows) - summary['p10_cases_fail']}/{len(p10_rows)}"
               f" PASS")
+        print(f"  PATCH 11 (جملة المستخدم + ه↔ة + ضمان العلامة): "
+              f"{len(p11_rows) - summary['p11_cases_fail']}/{len(p11_rows)}"
+              f" PASS")
         print(f"  مسار msa المُصلَح: "
               f"{len(msa_rows) - summary['msa_cases_fail']}/{len(msa_rows)}"
               f" PASS")
@@ -598,7 +695,8 @@ def main():
     if args.json:
         with open(args.json, 'w', encoding='utf-8') as f:
             json.dump({'summary': summary, 'rows': rows,
-                       'p9_rows': p9_rows,
+                       'p9_rows': p9_rows, 'p10_rows': p10_rows,
+                       'p11_rows': p11_rows,
                        'mode_rows': mode_rows, 'msa_rows': msa_rows}, f,
                       ensure_ascii=False, indent=1)
         if not args.quiet:
