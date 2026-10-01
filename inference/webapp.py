@@ -59,6 +59,7 @@ MAX_TEXT_CHARS = 10000
 MAX_CHUNKS = 60
 CHUNK_GAP_S = 0.22                                     # صمت بين المقاطع
 SAMPLE_RATE = 22050
+_EDGE_FADE_S = 0.008           # PATCH 13: تلاشي 8ms عند حواف المقطع
 
 # ============================================================================
 # حالة التطبيق: النماذج + المهام
@@ -213,6 +214,67 @@ def effective_vocalize_mode(raw_text, mode):
     return 'always' if density < 0.30 else 'never'
 
 
+# ---------------------------------------------------------------- PATCH 13 --
+def _unify_chunks_tone(waves):
+    """PATCH 13 (2026-10-02) — توحيد نبرة المتحدث في النصوص الطويلة.
+
+    شكوى المستخدم: «ما سبب اختلاف نبرة المتحدث مع النصوص الطويلة؟».
+    التشخيص: (1) كل مقطع كان يُطبَّل ذروته على حدة (0.9*wave/max في
+    mel_to_wav) فتقفز الجهارة بين المقاطع؛ (2) النموذج حتمي (لا عشوائية
+    في infer) لكن كل مقطع يبدأ نطقًا جديدًا فيُصفَّر إعراب الجملة عند كل
+    حد — والفروق الصاخبة بين الحدود هي المدرك السمعي «لنبرة مختلفة».
+
+    الحل (بلا إعادة تدريب):
+      1. تعادل جهارة RMS كل مقطع نحو وسيط المقاطع (حد كسب 0.25–4.0)
+      2. تلاشي قصير (8ms) عند حافتي كل مقطع — يمنع نقرات الوصل
+      3. تطبيع ذروة واحد (0.9) على النص كاملاً بعد الوصل — بدل تطبيع
+         كل مقطع على حدة
+    يعيد (الموجة النهائية، dict بيانات التعادل للعرض)."""
+    import numpy as np
+    n = len(waves)
+    info = {'n_chunks': n, 'rms_gains': None}
+    if n == 0:
+        return None, info
+
+    # 1) تعادل الجهارة (RMS) نحو وسيط المقاطع — فقط للتعدد
+    rms = [float(np.sqrt(np.mean(np.square(w)))) if len(w) else 0.0
+           for w in waves]
+    if n > 1:
+        target = float(np.median(rms))              # الوسيط — متين ضد الشواذ
+        gains = []
+        if target > 1e-6:
+            for i in range(n):
+                g = 1.0
+                if rms[i] > 1e-6:
+                    g = min(max(target / rms[i], 0.25), 4.0)
+                    waves[i] = (waves[i] * g).astype('float32')
+                gains.append(round(g, 2))
+        info['rms_gains'] = gains
+
+    # 2) تلاشي قصير عند الحواف (منع النقرات عند الوصل)
+    fade = max(1, int(_EDGE_FADE_S * SAMPLE_RATE))
+    for i in range(n):
+        w = waves[i]
+        if len(w) > 2 * fade:
+            ramp = np.linspace(0.0, 1.0, fade, dtype='float32')
+            w[:fade] *= ramp
+            w[-fade:] *= ramp[::-1]
+
+    # 3) الوصل (مع فاصل الجملة) ثم تطبيع ذروة واحد للنص كله
+    if n == 1:
+        final = waves[0]
+    else:
+        gap = np.zeros(int(CHUNK_GAP_S * SAMPLE_RATE), dtype='float32')
+        final = waves[0]
+        for w in waves[1:]:
+            final = np.concatenate([final, gap, w])
+    peak = float(np.abs(final).max()) if len(final) else 0.0
+    if peak > 1e-6:
+        final = (0.9 * final / peak).astype('float32')
+    return final, info
+# ---------------------------------------------------------------------------
+
+
 # ============================================================================
 # تنفيذ مهمة التوليد (في خيط منفصل)
 # ============================================================================
@@ -264,6 +326,8 @@ def run_job(job_id, params):
             job['vocalized'] = voc_mode == 'always'
 
             # ----- توليد كل مقطع بنفس دالتي infer.py -----
+            # PATCH 13: peak_normalize=False — الموجات الخام؛ توحيد الجهارة
+            # والتطبيع الواحد في _unify_chunks_tone بعد اكتمال المقاطع
             import tempfile
             tmp_dir = tempfile.mkdtemp(prefix='nile_web_')
             waves = []
@@ -288,20 +352,14 @@ def run_job(job_id, params):
                     model, text, params['dialect'], params['speaker'],
                     params['pace'], tmp_wav, params['denoise'],
                     qaf_mode=qaf_mode, qaf_word_actions=qaf_actions,
-                    qaf_native_skel=qaf_native)
+                    qaf_native_skel=qaf_native, peak_normalize=False)
                 n_tokens_total += n_tok
                 w, _ = sf.read(tmp_wav, dtype='float32')
                 waves.append(w)
                 job['elapsed'] = round(time.time() - t0, 1)
 
-            # ----- تجميع الموجات مع فاصل صمت (تجميع مخرجات فقط) -----
-            gap = np.zeros(int(CHUNK_GAP_S * SAMPLE_RATE), dtype='float32')
-            if len(waves) == 1:
-                final = waves[0]
-            else:
-                final = waves[0]
-                for w in waves[1:]:
-                    final = np.concatenate([final, gap, w])
+            # ----- PATCH 13: تجميع الموجات بتوحيد النبرة -----
+            final, tone_info = _unify_chunks_tone(waves)
 
             buf = io.BytesIO()
             sf.write(buf, final, SAMPLE_RATE, subtype='PCM_16',
@@ -329,6 +387,8 @@ def run_job(job_id, params):
                 'qaf_planted': qaf_planted_all,
                 'qaf_un_deep': qaf_un_deep_all,
                 'det_partial': det_partial,
+                'tone_unified': bool(tone_info['n_chunks'] > 1),
+                'tone_rms_gains': tone_info['rms_gains'],
                 'msg': 'تم التوليد بنجاح',
             })
     except SystemExit as e:
