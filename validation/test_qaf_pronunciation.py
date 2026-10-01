@@ -63,6 +63,17 @@ hamza (فرض الهمزة شاملًا) | g (فرض الجيم شاملًا). �
                      بقرار مراجعة المستخدم 2026-10-01، وتشمل حارس
                      «بقرأ» التقدمية.
 
+== PATCH 9 (2026-10-01: الأشكال المدروسة + علامات النص) ==
+زرع الشكل المطابق للتدريب يستدعي النطق المتعلم العميق (قطعة/قِطْعَةً)
++ علامات {ق}/{ء}/{ج} بعد الكلمة تخلط الأشكال الثلاثة في جملة واحدة.
+
+== PATCH 10 (2026-10-02: ترقية الطبقات بنتائج القياس run1) ==
+قياس آلي على جهاز المستخدم (speaker 0): قصة/قطب/قطبين قاست q? →
+verified؛ قطر/يقيس قاست ء عند الزرع → tier2؛ صيغة قطر → قُطْرًا
+(الشكل العميق المقيس). معايرة حاسمة: قطعة قاست g وأذن المستخدم
+أكدتها أصيلة — المصنّف numpy لا يقيس مكان النطق، فقياس g على
+المزروع لا ينزل من auto؛ فقط ء (ضرر مؤكد) ينزل و q? يرقّي.
+
 == الاستخدام ==
     python test_qaf_pronunciation.py            # جدول + ملخص
     python test_qaf_pronunciation.py --json out.json
@@ -466,6 +477,50 @@ def main():
             print(f'{("[P9] " + _n):<34s} {"PASS" if _ok else "FAIL":<11s} '
                   f'{_w[:52]}')
 
+    # ------------------ PATCH 10 (2026-10-02): ترقية run1 للطبقات --------
+    p10_cases = []
+
+    def p10(name, ok, why=''):
+        p10_cases.append((name, bool(ok), why))
+
+    # 1) الترقيات الثلاث → verified (زرع في auto حتى بلا علامة)
+    r = infer.prepare_text_rich('قَصَّةَ', 'never', 'egy', 'auto')
+    p10('قصة (ترقية q?) تُزرع في auto', r['text'] == 'قِصَّةِ', r['text'])
+    p10('native يشمل qSp', 'qSp' in r['qaf_native'], str(r['qaf_native']))
+    r = infer.prepare_text_rich('قَطْب', 'never', 'egy', 'auto')
+    p10('قطب (ترقية q?) تُزرع في auto', r['text'] == 'قُطْبٌ', r['text'])
+    r = infer.prepare_text_rich('قَطْبَيْن', 'never', 'egy', 'auto')
+    p10('قطبين (ترقية q?) تُزرع في auto', r['text'] == 'قُطْبَيْنِ', r['text'])
+
+    # 2) التنزيلان → tier2 (لا زرع في auto)
+    r = infer.prepare_text_rich('قَطَرَ', 'never', 'egy', 'auto')
+    p10('قطر (تنزيل ء) لا تُزرع في auto', not r['qaf_planted'], r['text'])
+    r = infer.prepare_text_rich('يقيس', 'never', 'egy', 'auto')
+    p10('يقيس (تنزيل ء) لا يُزرع في auto', not r['qaf_planted'], r['text'])
+
+    # 3) صيغة قطر المحدثة قُطْرًا (الشكل العميق المقيس في run1)
+    r = infer.prepare_text_rich('قَطَرَ', 'never', 'egy', 'qaf')
+    p10('قطر في qaf تُزرع بصيغة قُطْرًا', r['text'] == 'قُطْرًا', r['text'])
+    r = infer.prepare_text_rich('قَطَرَ{ق}', 'never', 'egy', 'auto')
+    p10('علامة {ق} تزرع قُطْرًا رغم tier2', r['text'] == 'قُطْرًا', r['text'])
+    p10('fix_qaf: native قطر خام في qaf',
+        infer.fix_qaf('qaTr', 'qaf', 'egy', None, {'qTr'}) == 'qaTr')
+
+    # 4) قطعة تظل verified رغم قياس g (نقطة المعايرة — أذن المستخدم
+    #    مقدّمة على المصنّف numpy الذي لا يقيس مكان النطق)
+    r = infer.prepare_text_rich('قَطْعَةَ', 'never', 'egy', 'auto')
+    p10('قطعة تظل مزروعة (معايرة الأذن)', r['text'] == 'قِطْعَةً', r['text'])
+
+    n_pass += sum(1 for _n, _ok, _w in p10_cases if _ok)
+    n_fail += sum(1 for _n, _ok, _w in p10_cases if not _ok)
+    p10_rows = [{'name': _n, 'verdict': 'PASS' if _ok else 'FAIL', 'why': _w}
+                for _n, _ok, _w in p10_cases]
+    if not args.quiet:
+        print()
+        for _n, _ok, _w in p10_cases:
+            print(f'{("[P10] " + _n):<34s} {"PASS" if _ok else "FAIL":<11s} '
+                  f'{_w[:52]}')
+
     total = len(rows)
     by_class = {}
     for c in 'ABC':
@@ -478,16 +533,24 @@ def main():
         'n_mode_cases': len(mode_rows),
         'n_msa_cases': len(msa_rows),
         'n_p9_cases': len(p9_rows),
+        'n_p10_cases': len(p10_rows),
+        'p10_cases_fail': sum(r['verdict'] == 'FAIL' for r in p10_rows),
         'p9_cases_fail': sum(r['verdict'] == 'FAIL' for r in p9_rows),
         'mode_cases_fail': sum(r['verdict'] == 'FAIL' for r in mode_rows),
         'msa_cases_fail': sum(r['verdict'] == 'FAIL' for r in msa_rows),
         'policy': ("A→'<' (قاهري [ʔ])، B→'v' ([g] ثابت)، "
                    "C→'<' (متغير → افتراضي [ʔ] — PATCH 6b)"),
         'policy_p9': (
-            "PATCH 9 — زرع الأشكال المدروسة (29 هيكلا: verified=2 "
-            "tier1=16 tier2=11) + علامات النص {ق}/{ء}/{ج} تخلط "
-            "الأشكال الثلاثة في الجملة الواحدة؛ الملتبسة بأفعال تُزرع "
-            "منفردة/بعلامة فقط؛ قرار B ساري في auto"),
+            "PATCH 9 — زرع الأشكال المدروسة (29 هيكلا) + علامات النص "
+            "{ق}/{ء}/{ج} تخلط الأشكال الثلاثة في الجملة الواحدة؛ الملتبسة "
+            "بأفعال تُزرع منفردة/بعلامة فقط؛ قرار B ساري في auto"),
+        'policy_p10': (
+            "PATCH 10 (run1 2026-10-02، speaker 0) — ترقية الطبقات بالقياس "
+            "الآلي: verified=5 (قطعة/قطع أذن + قصة/قطب/قطبين قياس q?) "
+            "tier1=12 tier2=12؛ قطر/يقيس نزلتا tier2 (زرعهما قاس ء) وصيغة "
+            "قطر تحدثت إلى قُطْرًا (قاست q? عميقًا 46ms). معايرة: قياس g على "
+            "المزروع لا ينزل من auto (قطعة قاست g وأذن المستخدم أصيلة — "
+            "مجهور مؤخر)؛ فقط ء ينزل و q? يرقّي"),
         'policy_modes': (
             "PATCH 7 — auto: السلوك المعتمد دون تغيير | qaf: قائمة Q (81 "
             "هيكلًا) → 'k' قاف فصحى تقريبية، الباقي كما auto | hamza: كل "
@@ -519,6 +582,9 @@ def main():
               f" PASS")
         print(f"  PATCH 9 (علامات + زرع الأشكال): "
               f"{len(p9_rows) - summary['p9_cases_fail']}/{len(p9_rows)}"
+              f" PASS")
+        print(f"  PATCH 10 (ترقية run1 للطبقات): "
+              f"{len(p10_rows) - summary['p10_cases_fail']}/{len(p10_rows)}"
               f" PASS")
         print(f"  مسار msa المُصلَح: "
               f"{len(msa_rows) - summary['msa_cases_fail']}/{len(msa_rows)}"

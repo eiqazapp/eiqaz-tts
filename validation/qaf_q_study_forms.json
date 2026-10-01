@@ -1,26 +1,27 @@
 {
  "meta": {
   "name": "QAF_Q_STUDY_FORMS — معجم الأشكال المدروسة للقاف الأصيلة",
-  "version": "study-v2.0-final",
-  "date": "2026-10-01",
+  "version": "study-v2.1",
+  "date": "2026-10-02",
   "mechanism": "زرع الشكل المطابق للتدريب: التدريب شُكِّل بـcatt على جُمل corpus نفسه، فمخرج catt داخل الجملة هو توزيع التدريب حرفيًا؛ المنفردة تسقط للفتحة (OOD) فتُنطق همزة. الزرع يستدعي النطق المتعلَّم. مؤكد سمعيًا من المستخدم: قطعة/قِطْعَةً → قاف أصيلة.",
   "env_rule": "deep = كسرة/ضمة/تنوين كسر-ضم على القاف (قِ/قُ) → الشكل قابل للزرع؛ plain = فتحة/سكون (قَ/قْ) → لا زرع (سلوك أصيل أو [k] في وضع qaf). قاعدة مستنتجة من الأدلة المؤكدة، قابلة للتنقيح بنتائج qaf_experiment.py على جهاز المستخدم.",
   "tiers": {
-   "verified": "زرع في auto+qaf داخل الجملة والمنفرد (تأكيد سمعي)",
+   "verified": "زرع في auto+qaf داخل الجملة والمنفرد (تأكيد سمعي من المستخدم أو قياس آلي q? من run1)",
    "tier1": "زرع في auto+qaf (أسماء غير ملتبسة، شكل corpus مكسور)",
-   "tier2": "زرع في qaf + علامة {ق} فقط (ملتبسة بفعل/عامية غالبة/بحثية)"
+   "tier2": "زرع في qaf + علامة {ق} فقط (ملتبسة بفعل/عامية غالبة/زرعها يقيس همزة)"
   },
   "sentence_rule": "داخل جملة متعددة الكلمات: لا تُزرع الهياكل الملتبسة بأفعال (qTE/qsm/yqsm) إلا بعلامة {ق} — catt يعطي القراءة السياقية الصحيحة (قَطَعَ فعلًا). المنفرد (≤2 كلمات): تُزرع كل الطبقات.",
   "sources": [
    "corpus نيلتس عبر catt داخل جمل حقيقية (qaf_study_build.py)",
    "جمل حاملة بأسلوب المعلم + تحقق catt مباشر",
    "بحث الويب 2026-10-01: talkinarabic.com (قائمة مصرية لكلمات القاف) + Wikipedia Egyptian Arabic phonology + r/learn_arabic",
-   "تجربة المستخدم qaf_experiment.py (تأكيد قطعة/قِطْعَةً)"
+   "تجربة المستخدم qaf_experiment.py (تأكيد قطعة/قِطْعَةً)",
+   "run1 (2026-10-02): qaf_experiment.py على جهاز المستخدم — speaker 0، 24 كلمة × 5 تصييرات + 29 هيكلًا study-all + 12 جملة استماع (validation/qaf_experiment_run1.json)"
   ],
   "n_entries": 29,
-  "n_verified": 2,
-  "n_tier1": 16,
-  "n_tier2": 11,
+  "n_verified": 5,
+  "n_tier1": 12,
+  "n_tier2": 12,
   "dropped": {
    "qsmt": "قسمت — الحصاد قُسِمَتْ (مبني للمجهول) ≠ قصد القائمة (ماضي القسمة)",
    "tqys": "تقيس — الحصاد بِتَقِيُّسِ = تقييس كلمة مختلفة (التباس الشدة)",
@@ -28,7 +29,19 @@
    "qrb": "قرّب — الحصاد قُرْبٌ (اسم) ≠ قرّب (فعل) المقصود",
    "tqsym": "تقسيم — تَقْسِيمُ قافها ساكنة (مدقق البيئي) → غير قابلة للزرع؛ تبقى على [k] في وضع qaf",
    "yqsm": "يقسم — يَقْسِمُ قافها ساكنة (يَفْعِلُ) → غير قابلة للزرع؛ تبقى على [k] في وضع qaf"
-  }
+  },
+  "machine_runs": {
+   "run1": {
+    "name": "run1",
+    "date": "2026-10-02",
+    "speaker": 0,
+    "n_words": 24,
+    "n_files": 120,
+    "n_study_all": 29,
+    "source": "validation/qaf_experiment_run1.json (نسخة من مخرجات جهاز المستخدم)"
+   }
+  },
+  "calibration": "معايرة run1: qTEp (قطعة) قاست 'g' (جهر=0.29, VOT=8ms) بينما أذن المستخدم أكدتها قافًا أصيلة فصحى — المصنّف numpy يقيس جهر الإغلاق+VOT ولا يقيس مكان النطق، فمجرور مؤخَّر [ɢ] يُقاس 'g' ويُسمع أصيلًا. لذلك: 'g' على الأشكال المزروعة لا يكفي للتنزيل من auto (البقاء)، 'ء' = زرع ضار (تنزيل)، 'q?' = أقوى إشارة عمق (ترقية). ملاحظة ثانية: كاف_k الحقيقي [k] يُقاس 'q?' أيضًا (صامت+VOT طويل) — المصنّف لا يفرز [k] عن [q]."
  },
  "entries": {
   "qTEp": {
@@ -37,7 +50,14 @@
    "tier": "verified",
    "env": "deep",
    "definite_form": "قِطْعَة",
-   "provenance": "corpus ×36 بالشكل نفسه داخل الجمل + تأكيد المستخدم"
+   "provenance": "corpus ×36 بالشكل نفسه داخل الجمل + تأكيد المستخدم | run1: بقاء verified: تأكيد سمعي من المستخدم (أصيلة) رغم قياس 'g' — نقطة المعايرة",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.07s | جهر_الإغلاق=0.29 | VOT=8ms → مجهور/فتحة قصيرة",
+    "form_used": "قِطْعَةً",
+    "wav": "study_qTEp.wav",
+    "speaker": 0
+   }
   },
   "qTE": {
    "word_ar": "قطع",
@@ -45,7 +65,14 @@
    "tier": "verified",
    "env": "deep",
    "definite_form": "قِطَع",
-   "provenance": "تجربة المستخدم (خام_مدروس) + corpus الْقِطَعِ/قِطَعِ ×4 — ملتبس بالفعل قَطَعَ لذا لا يُزرع داخل جملة إلا بعلامة {ق}"
+   "provenance": "تجربة المستخدم (خام_مدروس) + corpus الْقِطَعِ/قِطَعِ ×4 — ملتبس بالفعل قَطَعَ لذا لا يُزرع داخل جملة إلا بعلامة {ق} | run1: بقاء verified: تأكيد سمعي من المستخدم",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.06s | جهر_الإغلاق=0.26 | VOT=8ms → مجهور/فتحة قصيرة",
+    "form_used": "قِطَعٍ",
+    "wav": "study_qTE.wav",
+    "speaker": 0
+   }
   },
   "qTEtyn": {
    "word_ar": "قطعتين",
@@ -53,7 +80,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "قِطْعَتَيْن",
-   "provenance": "corpus ×2"
+   "provenance": "corpus ×2",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.13s | جهر_الإغلاق=0.47 | VOT=66ms → مجهور/فتحة قصيرة",
+    "form_used": "قِطْعَتَيْنِ",
+    "wav": "study_qTEtyn.wav",
+    "speaker": 0
+   }
   },
   "qTAE": {
    "word_ar": "قطاع",
@@ -61,7 +95,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "قِطَاع",
-   "provenance": "corpus وَالْقِطَاعُ"
+   "provenance": "corpus وَالْقِطَاعُ",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.05s | جهر_الإغلاق=0.39 | VOT=4ms → مجهور/فتحة قصيرة",
+    "form_used": "قِطَاعُ",
+    "wav": "study_qTAE.wav",
+    "speaker": 0
+   }
   },
   "qTAEAt": {
    "word_ar": "قطاعات",
@@ -69,7 +110,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "قِطَاعَات",
-   "provenance": "corpus قِطَاعَاتِ"
+   "provenance": "corpus قِطَاعَاتِ",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.16s | جهر_الإغلاق=0.31 | VOT=Nonems → مجهور/فتحة قصيرة",
+    "form_used": "قِطَاعَاتِ",
+    "wav": "study_qTAEAt.wav",
+    "speaker": 0
+   }
   },
   "qsmp": {
    "word_ar": "قسمة",
@@ -77,7 +125,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "قِسْمَة",
-   "provenance": "corpus الْقِسْمَةَ + تجربة قِسْمَةً"
+   "provenance": "corpus الْقِسْمَةَ + تجربة قِسْمَةً",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.03s | جهر_الإغلاق=0.22 | VOT=8ms → مجهور/فتحة قصيرة",
+    "form_used": "قِسْمَةَ",
+    "wav": "study_qsmp.wav",
+    "speaker": 0
+   }
   },
   "qsmyn": {
    "word_ar": "قسمين",
@@ -85,7 +140,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "قِسْمَيْن",
-   "provenance": "carrier ×2 + الْقِسْمَيْنِ"
+   "provenance": "carrier ×2 + الْقِسْمَيْنِ",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.03s | جهر_الإغلاق=0.28 | VOT=18ms → مجهور/فتحة قصيرة",
+    "form_used": "قِسْمَيْنِ",
+    "wav": "study_qsmyn.wav",
+    "speaker": 0
+   }
   },
   "qyAs": {
    "word_ar": "قياس",
@@ -93,15 +155,29 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "قِيَاس",
-   "provenance": "corpus قِيَاسِ + carrier قِيَاسُ"
+   "provenance": "corpus قِيَاسِ + carrier قِيَاسُ",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.10s | جهر_الإغلاق=0.50 | VOT=0ms → مجهور/فتحة قصيرة",
+    "form_used": "قِيَاسُ",
+    "wav": "study_qyAs.wav",
+    "speaker": 0
+   }
   },
   "yqys": {
    "word_ar": "يقيس",
    "study_form": "يَقِيسُ",
-   "tier": "tier1",
+   "tier": "tier2",
    "env": "deep",
    "definite_form": "يَقِيس",
-   "provenance": "corpus وَيَقِيسُ"
+   "provenance": "corpus وَيَقِيسُ | تنزيل run1: الزرع بصيغة يَقِيسُ قاس همزة (study_all) — تنزيل من auto؛ بيئتها عميقة طبيعًا فلا تُزرع عمليًا",
+   "machine_run1": {
+    "verdict": "ء",
+    "detail": "لا انفجار فموي في موضع القاف (بداية صوتية مباشرة)",
+    "form_used": "يَقِيسُ",
+    "wav": "study_yqys.wav",
+    "speaker": 0
+   }
   },
   "mnTq": {
    "word_ar": "منطق",
@@ -109,7 +185,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "مَنْطِق",
-   "provenance": "corpus بِالْمَنْطِقِ"
+   "provenance": "corpus بِالْمَنْطِقِ",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.15s | جهر_الإغلاق=0.23 | VOT=6ms → مجهور/فتحة قصيرة",
+    "form_used": "مَنْطِقِ",
+    "wav": "study_mnTq.wav",
+    "speaker": 0
+   }
   },
   "mstqym": {
    "word_ar": "مستقيم",
@@ -117,7 +200,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "مُسْتَقِيم",
-   "provenance": "corpus الْمُسْتَقِيمُ"
+   "provenance": "corpus الْمُسْتَقِيمُ",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.03s | جهر_الإغلاق=0.51 | VOT=40ms → مجهور/فتحة قصيرة",
+    "form_used": "مُسْتَقِيمُ",
+    "wav": "study_mstqym.wav",
+    "speaker": 0
+   }
   },
   "AnqsAm": {
    "word_ar": "انقسام",
@@ -125,7 +215,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "انْقِسَام",
-   "provenance": "corpus الِانْقِسَامُ"
+   "provenance": "corpus الِانْقِسَامُ",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.03s | جهر_الإغلاق=0.58 | VOT=0ms → مجهور/فتحة قصيرة",
+    "form_used": "انْقِسَامُ",
+    "wav": "study_AnqsAm.wav",
+    "speaker": 0
+   }
   },
   "Hqwq": {
    "word_ar": "حقوق",
@@ -133,7 +230,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "حُقُوق",
-   "provenance": "corpus الْحُقُوقُ + تجربة حُقُوقًا"
+   "provenance": "corpus الْحُقُوقُ + تجربة حُقُوقًا",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.12s | جهر_الإغلاق=0.36 | VOT=0ms → مجهور/فتحة قصيرة",
+    "form_used": "حُقُوقُ",
+    "wav": "study_Hqwq.wav",
+    "speaker": 0
+   }
   },
   "twqyt": {
    "word_ar": "توقيت",
@@ -141,31 +245,59 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "تَوْقِيت",
-   "provenance": "corpus تَوْقِيتٌ"
+   "provenance": "corpus تَوْقِيتٌ",
+   "machine_run1": {
+    "verdict": "ambiguous",
+    "detail": "انفجار عند 0.03s | جهر_الإغلاق=0.25 | VOT=Nonems → غير حاسم (راجع بالسمع)",
+    "form_used": "تَوْقِيتٌ",
+    "wav": "study_twqyt.wav",
+    "speaker": 0
+   }
   },
   "qTb": {
    "word_ar": "قطب",
    "study_form": "قُطْبٌ",
-   "tier": "tier1",
+   "tier": "verified",
    "env": "deep",
    "definite_form": "قُطْب",
-   "provenance": "carrier قُطْبٌ/قُطْبٍ"
+   "provenance": "carrier قُطْبٌ/قُطْبٍ | ترقية run1: قياس آلي q? (VOT=42ms, جهر=0.22)",
+   "machine_run1": {
+    "verdict": "q?",
+    "detail": "انفجار عند 0.03s | جهر_الإغلاق=0.22 | VOT=42ms → صامت الإغلاق بفتحة طويلة (انفجار عميق!)",
+    "form_used": "قُطْبٌ",
+    "wav": "study_qTb.wav",
+    "speaker": 0
+   }
   },
   "qTbyn": {
    "word_ar": "قطبين",
    "study_form": "قُطْبَيْنِ",
-   "tier": "tier1",
+   "tier": "verified",
    "env": "deep",
    "definite_form": "قُطْبَيْن",
-   "provenance": "carrier ×2"
+   "provenance": "carrier ×2 | ترقية run1: قياس آلي q? (VOT=38ms, جهر=0.13)",
+   "machine_run1": {
+    "verdict": "q?",
+    "detail": "انفجار عند 0.02s | جهر_الإغلاق=0.13 | VOT=38ms → صامت الإغلاق بفتحة طويلة (انفجار عميق!)",
+    "form_used": "قُطْبَيْنِ",
+    "wav": "study_qTbyn.wav",
+    "speaker": 0
+   }
   },
   "qTr": {
    "word_ar": "قطر",
-   "study_form": "قُطْرَ",
-   "tier": "tier1",
+   "study_form": "قُطْرًا",
+   "tier": "tier2",
    "env": "deep",
    "definite_form": "قُطْر",
-   "provenance": "corpus الْقُطْرَ + تجربة قُطْرًا"
+   "provenance": "corpus الْقُطْرَ + تجربة قُطْرًا | تنزيل run1: الزرع بصيغة قُطْرَ قاس همزة مرتين (study_all + افتراضي في words) بينما قُطْرًا (بالتنوين) قاس q? عميقًا (VOT=46ms) — تنزيل من auto وتحديث الصيغة إلى العميقة المقيسة | صيغة run1: قُطْرًا (بالتنوين) = الشكل الوحيد الذي قاس q? عميقًا في run1 (words/خام_مدروس VOT=46ms)؛ قُطْرَ بلا تنوين قاس ء مرتين",
+   "machine_run1": {
+    "verdict": "ء",
+    "detail": "لا انفجار فموي في موضع القاف (بداية صوتية مباشرة)",
+    "form_used": "قُطْرَ",
+    "wav": "study_qTr.wav",
+    "speaker": 0
+   }
   },
   "qdrAt": {
    "word_ar": "قدرات",
@@ -173,7 +305,14 @@
    "tier": "tier1",
    "env": "deep",
    "definite_form": "قُدُرَات",
-   "provenance": "corpus الْقُدُرَاتِ ×2"
+   "provenance": "corpus الْقُدُرَاتِ ×2",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.12s | جهر_الإغلاق=0.67 | VOT=0ms → مجهور/فتحة قصيرة",
+    "form_used": "قُدُرَاتِ",
+    "wav": "study_qdrAt.wav",
+    "speaker": 0
+   }
   },
   "qsm": {
    "word_ar": "قسم",
@@ -181,15 +320,29 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "قِسْم",
-   "provenance": "corpus قِسْمٌ — ملتبس بالفعل قَسَمَ → جملةً بالعلامة فقط"
+   "provenance": "corpus قِسْمٌ — ملتبس بالفعل قَسَمَ → جملةً بالعلامة فقط",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.16s | جهر_الإغلاق=0.70 | VOT=0ms → مجهور/فتحة قصيرة",
+    "form_used": "قِسْمٌ",
+    "wav": "study_qsm.wav",
+    "speaker": 0
+   }
   },
   "qSp": {
    "word_ar": "قصة",
    "study_form": "قِصَّةِ",
-   "tier": "tier2",
+   "tier": "verified",
    "env": "deep",
    "definite_form": "قِصَّة",
-   "provenance": "research talkinarabic + corpus الْقِصَّةِ — عامية غالبة (hits=200)"
+   "provenance": "research talkinarabic + corpus الْقِصَّةِ — عامية غالبة (hits=200) | ترقية run1: قياس آلي q? (VOT=38ms, جهر=0.21) + بحث talkinarabic (قصة من كلمات القاف المحتفظة)",
+   "machine_run1": {
+    "verdict": "q?",
+    "detail": "انفجار عند 0.04s | جهر_الإغلاق=0.21 | VOT=38ms → صامت الإغلاق بفتحة طويلة (انفجار عميق!)",
+    "form_used": "قِصَّةِ",
+    "wav": "study_qSp.wav",
+    "speaker": 0
+   }
   },
   "qwp": {
    "word_ar": "قوة",
@@ -197,7 +350,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "قُوَّة",
-   "provenance": "corpus بِقُوَّةٍ — عامية غالبة (hits=175)"
+   "provenance": "corpus بِقُوَّةٍ — عامية غالبة (hits=175)",
+   "machine_run1": {
+    "verdict": "ء",
+    "detail": "لا انفجار فموي في موضع القاف (بداية صوتية مباشرة)",
+    "form_used": "قُوَّةٍ",
+    "wav": "study_qwp.wav",
+    "speaker": 0
+   }
   },
   "qymp": {
    "word_ar": "قيمة",
@@ -205,7 +365,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "قِيمَة",
-   "provenance": "corpus الْقِيمَةُ — عامية غالبة (hits=492)"
+   "provenance": "corpus الْقِيمَةُ — عامية غالبة (hits=492)",
+   "machine_run1": {
+    "verdict": "ء",
+    "detail": "لا انفجار فموي في موضع القاف (بداية صوتية مباشرة)",
+    "form_used": "قِيمَةُ",
+    "wav": "study_qymp.wav",
+    "speaker": 0
+   }
   },
   "qdrp": {
    "word_ar": "قدرة",
@@ -213,7 +380,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "قُدْرَة",
-   "provenance": "corpus قُدْرَةٍ (hits=145)"
+   "provenance": "corpus قُدْرَةٍ (hits=145)",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.03s | جهر_الإغلاق=0.16 | VOT=20ms → مجهور/فتحة قصيرة",
+    "form_used": "قُدْرَةٍ",
+    "wav": "study_qdrp.wav",
+    "speaker": 0
+   }
   },
   "qlwb": {
    "word_ar": "قلوب",
@@ -221,7 +395,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "قُلُوب",
-   "provenance": "corpus الْقُلُوبُ — تشريح عامي"
+   "provenance": "corpus الْقُلُوبُ — تشريح عامي",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.06s | جهر_الإغلاق=0.40 | VOT=30ms → مجهور/فتحة قصيرة",
+    "form_used": "قُلُوبُ",
+    "wav": "study_qlwb.wav",
+    "speaker": 0
+   }
   },
   "qwY": {
    "word_ar": "قوى",
@@ -229,7 +410,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "قُوَى",
-   "provenance": "corpus الْقُوَى ×2"
+   "provenance": "corpus الْقُوَى ×2",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.03s | جهر_الإغلاق=0.35 | VOT=10ms → مجهور/فتحة قصيرة",
+    "form_used": "قُوَى",
+    "wav": "study_qwY.wav",
+    "speaker": 0
+   }
   },
   "qyAm": {
    "word_ar": "قيام",
@@ -237,7 +425,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "قِيَام",
-   "provenance": "research ديني + corpus الْقِيَامُ"
+   "provenance": "research ديني + corpus الْقِيَامُ",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.08s | جهر_الإغلاق=0.49 | VOT=0ms → مجهور/فتحة قصيرة",
+    "form_used": "قِيَامُ",
+    "wav": "study_qyAm.wav",
+    "speaker": 0
+   }
   },
   "tEqyd": {
    "word_ar": "تعقيد",
@@ -245,7 +440,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "تَعْقِيد",
-   "provenance": "research talkinarabic + corpus التَّعْقِيدِ"
+   "provenance": "research talkinarabic + corpus التَّعْقِيدِ",
+   "machine_run1": {
+    "verdict": "ambiguous",
+    "detail": "انفجار عند 0.04s | جهر_الإغلاق=0.24 | VOT=Nonems → غير حاسم (راجع بالسمع)",
+    "form_used": "تَعْقِيدِ",
+    "wav": "study_tEqyd.wav",
+    "speaker": 0
+   }
   },
   "$qyq": {
    "word_ar": "شقيق",
@@ -253,7 +455,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "شَقِيق",
-   "provenance": "research سجل فصيح + carrier"
+   "provenance": "research سجل فصيح + carrier",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.10s | جهر_الإغلاق=0.41 | VOT=6ms → مجهور/فتحة قصيرة",
+    "form_used": "شَقِيقٌ",
+    "wav": "study_$qyq.wav",
+    "speaker": 0
+   }
   },
   "trqym": {
    "word_ar": "ترقيم",
@@ -261,7 +470,14 @@
    "tier": "tier2",
    "env": "deep",
    "definite_form": "تَرْقِيم",
-   "provenance": "carrier — B∩Q: في auto قرار B [g] ساري؛ الزرع في qaf فقط"
+   "provenance": "carrier — B∩Q: في auto قرار B [g] ساري؛ الزرع في qaf فقط",
+   "machine_run1": {
+    "verdict": "g",
+    "detail": "انفجار عند 0.04s | جهر_الإغلاق=0.14 | VOT=0ms → مجهور/فتحة قصيرة",
+    "form_used": "تَرْقِيمٌ",
+    "wav": "study_trqym.wav",
+    "speaker": 0
+   }
   }
  }
 }
