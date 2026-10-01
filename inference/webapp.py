@@ -122,6 +122,16 @@ def default_checkpoint():
 # ============================================================================
 _SENT_END = re.compile(r'(?<=[.!؟?…])\s+')
 _SOFT_SPLIT = re.compile(r'\s*[,،؛;:]+\s*')
+# PATCH 12: ربط الوسم المنفصل بكلمته قبل التقسيم — «كلمة {ق}» → «كلمة{ق}»
+# حتى لا يفصل تقطيع حدود الكلمات (مجموعات الـ12) الوسم عن كلمته فيطبق
+# على كلمة أخرى أو يضيع. لا يمس الوسوم الملتحقة أصلًا ولا غير العربية.
+_TAG_BIND_RE = re.compile(
+    r'([\u0621-\u063A\u0641-\u064A\u064B-\u0652])\s+(\{[^{}]{1,2}\})')
+
+
+def bind_markers_to_words(raw_text):
+    """PATCH 12 — لصق الوسم المنفصل بحرف عربي سابق له (المسافة → لصق)."""
+    return _TAG_BIND_RE.sub(r'\1\2', raw_text)
 
 
 def _n_tokens_of(text, dialect, tok_fns):
@@ -143,7 +153,10 @@ def split_into_chunks(raw_text, dialect, tok_fns,
       3) المقطع الأطول من السقف يُقسَّم عند الفواصل الناعمة (، ؛ ; :)
          ثم عند حدود الكلمات كخيار أخير
     كل مقطع يمرّ لاحقًا بنفس prepare_text/synthesize المستخدمة في infer.py.
+
+    PATCH 12: يُستدعى بعد bind_markers_to_words — الوسم لا ينفصل عن كلمته.
     """
+    raw_text = bind_markers_to_words(raw_text)
     segments = [s.strip() for s in raw_text.split('\n') if s.strip()]
     pieces = []
     for seg in segments:

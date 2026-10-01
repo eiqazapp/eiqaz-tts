@@ -214,13 +214,18 @@ _QAF_PROGRESSIVE_BAQR = re.compile(r'^[wf]?b(?:yt|y|t)?qr>')
 # القراءة السياقية الصحيحة: قَطَعَ فعلًا)؛ المنفرد (≤2 كلمة) تُزرع كلها.
 # قرار B ساري: B∩Q (ترقيم) لا يُزرع في auto (يبقى [g])؛ وفي qaf تفوز Q.
 #
-# علامات النص (خيار الكتابة — لا وضع واجهة): تُكتب بعد الكلمة مباشرة:
-#   كلمة{ق} أو كلمة{q}  → قاف أصيلة: زرع الشكل المدروس + إمرار خام
+# علامات النص (خيار الكتابة — لا وضع واجهة): تُكتب بعد الكلمة مباشرة
+#   (أو بمسافة — PATCH 12):
+#   كلمة{ق} أو كلمة {ق} أو كلمة{q}  → قاف أصيلة: زرع الشكل المدروس
+#                                   (المجردة/موثوقة السوابق — PATCH 12)
+#                                   أو خام للموثوقة (QAF_Q_TRUST)، وإلا
+#                                   تقريب كاف [k] — لا همزة أبدًا
 #   كلمة{ء} أو كلمة{أ} أو كلمة{h} → همزة: نزع بيئة العمق (كسرة→فتحة)
 #                                   + تجاوز قائمة B لهذه الكلمة حصرًا
 #   كلمة{ج} أو كلمة{گ} أو كلمة{g} → جيم [g] لهذه الكلمة حصرًا
 #   تعمل معًا في جملة واحدة: «قسّمنا قطعة{ق} قماش على رقم{ج} أطفال» —
 #   قطعة قافًا أصيلة + رقم جيمًا + الباقي همزة. العلامة تُنزع قبل المعالجة
+#   (PATCH 12: نزعها مسافةً — لا لصق كلمات أبدًا مهما كانت مسافاتها)
 #   ولا تصل النموذج أبدًا.
 #   في msa: {ج} و{ء} تعملان على مستوى التوكن؛ {ق} = تقريب [k] (الآلية
 #   الأصيلة مصرية — تركب خريطة EGY_TOKEN_MAP).
@@ -242,7 +247,33 @@ QAF_Q_STUDY_FORMS = {
     # فقط، وأذن المستخدم/حلقة qaf_experiment تحسم الترقية.
     'qr|n': 'قُرْآنٍ', 'qrAn': 'قُرْآنٍ', 'qr|ny': 'قُرْآنِيٌّ',
     'qr|nyp': 'قُرْآنِيَّةٌ', 'qrAny': 'قُرْآنِيٌّ', 'qSS': 'قِصَصٍ',
+    # PATCH 12 (2026-10-02، جملة المستخدم الثانية): قرآنا بالنصب (قُرْآنًا
+    # بالرسم) — هيكلها qr|nA لم يكن في المعجم فكانت تسقط لتقريب [k] رغم
+    # أنها آخر الجملة سماعًا. الشكل المزروع قُرْآنَ = أحد شكلي corpus
+    # الموثقين (قُرْآنَ/قُرْآنٍ — §3-أ) — بيئة قُ عميقة + نهاية نصب أقرب
+    # من قُرْآنٍ لسياق «يتدبر قرآنا».
+    'qr|nA': 'قُرْآنَ',
 }
+
+# PATCH 12 — أدلة تعرض السوابق/التعريف من corpus (scripts/qaf_affix_scan.py
+# → validation/qaf_affix_scan.json): الهياكل التي ورد لها شكل مسبوق (ال/و/ف/
+# ب/ل/ك [+ال]) في corpus التدريب يُسمح بزرعها مسبوقةً بعلامة {ق} — نمط
+# التوكنات داخل التوزيع. من لم يرد له شكل مسبوق (قرآن: bare=2/prefixed=0)
+# زرعه المسبوق OOD يُسمع همزة (الْقُرْآن — صفر مواضع §3-أ) → تقريب [k]
+# حتمي في fix_qaf بدل الإمرار الخام.
+QAF_Q_AFFIX_OK = frozenset({
+    'AnqsAm', 'Hqwq', 'mnTq', 'mstqym', 'qSS', 'qSp', 'qTAE', 'qTAEAt',
+    'qTE', 'qTEp', 'qTr', 'qdrAt', 'qdrp', 'qlwb', 'qsm', 'qsmp', 'qwY',
+    'qwp', 'qyAm', 'qyAs', 'qymp', 'tEqyd', 'twqyt', 'yqys',
+})
+
+# PATCH 12 — كلمات موثوقة النطق العميق خامًا (لا تُزرع — يستدعي النموذج
+# نطقه المتعلم من التعرض الكثيف): حقيقة = 82 مجردة + 115 معرفة في corpus
+# + قياس run1 الصوتي «q? عميق» عند speaker 0 (QAF_NATIVE_DISCOVERY §8).
+# العلامة {ق} عليها = خام (لا [k] يُفسد النطق المتعلم). حلقة الترقية
+# (qaf_experiment.py) تضيف المزيد بالدليل الصوتي — لا بعدّ المواضع وحده
+# (قيمة: 251+241 موضعًا لكنها قاستت همزة — عامية متعلمة).
+QAF_Q_TRUST = frozenset({'Hqyqp'})
 QAF_Q_VERIFIED = frozenset({'qTEp', 'qTE', 'qSp', 'qTb', 'qTbyn'})
 QAF_Q_TIER1 = frozenset({
     'qTEp', 'qTE', 'qTEtyn', 'qTAE', 'qTAEAt', 'qsmp', 'qsmyn', 'qyAs',
@@ -256,10 +287,14 @@ _QAF_MARKER_MAP = {'ق': 'q', 'q': 'q', 'ء': 'h', 'أ': 'h', 'h': 'h',
 _QAF_MARKER_RE = re.compile(
     r'([\u0621-\u063A\u0641-\u064A][\u0621-\u063A\u0641-\u064A\u064B-\u0652]*)'
     r'\s*\{([^{}]{1,2})\}')
+# PATCH 12: نزع الوسم نفسه فقط (لا يمس المسافات) + إعادة لصق الترقيم
+_QAF_MARKER_TAG_RE = re.compile(r'\{([^{}]{1,2})\}')
+_PUNCT_SPACE_RE = re.compile(r'\s+([،؛,.!؟:…]+)')
 QAF_MARKER_SYNTAX_AR = (
-    'علامات نصية بعد الكلمة مباشرة: {ق}=قاف أصيلة (زرع الشكل المدروس، وإلا '
-    'تقريب كاف [k] — لا همزة أبدًا) · {ء}=همزة · {ج}=جيم [g] — تُخلط في '
-    'الجملة الواحدة (مثال: قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد '
+    'علامات نصية بعد الكلمة مباشرة أو بمسافة: {ق}=قاف أصيلة (زرع الشكل '
+    'المدروس للكلمة المجردة/الموثوقة السوابق، وإلا تقريب كاف [k] — لا همزة '
+    'أبدًا) · {ء}=همزة · {ج}=جيم [g] — تُخلط في الجملة الواحدة وتعمل مع كل '
+    'كلمة فيها قاف (مثال: قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد '
     'قال{ء} شكرًا)')
 
 _SUN_LETTERS = frozenset('تثدذرزسشصضطظلن')
@@ -397,15 +432,21 @@ def _attach_definite(prefix, form):
 
 
 def parse_qaf_markers(text):
-    """PATCH 9 — تحليل علامات النص {ق}/{ء}/{ج}.
+    """PATCH 9 + PATCH 12 — تحليل علامات النص {ق}/{ء}/{ج}.
 
     يعيد (نص_نظيف_بلا_علامات, {هيكل: فعل}) — الفعل ∈ {'q','h','g'}. العلامة
     تُسند للكلمة السابقة مباشرة (بلا فاصل أو بفاصل أبيض). كل صيغ الهيكل
     (بال/سوابق) تحمل الفعل نفسه — أي أن العلامة تسري على كل مواضع الكلمة
-    نفسها في الجملة (قيود موثقة)."""
+    نفسها في الجملة (قيود موثقة).
+
+    PATCH 12 (خلل اللصق): كان نزع الوسم يُزيل المسافة بين الكلمة والكلمة
+    التالية حين تكتب «قرآن {ق}نقرأه{ق}» (مسافة قبل الوسم وبلا مسافة بعده)
+    فتلتصق الكلمتان «قرآننقرأه» — كلمة مشوهة تُنطق همزة وتضيع علامتاهما.
+    الآن: الوسم يُستبدل بمسافة ثم توحَّد الفراغات — لا لصق أبدًا مهما كان
+    موضع المسافات حول الوسم (قبلَه/بعدَه/كلاهما/لا شيء)."""
     actions = {}
 
-    def _keep(m):
+    for m in _QAF_MARKER_RE.finditer(text):
         word, letters = m.group(1), m.group(2)
         act = _QAF_MARKER_MAP.get(letters) if len(letters) == 1 else None
         if act is None:
@@ -418,9 +459,12 @@ def parse_qaf_markers(text):
             if skel:
                 for v in _qaf_skel_variants(skel):
                     actions[v] = act
-        return word
 
-    clean = _QAF_MARKER_RE.sub(_keep, text)
+    # الوسم → مسافة (لا حذف المسافة الفاصلة) ثم توحيد الفراغات
+    clean = _QAF_MARKER_TAG_RE.sub(' ', text)
+    clean = ' '.join(clean.split())
+    # إعادة لصق الترقيم بالكلمة السابقة (جمالية — catt يقص الترقيم أصلًا)
+    clean = _PUNCT_SPACE_RE.sub(r'\1', clean)
     return clean, actions
 
 
@@ -437,7 +481,15 @@ def _lookup_qaf_action(skel, actions):
 def _plant_study_word(word_ar, qaf_mode, action, standalone):
     """محاولة زرع الشكل المدروس في كلمة واحدة من النص المُشكَّل.
 
-    يعيد (الكلمة_المزروعة أو None, الهيكل, البيئة_عميقة_أصلًا)."""
+    يعيد (الكلمة_المزروعة أو None, الهيكل, البيئة_عميقة_أصلًا).
+
+    PATCH 12 — سياسة العلامة {ق} الحتمية (لا همزة عرضية أبدًا):
+      • مجردة بمعجم → زرع الشكل المدروس (موثوق سمعيًا: قطعة/قرآنا)
+      • مسبوقة (ال/سوابق) بمعجم → زرع فقط لو تعرض موثق في corpus
+        (QAF_Q_AFFIX_OK) — وإلا [k]: الْقُرْآن شكل OOD صفر مواضع يُسمع
+        همزة (جملة المستخدم: المعرفة همزة والمجردة قاف عميقة)
+      • خارج المعجم + موثوقة خامًا (QAF_Q_TRUST) → خام — النموذج يعرفها
+      • كل ما عدا ذلك → [k] في fix_qaf (كاف ثقيلة — ليست همزة وليست {ج})"""
     best = None
     for prefix, base in _prefix_candidates(word_ar):
         skel = _ar_skel(base)
@@ -445,9 +497,23 @@ def _plant_study_word(word_ar, qaf_mode, action, standalone):
             best = (prefix, base, skel)
             break
     if best is None:
+        # PATCH 12: خارج المعجم بعلامة {ق}: الموثوقة خامًا تُمرر خام
+        # (native عبر env_deep=True) — يستدعي النموذج نطقه المتعلم؛ وإلا
+        # [k] حتمي في fix_qaf.
+        if action == 'q':
+            w_skel = _ar_skel(word_ar)
+            if w_skel and any(v in QAF_Q_TRUST
+                              for v in _qaf_skel_variants(w_skel)):
+                return None, w_skel, True
         return None, None, False
     prefix, _base, skel = best
     env_deep = _qaf_env_is_deep(word_ar)
+    # PATCH 12: زرع المسبوقة (ال/سوابق) بأدلة corpus فقط — شكل OOD يُسمع
+    # همزة (القرآن بالتعريف = صفر مواضع §3-أ). يسري على العلامة {ق} ووضع
+    # qaf (كلاهما زرع قسري)؛ لا يمس زرع auto التلقائي للطبقات.
+    if (action == 'q' or qaf_mode == 'qaf') and prefix \
+            and skel not in QAF_Q_AFFIX_OK:
+        return None, None, False            # رفض معلوم → [k] حتمي
     if action == 'q':                               # علامة {ق}: زرع قسري
         pass
     elif env_deep:
@@ -466,7 +532,11 @@ def _plant_study_word(word_ar, qaf_mode, action, standalone):
         planted = _attach_definite(prefix, form)
     else:
         planted = prefix + form
-    return planted, skel, True
+    # PATCH 12: هيكل الشكل المزروع (لا الكلمة قبل الزرع) — الزرع قد يُسقط
+    # ألف التنوين (قُرْآنًا qr|nA ← قُرْآنَ qr|n) فلو سُجّل هيكل ما قبل الزرع
+    # لم تطابقه طبقة التوكنات وسقطت الكلمة لتقريب [k] رغم زرعها الصحيح.
+    planted_skel = _ar_skel(planted) or skel
+    return planted, planted_skel, True
 
 
 def _apply_qaf_text_layer(text, qaf_mode, dialect, actions, standalone):
@@ -503,6 +573,9 @@ def _apply_qaf_text_layer(text, qaf_mode, dialect, actions, standalone):
             # يتكفل fix_qaf بتقريب [k] (بيئة deep لكلمة خارج المعجم ليست
             # دليلًا على تحقق متعلّم؛ نقرأه مثلًا صفر مواضع deep في corpus).
             # السياسة الحتمية: {ق} = أصيلة مزروعة (معجم) أو تقريب [k] فقط.
+            # PATCH 12 استثناء: الموثوقة خامًا (QAF_Q_TRUST — _plant_study_word
+            # يعيد هيكلها مع env_deep=True) تضاف للـ native فتمر خامًا —
+            # النطق العميق المتعلم من التعرض الكثيف + قياس run1 الصوتي.
             if env_deep and skel:
                 native.add(skel)
     return ' '.join(out), planted, frozenset(native), un_deep
@@ -522,7 +595,10 @@ def _qaf_skel_variants(s):
     PATCH 11: نهاية «ه» تُطابَق أيضًا كـ«ة» بعد كل توليد صيغة (رقمه→رقمة،
     نقرأه→…) — قبل هذا كانت طبقة التوكنات (fix_qaf) تحسب الهيكل بلا هذا
     التطبيع فتضيع علامات الكلمات المنتهية به (نقرأه{ق} → act=None) ولا
-    تطابق معجم B كلمات مثل رقمه/الرقمه (تبقى همزة بدل [g])."""
+    تطابق معجم B كلمات مثل رقمه/الرقمه (تبقى همزة بدل [g]).
+    PATCH 12: ألف تنوين النصب الطرفية تُنزع أيضًا (قرآنا→قرآن، قانونا→
+    قانون، رقما→رقم) — فالكلمة المنصوبة تطابق معجمها وعلامتها وسابقة
+    الزرع (كانت قرآنا{ق} تسقط من المعجم لأن qr|nA ≠ qr|n)."""
     out = {s}
     if s.startswith('Al') and len(s) > 3:
         out.add(s[2:])
@@ -535,6 +611,8 @@ def _qaf_skel_variants(s):
     # Alrqmh → rqmp وليس Alrqmp فقط)
     out |= {v[:-1] + 'p' for v in tuple(out)
             if v.endswith('h') and len(v) > 2}
+    # PATCH 12: نزع ألف تنوين النصب الطرفية (qr|nA → qr|n)
+    out |= {v[:-1] for v in tuple(out) if v.endswith('A') and len(v) > 2}
     return out
 
 
@@ -595,6 +673,16 @@ def fix_qaf(buck, mode='auto', dialect='egy', word_actions=None,
         return buck.replace('q', 'k')      # auto/qaf: قاف فصحى تقريبية
     words = buck.split(' ')
     hit = False
+
+    def _affix_gated(skel_w, variants_w):
+        """PATCH 12 — كلمة مسبوقة (ال/سوابق) أساسها بمعجم بلا تعرض موثق
+        في corpus للسوابق (QAF_Q_AFFIX_OK) → تقريب [k]. تمنع المسبوقة من
+        ركوب native عائلتها المجردة عبر صيغ النزع (الْقُرْآنِ كانت تركب
+        native قرآنا المزروعة في نفس المقطع فتمر خام OOD تُسمع همزة)."""
+        base = skel_w if skel_w in QAF_Q_STUDY_FORMS else next(
+            (v for v in variants_w if v in QAF_Q_STUDY_FORMS), None)
+        return bool(base and base != skel_w and base not in QAF_Q_AFFIX_OK)
+
     for i, w in enumerate(words):
         if 'q' not in w:
             continue
@@ -609,7 +697,11 @@ def fix_qaf(buck, mode='auto', dialect='egy', word_actions=None,
             continue
         if act == 'h':                      # علامة {ء}: خام — همزة صريحة
             continue                        # (تجاوز B — طلب صريح)
-        if act == 'q':                      # علامة {ق} — PATCH 11
+        if act == 'q':                      # علامة {ق} — PATCH 11 + 12
+            if _affix_gated(skel, variants):
+                words[i] = w.replace('q', 'k')  # مسبوقة OOD → [k] حتمي
+                hit = True
+                continue
             if native_q_skel and any(v in native_q_skel for v in variants):
                 continue                    # مزروع/بيئة deep → خام أصيلة
             words[i] = w.replace('q', 'k')  # لا شكل مدروس → تقريب [k]
@@ -622,6 +714,10 @@ def fix_qaf(buck, mode='auto', dialect='egy', word_actions=None,
         if mode == 'hamza':
             continue                        # فرض شامل — لا j ولا k
         if mode == 'qaf' and any(v in QAF_Q_SKELETONS for v in variants):
+            if _affix_gated(skel, variants):
+                words[i] = w.replace('q', 'k')  # PATCH 12: مسبوقة OOD → [k]
+                hit = True
+                continue
             if native_q_skel and any(v in native_q_skel for v in variants):
                 continue                    # مزروع/مؤكد → قاف خام (أصيلة)
             words[i] = w.replace('q', 'k')  # فصحى المصطلحات — تقريب

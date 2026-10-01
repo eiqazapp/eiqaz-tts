@@ -535,8 +535,11 @@ def main():
     fail_sent = ('القرآن{ق} كتاب عظيم، وكل قرآن{ق} نقرأه{ق} يذكرنا بآيات '
                  'القرآن، وفي القرآن{ق} قصص{ق} وحكم كثيرة')
     r = infer.prepare_text_rich(fail_sent, 'always', 'egy', 'auto')
-    p11('full: القرآن مزروعة بالعلامة (×3)',
-       sum(1 for pl in r['qaf_planted'] if pl['skel'] == 'qr|n') == 3,
+    # PATCH 12: المعرفة (القرآن) لا تُزرع — زرعها OOD (صفر مواضع بالتعريف
+    # في corpus §3-أ) كان يُسمع همزة؛ الآن [k] حتمي (بوابة QAF_Q_AFFIX_OK)
+    p11('full: القرآن بالتعريف لا تُزرع (بوابة P12)',
+       not any(pl['skel'] == 'qr|n' and pl['was'].startswith('ال')
+               for pl in r['qaf_planted']),
        str(r['qaf_planted']))
     p11('full: قصص مزروعة قِصَصٍ',
        any(pl['skel'] == 'qSS' and pl['now'] == 'قِصَصٍ'
@@ -564,9 +567,9 @@ def main():
     # (سكّل باكوالتير qbArp: الحركات aui تُنزع قبل المطابقة)
     p11('fix: {ق} لكلمة بلا معجم → k',
        'k' in infer.fix_qaf('qubArp', 'auto', 'egy', {'qbArp': 'q'}))
-    p11('fix: {ق} مزروعة native → خام',
-       infer.fix_qaf('Aloquro|n', 'auto', 'egy', {'qr|n': 'q'},
-                     {'qr|n'}) == 'Aloquro|n')
+    p11('fix: {ق} مجردة native → خام (لا مسبوقة)',
+       infer.fix_qaf('quro|nK', 'auto', 'egy', {'qr|n': 'q'},
+                     {'qr|n'}) == 'quro|nK')
     p11('fix: رقمه (ه↔ة) يطابق B الآن → j',
        'j' in infer.fix_qaf('Alrqmh', 'auto', 'egy'))
     p11('fix: رقمه{ء} يجاوز B الآن (وصل الهيكل)',
@@ -587,9 +590,9 @@ def main():
     p11('qaf بلا علامة (plain): قصص{ق} العلامة تزرع قِصَصٍ رغم deep',
        (lambda rr: rr['text'].split()[0] == 'قِصَصٍ')(
            infer.prepare_text_rich('قصص{ق} كثيرة', 'always', 'egy', 'qaf')), '')
-    p11('qaf: القرآن native خام (Q تفوق B)',
-       infer.fix_qaf('Aloquro|n', 'qaf', 'egy', None,
-                     {'qr|n'}) == 'Aloquro|n')
+    p11('qaf: القرآن المجردة native خام (Q تفوق B)',
+       infer.fix_qaf('quro|nK', 'qaf', 'egy', None,
+                     {'qr|n'}) == 'quro|nK')
 
     # 5) msa: {ق} = تقريب [k] في كل وضع (العلامة تتفوق — qur|n = قُرْآن بالمدة)
     p11('msa: {ق} → k',
@@ -606,6 +609,131 @@ def main():
             print(f'{("[P11] " + _n):<34s} {"PASS" if _ok else "FAIL":<11s} '
                   f'{_w[:52]}')
 
+    # ------------- PATCH 12 (2026-10-02): العلامات تعم كل كلمة -------------
+    p12_cases = []
+
+    def p12(name, ok, why=''):
+        p12_cases.append((name, bool(ok), why))
+
+    # 1) إصلاح خلل اللصق — الوسم يُستبدل بمسافة (كل أنماط المسافات)
+    c, a = infer.parse_qaf_markers('وكل قرآن {ق}نقرأه{ق} يذكرنا')
+    p12('لصق: «قرآن {ق}نقرأه{ق}» لا تلتصق الكلمتان',
+       c == 'وكل قرآن نقرأه يذكرنا', c)
+    p12('لصق: العلامتان تصلان (qr|n + nqr>p)',
+       a.get('qr|n') == 'q' and a.get('nqr>p') == 'q', str(a))
+    c, _ = infer.parse_qaf_markers('قال{ء}شكرًا')
+    p12('لصق: «قال{ء}شكرًا» بلا مسافة → تُفصل بمسافة', c == 'قال شكرًا', c)
+    c, _ = infer.parse_qaf_markers('قطعة{ق} قماش')
+    p12('لصق: الملتحقة تعمل كما كانت', c == 'قطعة قماش', c)
+    c, _ = infer.parse_qaf_markers('القرآن {ق} كتاب')
+    p12('لصق: مسافة قبل وبعد → نظيفة', c == 'القرآن كتاب', c)
+    c, _ = infer.parse_qaf_markers('القرآن{ق}، وفي')
+    p12('لصق: الترقيم يعود للتصاقه (جمالي)', c == 'القرآن، وفي', c)
+
+    # 2) بوابة السوابق — المسبوقة OOD لا تُزرع ولا تركب native العائلة
+    r = infer.prepare_text_rich('القرآن{ق} كتاب عظيم', 'always', 'egy', 'auto')
+    p12('بوابة: القرآن{ق} (معرفة OOD) لا تُزرع → [k]',
+       not r['qaf_planted'] and 'k' in infer.fix_qaf(
+           a2b(r['text']), 'auto', 'egy', r['qaf_actions'] or None,
+           r['qaf_native'] or None), r['text'])
+    p12('بوابة: المسبوقة لا تركب native المجردة (تسريب المقاطع)',
+       infer.fix_qaf('Aloquro|n', 'auto', 'egy', {'qr|n': 'q'},
+                     {'qr|n'}) == 'Alokuro|n')
+    p12('بوابة: المسبوقة في qaf أيضًا → [k]',
+       infer.fix_qaf('Aloquro|n', 'qaf', 'egy', None,
+                     {'qr|n'}) == 'Alokuro|n')
+    p12('بوابة: القطعة{ق} (معرفة بتعرض corpus) تُزرع',
+       (lambda rr: any(pl['skel'] == 'AlqTEp' and pl['was'].startswith('ال')
+                       for pl in rr['qaf_planted']))(
+           infer.prepare_text_rich('القطعة{ق} كبيرة', 'always', 'egy',
+                                   'auto')), '')
+    p12('بوابة: القسم{ق} (معرفة qsm∈AFFIX_OK) خام',
+       infer.fix_qaf('Aloqisomi', 'auto', 'egy', {'qsm': 'q'},
+                     {'Alqsm'}) == 'Aloqisomi')
+
+    # 3) قرآنا (qr|nA) — ألف التنوين تطابق المعجم وتُزرع قُرْآنَ
+    c, a = infer.parse_qaf_markers('قرآنا{ق}')
+    p12('ألف التنوين: قرآنا{ق} → qr|nA + qr|n',
+       a.get('qr|nA') == 'q' and a.get('qr|n') == 'q', str(a))
+    r = infer.prepare_text_rich('يتدبر قرآنا{ق} كريما', 'always', 'egy',
+                                'auto')
+    p12('ألف التنوين: قرآنا{ق} تُزرع قُرْآنَ (شكل corpus)',
+       any(pl['now'] == 'قُرْآنَ' and pl['skel'] == 'qr|n'
+           for pl in r['qaf_planted']), str(r['qaf_planted']))
+    p12('ألف التنوين: المزروعة خام (هيكل ما بعد الزرع)',
+       infer.fix_qaf('quro|na', 'auto', 'egy', {'qr|n': 'q'},
+                     {'qr|n'}) == 'quro|na')
+    p12('ألف التنوين: قانونا بلا علامة يطابق B → j',
+       'j' in infer.fix_qaf('qAnuwnaA', 'auto', 'egy'))
+
+    # 4) TRUST — الموثوقة خامًا (حقيقة: 197 موضعًا + قياس run1)
+    r = infer.prepare_text_rich('حقيقة{ق} مؤلمة', 'always', 'egy', 'auto')
+    p12('TRUST: حقيقة{ق} خام (لا [k])', 'Hqyqp' in r['qaf_native'],
+       f"native={r['qaf_native']}")
+    p12('TRUST: الحقيقة{ق} (معرفة) خام أيضًا',
+       (lambda rr: 'AlHqyqp' in rr['qaf_native'])(
+           infer.prepare_text_rich('الحقيقة{ق} مؤلمة', 'always', 'egy',
+                                   'auto')), '')
+    p12('TRUST: fix_qaf خام لا k',
+       infer.fix_qaf('Haqiyqap', 'auto', 'egy', {'Hqyqp': 'q'},
+                     {'Hqyqp'}) == 'Haqiyqap')
+
+    # 5) ربط الوسم بالكلمة قبل التقسيم (webapp)
+    try:
+        from webapp import bind_markers_to_words, split_into_chunks
+        p12('webapp: «كلمة {ق}» تُربط قبل التقسيم',
+           bind_markers_to_words('كلمة {ق} بعدها') == 'كلمة{ق} بعدها')
+        long_txt = ('جملة طويلة جدا تحتاج تقطيع عند حدود الكلمات ' * 6
+                    + 'وفي آخرها القرآن {ق} عظيم')
+        chunks = split_into_chunks(long_txt, 'egy', infer.get_tokenizer('auto'))
+        p12('webapp: الوسم لا ينفصل عن كلمته بعد التقسيم',
+           all(' {ق}' not in ch for ch in chunks)
+           and any('القرآن{ق}' in ch for ch in chunks),
+           str([ch[-25:] for ch in chunks]))
+    except Exception as e:  # noqa: BLE001
+        p12('webapp: ربط الوسم قبل التقسيم (تخطي — استيراد)', False, str(e))
+
+    # 6) جملة المستخدم الثانية حرفيًا (بمسافاتها) — التكامل الكامل
+    user2 = ('القرآن {ق} كتاب عظيم، وكل قرآن {ق}نقرأه{ق} يذكرنا بآيات '
+             'القرآن{ق}، وفي القرآن{ق} قصص{ق} وحكم كثيرة، ونحب أن نقرأ '
+             'القرآن{ق} كل يوم، لأن قرآننا{ق} مصدر هداية، وكل من يقرأ{ق} '
+             'القرآن{ق} يتعلم من آيات القرآن{ق}، ويعود إلى القرآن{ق} كلما '
+             'أراد أن يتدبر قرآنا{ق} كريما.')
+    r = infer.prepare_text_rich(user2, 'always', 'egy', 'auto')
+    fixed = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                          r['qaf_actions'] or None, r['qaf_native'] or None)
+    p12('جملة المستخدم 2: لا معرفة تبقى خام OOD (كل القرآن → k)',
+       'Aloquro|n' not in fixed and 'Alokuro|n' in fixed, fixed[:60])
+    p12('جملة المستخدم 2: قصص/قرآنا مزروعتان native',
+       {'qSS', 'qr|n'} <= set(r['qaf_native']),
+       f"native={sorted(r['qaf_native'])}")
+    p12('جملة المستخدم 2: نقرأه/يقرأ/قرآننا → [k] تقريب',
+       'nakora>uhu' in fixed and 'yakora>u' in fixed
+       and 'kuro|nanaA' in fixed, '')
+    p12('جملة المستخدم 2: بلا لصق (كل الكلمات سليمة)',
+       'قرآننقرأه' not in r['text'] and 'قُرْآنٍنَقْرَأَهُ' not in r['text'],
+       r['text'][:50])
+
+    # 7) لا انحدار: الجملة العاملة القديمة (الأشكال الثلاثة)
+    r = infer.prepare_text_rich(
+        'قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد قال{ء} شكرًا',
+        'always', 'egy', 'auto')
+    fixed = infer.fix_qaf(a2b(r['text']), 'auto', 'egy',
+                          r['qaf_actions'] or None, r['qaf_native'] or None)
+    p12('لا انحدار: قطعة{ق} خام أصيلة + رقم{ج} جيم + قال{ء} خام',
+       'qiToEapF' in fixed and 'rajomi' in fixed and 'qaAla' in fixed,
+       fixed[:60])
+
+    n_pass += sum(1 for _n, _ok, _w in p12_cases if _ok)
+    n_fail += sum(1 for _n, _ok, _w in p12_cases if not _ok)
+    p12_rows = [{'name': _n, 'verdict': 'PASS' if _ok else 'FAIL', 'why': _w}
+                for _n, _ok, _w in p12_cases]
+    if not args.quiet:
+        print()
+        for _n, _ok, _w in p12_cases:
+            print(f'{("[P12] " + _n):<34s} {"PASS" if _ok else "FAIL":<11s} '
+                  f'{_w[:52]}')
+
     total = len(rows)
     by_class = {}
     for c in 'ABC':
@@ -620,6 +748,8 @@ def main():
         'n_p9_cases': len(p9_rows),
         'n_p10_cases': len(p10_rows),
         'n_p11_cases': len(p11_rows),
+        'n_p12_cases': len(p12_rows),
+        'p12_cases_fail': sum(r['verdict'] == 'FAIL' for r in p12_rows),
         'p11_cases_fail': sum(r['verdict'] == 'FAIL' for r in p11_rows),
         'p10_cases_fail': sum(r['verdict'] == 'FAIL' for r in p10_rows),
         'p9_cases_fail': sum(r['verdict'] == 'FAIL' for r in p9_rows),
@@ -645,6 +775,15 @@ def main():
             "(علامات نقرأه{ق}/رقمه{ء} كانت تضيع)؛ السياسة الحتمية: علامة "
             "{ق} = أصيلة مزروعة (معجم) أو تقريب [k] — لا همزة عرضية أبدًا "
             "(كانت {ق} تخطي B ثم تُنطق همزة خام)"),
+        'policy_p12': (
+            "PATCH 12 (2026-10-02، جملة المستخدم الثانية «القرآن {ق}… "
+            "قرآنا{ق}») — العلامات تعم كل كلمة: إصلاح خلل اللصق (الوسم "
+            "يُستبدل بمسافة — لا التصاق مهما كانت مسافاته)؛ بوابة السوابق "
+            "QAF_Q_AFFIX_OK بأدلة corpus (المسبوقة OOD مثل الْقُرْآن صفر "
+            "مواضع → [k] لا زرع يُسمع همزة، ولا ركوب native العائلة)؛ ألف "
+            "تنوين النصب تطابق المعجم (قرآنا → قُرْآنَ شكل corpus)؛ QAF_Q_TRUST "
+            "للموثوقة خامًا (حقيقة 197 موضعًا + قياس run1)؛ ربط الوسم بكلمته "
+            "قبل تقسيم الويب"),
         'policy_modes': (
             "PATCH 7 — auto: السلوك المعتمد دون تغيير | qaf: قائمة Q (81 "
             "هيكلًا) → 'k' قاف فصحى تقريبية، الباقي كما auto | hamza: كل "
@@ -683,6 +822,9 @@ def main():
         print(f"  PATCH 11 (جملة المستخدم + ه↔ة + ضمان العلامة): "
               f"{len(p11_rows) - summary['p11_cases_fail']}/{len(p11_rows)}"
               f" PASS")
+        print(f"  PATCH 12 (العلامات تعم كل كلمة + بوابة السوابق): "
+              f"{len(p12_rows) - summary['p12_cases_fail']}/{len(p12_rows)}"
+              f" PASS")
         print(f"  مسار msa المُصلَح: "
               f"{len(msa_rows) - summary['msa_cases_fail']}/{len(msa_rows)}"
               f" PASS")
@@ -696,7 +838,7 @@ def main():
         with open(args.json, 'w', encoding='utf-8') as f:
             json.dump({'summary': summary, 'rows': rows,
                        'p9_rows': p9_rows, 'p10_rows': p10_rows,
-                       'p11_rows': p11_rows,
+                       'p11_rows': p11_rows, 'p12_rows': p12_rows,
                        'mode_rows': mode_rows, 'msa_rows': msa_rows}, f,
                       ensure_ascii=False, indent=1)
         if not args.quiet:
