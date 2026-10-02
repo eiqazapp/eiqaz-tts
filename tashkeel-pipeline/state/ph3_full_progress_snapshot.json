@@ -1,13 +1,13 @@
 {
- "snapshot_at": "2026-10-02 22:39:02 UTC",
+ "snapshot_at": "2026-10-02 22:47:50 UTC",
  "engine": "ph3_engine_v53.mjs (batched retry rounds + final individual drain) — auto-synced by quota poller",
- "units_total_recorded": 4353,
- "ok": 4286,
- "failed": 61,
+ "units_total_recorded": 8315,
+ "ok": 8236,
+ "failed": 73,
  "quarantined": 6,
- "cumulative_success_rate": 0.986,
- "remaining": 17527,
+ "cumulative_success_rate": 0.9912,
+ "remaining": 13565,
  "total_target": 21880,
  "resume_command": "cd /home/z/my-project && timeout 550 bash scripts/ph3_full_run_v53.sh 3  (per ~9-min chunk; do NOT exceed 3 workers — 4+ triggers 429 storms)",
- "new_ok_since_poller_start": 3444
+ "new_ok_since_poller_start": 3950
 }
