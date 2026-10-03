@@ -22,7 +22,7 @@ import sys
 import urllib.error
 import urllib.request
 
-URL = 'https://api.groq.com/openapi/v1/chat/completions'
+URL = 'https://api.groq.com/openai/v1/chat/completions'
 
 
 def main():
