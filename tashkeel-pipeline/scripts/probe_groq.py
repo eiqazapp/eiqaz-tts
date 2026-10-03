@@ -49,7 +49,11 @@ def main():
         req = urllib.request.Request(
             URL, data=body,
             headers={'Authorization': 'Bearer ' + key,
-                     'Content-Type': 'application/json'})
+                     'Content-Type': 'application/json',
+                     # Cloudflare 1010 bans the default Python-urllib signature
+                     # on api.groq.com; curl and node-fetch signatures pass.
+                     'User-Agent': 'curl/8.5.0',
+                     'Accept': '*/*'})
         try:
             with urllib.request.urlopen(req, timeout=180) as r:
                 r.read()
