@@ -64,17 +64,21 @@ def call(key, model, sysmsg, usermsg, max_tokens):
 def get_system_prompt():
     """Extract the TRUE SYSTEM_PROMPT from the engine (node SELF import) —
     inherits PH3_WORK_DIR / PH3_GUIDE_FILE, so it probes exactly what the
-    engine will send, full or condensed guide alike."""
+    engine will send, full or condensed guide alike. The engine path travels
+    via env (NOT argv — a trailing argv would trip the engine's isDirect
+    guard and launch main())."""
     engine_dir = os.environ.get('ENGINE_DIR',
                                 os.path.dirname(os.path.abspath(__file__)))
+    engine_mjs = os.path.join(engine_dir, 'ph3_engine_v53.mjs')
     code = (
-        "import('file://' + process.argv[1]).then(m => "
+        "const p = process.env.ENGINE_MJS; "
+        "import(p.startsWith('/') ? 'file://' + p : p).then(m => "
         "process.stdout.write(m.SELF.SYSTEM_PROMPT)).catch(e => {"
         "console.error(e); process.exit(1);})"
     )
-    p = subprocess.run(
-        ['node', '-e', code, os.path.join(engine_dir, 'ph3_engine_v53.mjs')],
-        capture_output=True, text=True, timeout=60)
+    p = subprocess.run(['node', '-e', code], capture_output=True, text=True,
+                       timeout=60,
+                       env={**os.environ, 'ENGINE_MJS': engine_mjs})
     if p.returncode != 0:
         raise RuntimeError('engine SELF import failed: ' + p.stderr[:300])
     return p.stdout

@@ -828,7 +828,8 @@ export const SELF = {
   BATCH_SIZE, RETRY_BATCH_SIZE, MAX_RETRY_ROUNDS,
 };
 
-const isDirect = process.argv[1] && process.argv[1].endsWith('ph3_engine_v53.mjs');
+const isDirect = process.argv[1] && process.argv[1].endsWith('ph3_engine_v53.mjs')
+  && process.argv[2] && process.argv[3]; // real invocation carries IN/OUT args
 if (isDirect) {
   main().catch((e) => { console.error('FATAL:', e); process.exit(1); });
 }
