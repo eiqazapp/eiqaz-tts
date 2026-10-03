@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
 # groq_relay.sh — Groq relay for the ph3 tashkeel engine (remote US runner).
 #
-# WHY THIS EXISTS: the workspace egress IP is in Hong Kong and Groq 403-blocks
-# the HK region at the Cloudflare edge (cf-ray ...-HKG). The same API key
-# works from US runners (Kaggle kernel / GitHub Actions). This script is the
-# runner-side orchestrator: probe candidate models with an ENGINE-SHAPED
-# request (small probes lie — they pass models that then hard-fail 413 on
-# the frozen 12k-token system prompt), then run up to GROQ_MAX_MODELS engine
-# passes — between passes only ok/quarantined records are kept in the output,
-# so units the previous model failed are re-processed by the next model.
+# WHY: the workspace egress is HK and Groq 403-blocks HK at the Cloudflare
+# edge; the key works from US runners (Kaggle kernel / GitHub Actions).
+# Groq on_demand tier limits (TPM 7-8k) are BELOW the frozen system prompt
+# (~10.5k tokens) for qwen/gpt-oss, so probe_groq.py walks a shape ladder
+# (batch25/batch5/single + completion-reserve ladder) and this relay maps
+# each usable verdict to engine run parameters (batch size + GROQ_MAX_TOKENS).
+# The system prompt, validators, and gates stay byte-identical (sha
+# 60130f6b…); only the user-message batch shape and completion reserve vary.
 #
 # Usage: bash groq_relay.sh <input.json> <output.jsonl>
 # Env:   GROQ_API_KEY (required), GROQ_CANDIDATES (optional override),
 #        GROQ_MAX_MODELS (default 3), GROQ_PASS_TIMEOUT (default 1500s),
 #        PH3_WORK_DIR (engine workdir with guide/lists).
-# Engine semantics: append-mode JSONL + resume-by-id (byte-identical
-# validators/prompt sha 60130f6b…; only the HTTP client is Groq).
 set -uo pipefail
 
 INPUT="$1"
@@ -46,33 +44,49 @@ except Exception as e:
     print('[diag] parse error:', e)
 PY
 
-# ---- 1) probe candidates with an engine-shaped request ----
-echo "== [probe] engine-shaped requests (system 25,398 chars + 25 sentences, max_tokens 4096) =="
+# ---- 1) probe candidates with engine-shaped requests (shape ladder) ----
+echo "== [probe] shape ladder: system 25,398 chars; batch25/mt4096 -> batch5/mt1024 -> single/mt512|256 =="
 PROBE_OUT=$(python3 "$SCRIPT_DIR/probe_groq.py" "$INPUT" $CANDIDATES 2>&1)
 echo "$PROBE_OUT"
-WORKING=()
+
+# VERDICT lines -> parallel arrays: model / batch / max_tokens
+declare -a OK_MODELS=() OK_BATCH=() OK_MT=()
 while IFS= read -r line; do
   case "$line" in
-    *"HTTP 200 USABLE"*)
-      m="${line#PROBE }"; m="${m%% *}"
-      WORKING+=("$m")
+    "VERDICT "*"USABLE-BATCH25"*)
+      m=$(echo "$line" | awk '{print $2}')
+      OK_MODELS+=("$m"); OK_BATCH+=(25); OK_MT+=("")
+      ;;
+    "VERDICT "*"USABLE-BATCH5"*)
+      m=$(echo "$line" | awk '{print $2}')
+      OK_MODELS+=("$m"); OK_BATCH+=(5); OK_MT+=("1024")
+      ;;
+    "VERDICT "*"USABLE-SINGLE mt="*)
+      m=$(echo "$line" | awk '{print $2}')
+      mt=$(echo "$line" | sed 's/.*USABLE-SINGLE mt=//')
+      OK_MODELS+=("$m"); OK_BATCH+=(1); OK_MT+=("$mt")
       ;;
   esac
 done <<< "$PROBE_OUT"
 
-if [ "${#WORKING[@]}" -eq 0 ]; then
+if [ "${#OK_MODELS[@]}" -eq 0 ]; then
   echo "RELAY_RESULT ok=0 failed=0 error=no_working_model"
-  echo "FATAL: no working Groq model for the engine-shaped request — see TPM limits above"
+  echo "FATAL: no usable model/shape — see limits above (on_demand tier caps)"
   exit 1
 fi
-echo "[probe] working models (priority order): ${WORKING[*]}"
+echo "[probe] usable models (priority order):"
+for i in "${!OK_MODELS[@]}"; do
+  echo "  ${OK_MODELS[$i]} batch=${OK_BATCH[$i]} max_tokens=${OK_MT[$i]:-default}"
+done
 
 # ---- 2) engine passes ----
 TOTAL=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$INPUT','utf8')).length)")
 echo "input units: $TOTAL"
 
 PASS=0
-for m in "${WORKING[@]:0:$MAX_MODELS}"; do
+N_MODELS=$(( ${#OK_MODELS[@]} < MAX_MODELS ? ${#OK_MODELS[@]} : MAX_MODELS ))
+for i in $(seq 0 $((N_MODELS - 1))); do
+  m="${OK_MODELS[$i]}"; b="${OK_BATCH[$i]}"; mt="${OK_MT[$i]}"
   PASS=$((PASS + 1))
   if [ "$PASS" -gt 1 ]; then
     # keep only settled records so failed ids are re-processed by this model
@@ -84,9 +98,14 @@ for m in "${WORKING[@]:0:$MAX_MODELS}"; do
     fi
     echo "[relay] pass $PASS: reset output to settled records only"
   fi
-  echo "== [engine] pass $PASS model=$m =="
+  echo "== [engine] pass $PASS model=$m batch=$b max_tokens=${mt:-default} =="
+  if [ -n "$mt" ]; then
+    export GROQ_MAX_TOKENS="$mt"
+  else
+    unset GROQ_MAX_TOKENS
+  fi
   GROQ_MODEL="$m" timeout "$PASS_TIMEOUT" node "$SCRIPT_DIR/ph3_engine_v53.mjs" \
-    "$INPUT" "$OUTPUT" 25 || echo "[engine] pass $PASS ended rc=$? (continuing to next model)"
+    "$INPUT" "$OUTPUT" "$b" || echo "[engine] pass $PASS ended rc=$? (continuing to next model)"
   OK=$(grep -c '"status":"ok"' "$OUTPUT" 2>/dev/null || echo 0)
   echo "[relay] after pass $PASS: ok=$OK / $TOTAL"
   if [ "$OK" -ge "$TOTAL" ]; then

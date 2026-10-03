@@ -463,10 +463,12 @@ function makeGroqClient(model, key) {
         create: async (req) => {
           const body = { ...req, model, temperature: 0.1 };
           delete body.thinking; // OpenAI-style endpoint — لا حقل تفكير
-          // 4096 (not 8192): Groq on_demand TPM counts can include the
-          // completion reserve; batch-25 output ≈ 3k tokens — 4096 keeps
-          // the worst-case request under small-tier TPM budgets.
-          if (!body.max_tokens) body.max_tokens = 4096;
+          // GROQ_MAX_TOKENS (default 4096): Groq on_demand TPM/context can
+          // force smaller completion reserves (e.g. allam single-sentence
+          // mode at 512) — batch-25 output ≈ 3k tokens needs 4096.
+          if (!body.max_tokens) {
+            body.max_tokens = parseInt(process.env.GROQ_MAX_TOKENS || '4096', 10);
+          }
           let lastErr;
           for (let t = 1; t <= MAX_TRIES; t++) {
             let retryAfter = 0;
