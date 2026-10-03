@@ -1,9 +1,9 @@
 {
- "snapshot_at": "2026-10-03 01:32:41 UTC",
+ "snapshot_at": "2026-10-03 02:03:49 UTC",
  "engine": "ph3_engine_v53.mjs (batched retry rounds + final individual drain)",
  "units_total_recorded": 21880,
- "ok": 21845,
- "failed": 29,
+ "ok": 21846,
+ "failed": 28,
  "quarantined": 6,
  "cumulative_success_rate": 0.9987,
  "remaining": 0,
@@ -11,7 +11,8 @@
  "retry_rounds": [
   "ph3_retry_round1_output.jsonl",
   "ph3_retry_round2_output.jsonl",
-  "ph3_retry_round3_output.jsonl"
+  "ph3_retry_round3_output.jsonl",
+  "ph3_retry_round4_output.jsonl"
  ],
  "note": "retry rounds via z-ai glm-4-plus (claude blocked 403 HK at Kaggle proxy level, account-wide); quota windows ~10 min each"
 }
