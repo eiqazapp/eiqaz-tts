@@ -37,7 +37,6 @@
 // rounds (attempts max 4; parse-failure units max 4 rounds as in v5.1).
 // Token accounting: usage-based when the backend exposes it, plus char
 // counts and call counts for estimation otherwise.
-import ZAI from 'z-ai-web-dev-sdk';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { loadMaps, applyTierA, applyRabbena, taaCheckWithExempt, restoreLetters }
@@ -48,11 +47,14 @@ const BATCH_SIZE = BATCH_ARG ? parseInt(BATCH_ARG, 10) : 50;
 const RETRY_BATCH_SIZE = parseInt(process.env.RETRY_BATCH || '5', 10);
 const MAX_RETRY_ROUNDS = 3; // same per-unit budget as v5.1 MAX_SINGLE_RETRIES
 
-const GUIDE_PATH = '/home/z/my-project/work/tashkeel_guide_v2.md';
-const TANWEEN_LIST_PATH = '/home/z/my-project/work/tanween_closed_list.json';
-const TIER_A_MAP_PATH = '/home/z/my-project/work/tier_a_map.json';
-const LETTER_FIXES_PATH = '/home/z/my-project/work/ph1_letter_fixes.json';
-const QUARANTINE_PATH = '/home/z/my-project/work/ph1_quarantine.json';
+// PH3_WORK_DIR: portable work-dir override (e.g. GitHub Actions runner);
+// unset → the canonical local layout. Same files, same bytes, same hashes.
+const WORK_DIR = process.env.PH3_WORK_DIR || '/home/z/my-project/work';
+const GUIDE_PATH = `${WORK_DIR}/tashkeel_guide_v2.md`;
+const TANWEEN_LIST_PATH = `${WORK_DIR}/tanween_closed_list.json`;
+const TIER_A_MAP_PATH = `${WORK_DIR}/tier_a_map.json`;
+const LETTER_FIXES_PATH = `${WORK_DIR}/ph1_letter_fixes.json`;
+const QUARANTINE_PATH = `${WORK_DIR}/ph1_quarantine.json`;
 const GUIDE = fs.readFileSync(GUIDE_PATH, 'utf8');
 const TANWEEN_ADVERBS = new Set(
   JSON.parse(fs.readFileSync(TANWEEN_LIST_PATH, 'utf8')).words);
@@ -411,6 +413,104 @@ ${item.converted}
 }
 
 // ---------------- main ----------------
+// ---------------- Kaggle Model Proxy backend (env-gated) ----------------
+// KAGGLE_PROXY_KEY مضبوط → كل نداءات LLM تذهب إلى وكيل Kaggle بدل z-ai.
+// غير مضبوط → سلوك المحرك مطابق تمامًا للنسخة المعتمدة (لا فرق).
+// التوافق: callLLM يقرأ completion.choices[0].message.content وcompletion.usage
+// وcompletion.model — والوكيل يعيدها جميعًا (OpenAI-style).
+function makeKaggleClient(model, key, url) {
+  const endpoint = String(url).replace(/\/$/, '') + '/openapi/chat/completions';
+  return {
+    chat: {
+      completions: {
+        create: async (req) => {
+          const body = { ...req, model };
+          delete body.thinking; // الوكيل OpenAI-style — لا حقل تفكير
+          if (!body.max_tokens) body.max_tokens = 8192;
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${key}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+          });
+          const txt = await res.text();
+          if (!res.ok) {
+            throw new Error(`kaggle proxy HTTP ${res.status}: ${txt.slice(0, 300)}`);
+          }
+          return JSON.parse(txt);
+        },
+      },
+    },
+  };
+}
+
+// ---------------- Groq backend (env-gated) ----------------
+// GROQ_API_KEY مضبوط → كل نداءات LLM تذهب إلى Groq (OpenAI-compatible).
+// المنطقة HK محجوبة عند Groq (403 عبر Cloudflare) لذا يُشغَّل هذا المسار من
+// GitHub Actions (خوادم US). العميل يتحمل 429 فترات أطول داخليًا (حدود TPM
+// في Groq تحتاج انتظارًا يتجاوز backoff المحرك) وينظف كتل <think> الدفاعية.
+// temperature 0.1: مهمة نسخ حروف حرفيًا — الحتمية تقلل أخطاء الزيادة/النقصان.
+function makeGroqClient(model, key) {
+  // GROQ_BASE_URL: testability override (local mock server); unset → Groq.
+  const base = process.env.GROQ_BASE_URL || 'https://api.groq.com';
+  const endpoint = `${base.replace(/\/$/, '')}/openai/v1/chat/completions`;
+  const MAX_TRIES = 8;
+  return {
+    chat: {
+      completions: {
+        create: async (req) => {
+          const body = { ...req, model, temperature: 0.1 };
+          delete body.thinking; // OpenAI-style endpoint — لا حقل تفكير
+          if (!body.max_tokens) body.max_tokens = 8192;
+          let lastErr;
+          for (let t = 1; t <= MAX_TRIES; t++) {
+            let retryAfter = 0;
+            try {
+              const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${key}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body),
+              });
+              const ra = parseInt(res.headers.get('retry-after') || '0', 10);
+              if (ra > 0) retryAfter = ra * 1000;
+              const txt = await res.text();
+              if (!res.ok) {
+                const err = new Error(`groq HTTP ${res.status}: ${txt.slice(0, 300)}`);
+                err.status = res.status;
+                throw err;
+              }
+              const parsed = JSON.parse(txt);
+              const msg = parsed.choices?.[0]?.message;
+              // defensive: بعض نماذج التفكير تدمج <think> في المحتوى — انزعها
+              // (parseNumbered لن يفهمها أصلًا)
+              if (msg && typeof msg.content === 'string') {
+                msg.content = msg.content
+                  .replace(/[\s\S]*?<\/think>\s*/g, '')
+                  .replace(/^<\|channel\|>final<\|message\|>\s*/g, '')
+                  .trim();
+              }
+              return parsed;
+            } catch (e) {
+              lastErr = e;
+              const is429 = e.status === 429 || /429|rate.?limit/i.test(String(e.message));
+              if (!is429 || t === MAX_TRIES) throw e;
+              const wait = retryAfter || Math.min(65000, 20000 * t);
+              console.log(`    [groq-429] waiting ${Math.round(wait / 1000)}s (try ${t}/${MAX_TRIES})`);
+              await new Promise((r) => setTimeout(r, wait));
+            }
+          }
+          throw lastErr;
+        },
+      },
+    },
+  };
+}
+
 async function main() {
   const input0 = JSON.parse(fs.readFileSync(IN_PATH, 'utf8'));
   // Letter-fix exceptions (guide v2.1 §ك-5 — approved 2026-09-30): swap the
@@ -438,8 +538,26 @@ async function main() {
   console.log(`input=${input.length} done=${done.size} quarantined=${quarantined.length} todo=${todo.length} batch=${BATCH_SIZE} retryBatch=${RETRY_BATCH_SIZE} tierA=${MAPS.meta.n_entries}forms/${MAPS.meta.total_corpus_positions}pos`);
   if (todo.length === 0 && quarantined.length === 0) { console.log('nothing to do'); return; }
 
-  const zai = await ZAI.create();
+  // Backend selection (env-gated; unset → z-ai exactly as approved):
+  //   GROQ_API_KEY > KAGGLE_PROXY_KEY > z-ai-web-dev-sdk (dynamic import —
+  //   the SDK is unavailable outside this workspace, e.g. on Actions runners)
+  let zai;
   let modelSeen = null;
+  if (process.env.GROQ_API_KEY) {
+    const gm = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+    zai = makeGroqClient(gm, process.env.GROQ_API_KEY);
+    console.log(`[groq] backend=on model=${gm}`);
+  } else if (process.env.KAGGLE_PROXY_KEY) {
+    zai = makeKaggleClient(
+      process.env.KAGGLE_MODEL || 'google/gemini-3.1-flash-lite-preview',
+      process.env.KAGGLE_PROXY_KEY,
+      process.env.KAGGLE_PROXY_URL || 'https://mp-staging.kaggle.net/models',
+    );
+    console.log(`[kaggle] backend=on model=${process.env.KAGGLE_MODEL
+      || 'google/gemini-3.1-flash-lite-preview'}`);
+  } else {
+    zai = await (await import('z-ai-web-dev-sdk')).default.create();
+  }
   const out = fs.createWriteStream(OUT_PATH, { flags: 'a' });
 
   const writeRec = (rec) => {
@@ -693,7 +811,7 @@ async function main() {
 // Offline self-test exports (harmless — engine still runs when invoked
 // directly by the orchestrator; imports skip main()).
 export const SELF = {
-  SYSTEM_PROMPT, validate, parseNumbered, applyPostFixes,
+  SYSTEM_PROMPT, validate, validateFinal, parseNumbered, applyPostFixes,
   BATCH_SIZE, RETRY_BATCH_SIZE, MAX_RETRY_ROUNDS,
 };
 
