@@ -463,7 +463,10 @@ function makeGroqClient(model, key) {
         create: async (req) => {
           const body = { ...req, model, temperature: 0.1 };
           delete body.thinking; // OpenAI-style endpoint — لا حقل تفكير
-          if (!body.max_tokens) body.max_tokens = 8192;
+          // 4096 (not 8192): Groq on_demand TPM counts can include the
+          // completion reserve; batch-25 output ≈ 3k tokens — 4096 keeps
+          // the worst-case request under small-tier TPM budgets.
+          if (!body.max_tokens) body.max_tokens = 4096;
           let lastErr;
           for (let t = 1; t <= MAX_TRIES; t++) {
             let retryAfter = 0;

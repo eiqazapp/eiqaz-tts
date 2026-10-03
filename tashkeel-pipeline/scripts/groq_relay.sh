@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
-# groq_relay.sh — Groq relay for the ph3 tashkeel engine (GitHub Actions runner).
+# groq_relay.sh — Groq relay for the ph3 tashkeel engine (remote US runner).
 #
 # WHY THIS EXISTS: the workspace egress IP is in Hong Kong and Groq 403-blocks
 # the HK region at the Cloudflare edge (cf-ray ...-HKG). The same API key
-# works from GitHub Actions runners (US). This script is the Actions-side
-# orchestrator: probe candidate models, then run up to GROQ_MAX_MODELS engine
+# works from US runners (Kaggle kernel / GitHub Actions). This script is the
+# runner-side orchestrator: probe candidate models with an ENGINE-SHAPED
+# request (small probes lie — they pass models that then hard-fail 413 on
+# the frozen 12k-token system prompt), then run up to GROQ_MAX_MODELS engine
 # passes — between passes only ok/quarantined records are kept in the output,
 # so units the previous model failed are re-processed by the next model.
 #
 # Usage: bash groq_relay.sh <input.json> <output.jsonl>
 # Env:   GROQ_API_KEY (required), GROQ_CANDIDATES (optional override),
-#        GROQ_MAX_MODELS (default 3), PH3_WORK_DIR (engine workdir).
+#        GROQ_MAX_MODELS (default 3), GROQ_PASS_TIMEOUT (default 1500s),
+#        PH3_WORK_DIR (engine workdir with guide/lists).
 # Engine semantics: append-mode JSONL + resume-by-id (byte-identical
 # validators/prompt sha 60130f6b…; only the HTTP client is Groq).
 set -uo pipefail
@@ -18,7 +21,9 @@ set -uo pipefail
 INPUT="$1"
 OUTPUT="$2"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-CANDIDATES="${GROQ_CANDIDATES:-moonshotai/kimi-k2-instruct openai/gpt-oss-120b llama-3.3-70b-versatile qwen/qwen3-32b llama-3.1-8b-instant}"
+# 2026-10 catalogue for this key (11 models visible; chat-capable only,
+# Arabic strength first — allam-2-7b is Aramco's Arabic-centric model):
+CANDIDATES="${GROQ_CANDIDATES:-allam-2-7b qwen/qwen3.8-27b openai/gpt-oss-20b openai/gpt-oss-120b}"
 MAX_MODELS="${GROQ_MAX_MODELS:-3}"
 PASS_TIMEOUT="${GROQ_PASS_TIMEOUT:-1500}"   # seconds per engine pass
 
@@ -41,25 +46,23 @@ except Exception as e:
     print('[diag] parse error:', e)
 PY
 
-# ---- 1) probe candidates with a tiny completion ----
+# ---- 1) probe candidates with an engine-shaped request ----
+echo "== [probe] engine-shaped requests (system 25,398 chars + 25 sentences, max_tokens 4096) =="
+PROBE_OUT=$(python3 "$SCRIPT_DIR/probe_groq.py" "$INPUT" $CANDIDATES 2>&1)
+echo "$PROBE_OUT"
 WORKING=()
-for m in $CANDIDATES; do
-  code=$(curl -s -o /tmp/groq_probe.json -w '%{http_code}' -m 60 \
-    https://api.groq.com/openai/v1/chat/completions \
-    -H "Authorization: Bearer $GROQ_API_KEY" \
-    -H 'Content-Type: application/json' \
-    -d "{\"model\":\"$m\",\"messages\":[{\"role\":\"user\",\"content\":\"reply with the single word: ok\"}],\"max_tokens\":8}")
-  if [ "$code" = "200" ]; then
-    WORKING+=("$m")
-    echo "[probe] $m -> HTTP 200 OK"
-  else
-    echo "[probe] $m -> HTTP $code $(head -c 160 /tmp/groq_probe.json 2>/dev/null)"
-  fi
-done
+while IFS= read -r line; do
+  case "$line" in
+    *"HTTP 200 USABLE"*)
+      m="${line#PROBE }"; m="${m%% *}"
+      WORKING+=("$m")
+      ;;
+  esac
+done <<< "$PROBE_OUT"
 
 if [ "${#WORKING[@]}" -eq 0 ]; then
   echo "RELAY_RESULT ok=0 failed=0 error=no_working_model"
-  echo "FATAL: no working Groq model — check key/quota/catalogue above"
+  echo "FATAL: no working Groq model for the engine-shaped request — see TPM limits above"
   exit 1
 fi
 echo "[probe] working models (priority order): ${WORKING[*]}"
