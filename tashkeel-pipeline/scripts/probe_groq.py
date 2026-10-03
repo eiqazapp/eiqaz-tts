@@ -2,14 +2,15 @@
 """probe_groq.py — probe Groq chat candidates with ENGINE-SHAPED requests.
 
 Groq on_demand (free) tier limits discovered 2026-10-03 for this key:
-  qwen/qwen3.8-27b   ITPM 7000   (needed ~11.4k input — impossible)
-  openai/gpt-oss-20b TPM  8000   (needed ~12.4k — impossible)
-  openai/gpt-oss-120b TPM 8000   (needed ~12.5k — impossible)
-  allam-2-7b         HTTP 400 at max_tokens 4096 (context-shaped refusal)
-The frozen system prompt alone is ~10.5k tokens, so full-batch calls cannot
-fit any of these limits. This probe walks a SHAPE LADDER to find the largest
-per-model request shape the tier accepts (system prompt stays byte-exact;
-only user-message size and completion reserve shrink):
+  qwen/qwen3.8-27b   ITPM 7000   (full prompt needs ~11.4k input)
+  openai/gpt-oss-20b TPM  8000   (full prompt needs ~12.4k)
+  openai/gpt-oss-120b TPM 8000   (full prompt needs ~12.5k)
+  allam-2-7b         HTTP 400 — context smaller than the full prompt
+The frozen FULL system prompt (~10.5k tokens) cannot fit any limit, so the
+runner may carry a CONDENSED guide via PH3_GUIDE_FILE. This probe extracts
+the TRUE SYSTEM_PROMPT from the engine itself (node SELF import — inherits
+PH3_WORK_DIR/PH3_GUIDE_FILE), then walks a SHAPE LADDER to find the largest
+per-model request shape the tier accepts:
 
   BATCH25 mt4096  == engine default first-pass batch (25 sentences)
   BATCH5  mt1024  == engine retry-batch shape (5 sentences)
@@ -20,11 +21,12 @@ Output per model (one line per shape attempt, plus a final verdict):
   VERDICT <model> USABLE-BATCH25 | USABLE-BATCH5 | USABLE-SINGLE mt=<n> | UNUSABLE
 
 Usage: probe_groq.py <input.json> <model> [<model> ...]
-Env:   GROQ_API_KEY, PH3_WORK_DIR
+Env:   GROQ_API_KEY, PH3_WORK_DIR, PH3_GUIDE_FILE (optional), ENGINE_DIR
 """
 import json
 import os
 import re
+import subprocess
 import sys
 import urllib.error
 import urllib.request
@@ -59,11 +61,29 @@ def call(key, model, sysmsg, usermsg, max_tokens):
         return -1, str(e)
 
 
+def get_system_prompt():
+    """Extract the TRUE SYSTEM_PROMPT from the engine (node SELF import) —
+    inherits PH3_WORK_DIR / PH3_GUIDE_FILE, so it probes exactly what the
+    engine will send, full or condensed guide alike."""
+    engine_dir = os.environ.get('ENGINE_DIR',
+                                os.path.dirname(os.path.abspath(__file__)))
+    code = (
+        "import('file://' + process.argv[1]).then(m => "
+        "process.stdout.write(m.SELF.SYSTEM_PROMPT)).catch(e => {"
+        "console.error(e); process.exit(1);})"
+    )
+    p = subprocess.run(
+        ['node', '-e', code, os.path.join(engine_dir, 'ph3_engine_v53.mjs')],
+        capture_output=True, text=True, timeout=60)
+    if p.returncode != 0:
+        raise RuntimeError('engine SELF import failed: ' + p.stderr[:300])
+    return p.stdout
+
+
 def main():
     key = os.environ['GROQ_API_KEY']
-    wd = os.environ['PH3_WORK_DIR']
-    sysmsg = open(os.path.join(wd, 'tashkeel_guide_v2.md'),
-                  encoding='utf-8').read()[:25398]
+    sysmsg = get_system_prompt()
+    print(f'[probe] true SYSTEM_PROMPT: {len(sysmsg)} chars', flush=True)
     with open(sys.argv[1], encoding='utf-8') as f:
         units = json.load(f)
 

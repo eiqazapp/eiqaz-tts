@@ -49,8 +49,13 @@ const MAX_RETRY_ROUNDS = 3; // same per-unit budget as v5.1 MAX_SINGLE_RETRIES
 
 // PH3_WORK_DIR: portable work-dir override (e.g. GitHub Actions runner);
 // unset → the canonical local layout. Same files, same bytes, same hashes.
+// PH3_GUIDE_FILE: guide filename override (default tashkeel_guide_v2.md).
+// Used by the Groq condensed-prompt experiment ONLY (on_demand TPM limits
+// are below the full prompt); meta records prompt_mode loudly so condensed
+// units are distinguishable and revertible at merge time.
 const WORK_DIR = process.env.PH3_WORK_DIR || '/home/z/my-project/work';
-const GUIDE_PATH = `${WORK_DIR}/tashkeel_guide_v2.md`;
+const GUIDE_FILE = process.env.PH3_GUIDE_FILE || 'tashkeel_guide_v2.md';
+const GUIDE_PATH = `${WORK_DIR}/${GUIDE_FILE}`;
 const TANWEEN_LIST_PATH = `${WORK_DIR}/tanween_closed_list.json`;
 const TIER_A_MAP_PATH = `${WORK_DIR}/tier_a_map.json`;
 const LETTER_FIXES_PATH = `${WORK_DIR}/ph1_letter_fixes.json`;
@@ -785,6 +790,9 @@ async function main() {
 
   const meta = {
     engine: 'ph3_engine_v53.mjs v5.3 (guide v2.1; v5.2 batched retry rounds for rounds 1-2 + v5-style focused individual retry as the last budget round — tashkeelSingle wording byte-identical to approved v5; per-unit budget unchanged (max 4 attempts); system prompt + validators byte-identical to v5.1/v5.2)',
+    ...(process.env.PH3_GUIDE_FILE ? {
+      prompt_mode: 'CONDENSED-EXPERIMENT (not the approved full guide v2.1 — Groq on_demand TPM caps are below the full ~10.5k-token prompt; core rule sections أ-ح kept verbatim, list appendices enforced engine-side by gates/maps as usual)',
+    } : {}),
     guide_path: GUIDE_PATH,
     guide_sha256: crypto.createHash('sha256').update(GUIDE).digest('hex'),
     prompt_sha256: crypto.createHash('sha256').update(SYSTEM_PROMPT).digest('hex'),

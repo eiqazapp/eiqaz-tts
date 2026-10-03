@@ -19,9 +19,11 @@ set -uo pipefail
 INPUT="$1"
 OUTPUT="$2"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# 2026-10 catalogue for this key (11 models visible; chat-capable only,
-# Arabic strength first — allam-2-7b is Aramco's Arabic-centric model):
-CANDIDATES="${GROQ_CANDIDATES:-allam-2-7b qwen/qwen3.8-27b openai/gpt-oss-20b openai/gpt-oss-120b}"
+# 2026-10 catalogue for this key (11 models visible; chat-capable only).
+# Condensed-prompt mode: gpt-oss-120b first (strongest instruction-follower
+# for the letter-exact contract), then allam-2-7b (Arabic-centric — its
+# context fits the condensed prompt), then 20b / qwen:
+CANDIDATES="${GROQ_CANDIDATES:-openai/gpt-oss-120b allam-2-7b openai/gpt-oss-20b qwen/qwen3.8-27b}"
 MAX_MODELS="${GROQ_MAX_MODELS:-3}"
 PASS_TIMEOUT="${GROQ_PASS_TIMEOUT:-1500}"   # seconds per engine pass
 
