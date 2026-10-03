@@ -71,27 +71,31 @@
   {
    "path": "ph3_retry_round1_output.jsonl",
    "sha256": "4087c71958414bb2d1551ff2d6d66a00d2649346390293cb59494888d792637b"
+  },
+  {
+   "path": "ph3_retry_round2_output.jsonl",
+   "sha256": "da65412e120a9c9274bc177c974a35b2712b17844f9b11aa888d2c33ce69c9b7"
   }
  ],
  "canonical_output": "/home/z/my-project/work/ph3_full_output.jsonl",
- "canonical_sha256": "bd3811bf311e46903a112c07b9f782634db663a23d2572891902dda7bdea6609",
+ "canonical_sha256": "16c02035cfe7bbe7b4ea88adbf94e10dc7abf72232d72bda7c7f5ea158cc53cd",
  "n_input": 21880,
  "n_records": 21880,
  "n_missing": 0,
  "counts": {
-  "ok": 21825,
-  "failed": 49,
+  "ok": 21836,
+  "failed": 38,
   "quarantined": 6
  },
  "counts_by_split": {
   "train": {
-   "ok": 19671,
-   "failed": 46,
+   "ok": 19681,
+   "failed": 36,
    "quarantined": 6
   },
   "eval": {
-   "ok": 2154,
-   "failed": 3
+   "ok": 2155,
+   "failed": 2
   }
  },
  "user_decisions_2026_09_30": [

@@ -1,19 +1,16 @@
 {
- "snapshot_at": "2026-10-03 00:53:14 UTC",
- "engine": "ph3_engine_v53.mjs (batched retry rounds + final individual drain) — auto-synced by quota poller",
+ "snapshot_at": "2026-10-03 01:13:04 UTC",
+ "engine": "ph3_engine_v53.mjs (batched retry rounds + final individual drain)",
  "units_total_recorded": 21880,
- "ok": 21825,
- "failed": 49,
+ "ok": 21836,
+ "failed": 38,
  "quarantined": 6,
- "cumulative_success_rate": 0.9978,
+ "cumulative_success_rate": 0.9983,
  "remaining": 0,
  "total_target": 21880,
- "retry_round1": {
-  "ok_recovered": 97,
-  "claude_recovered": 10,
-  "zai_recovered": 87,
-  "still_failed": 49,
-  "note": "claude blocked 403 HK at proxy level (account-wide, all 8 models, even server-side task execution); z-ai glm-4-plus fresh retry round recovered 87/136 on 2026-10-03"
- },
- "resume_command": "cd /home/z/my-project && python3 scripts/ph3_full_retry_prep.py 2 && run scripts/zai_retry_window.sh when quota resets"
+ "retry_rounds": [
+  "ph3_retry_round1_output.jsonl",
+  "ph3_retry_round2_output.jsonl"
+ ],
+ "note": "retry rounds via z-ai glm-4-plus (claude blocked 403 HK at Kaggle proxy level, account-wide); quota windows ~10 min each"
 }
