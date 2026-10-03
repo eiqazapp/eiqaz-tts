@@ -36,14 +36,19 @@ UA = {'User-Agent': 'curl/8.5.0', 'Accept': '*/*'}  # CF 1010 bans python-urllib
 
 
 def call(key, model, sysmsg, usermsg, max_tokens):
-    body = json.dumps({
+    payload = {
         'model': model,
         'messages': [
             {'role': 'system', 'content': sysmsg},
             {'role': 'user', 'content': usermsg},
         ],
         'max_tokens': max_tokens,
-    }).encode()
+    }
+    # mirror the engine client: gpt-oss reasoning models need low effort or
+    # the reasoning field eats the whole completion budget (empty content)
+    if model.startswith('openai/gpt-oss'):
+        payload['reasoning_effort'] = 'low'
+    body = json.dumps(payload).encode()
     req = urllib.request.Request(
         URL, data=body,
         headers={'Authorization': 'Bearer ' + key,
@@ -93,9 +98,11 @@ def main():
 
     numbered = lambda n: '\n'.join(f'{i + 1}. {u["text"]}'
                                    for i, u in enumerate(units[:n]))
+    # batch-2/mt1024 is the proven-fit shape for the on_demand tier:
+    # call size ≈ system 3.4k + 2 sentences + reserve 1024 ≈ 4.9k < 7-8k caps
+    # (batch-25/mt4096 trips TPM intermittently; feedback retries 413).
     shapes = [
-        ('BATCH25', numbered(25), 4096),
-        ('BATCH5', numbered(5), 1024),
+        ('BATCH2', numbered(2), 1024),
         ('SINGLE', f'1. {units[0]["text"]}', 512),
         ('SINGLE', f'1. {units[0]["text"]}', 256),
     ]
@@ -108,11 +115,8 @@ def main():
             label = name if name != 'SINGLE' else f'SINGLE mt={mt}'
             print(f'PROBE {model} {label} HTTP {code} {note}', flush=True)
             if code == 200:
-                if name == 'BATCH25':
-                    verdict = 'USABLE-BATCH25'
-                    break
-                if name == 'BATCH5':
-                    verdict = 'USABLE-BATCH5'
+                if name == 'BATCH2':
+                    verdict = 'USABLE-BATCH2'
                     break
                 if seen_single is None:
                     seen_single = mt

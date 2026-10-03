@@ -469,11 +469,16 @@ function makeGroqClient(model, key) {
           const body = { ...req, model, temperature: 0.1 };
           delete body.thinking; // OpenAI-style endpoint — لا حقل تفكير
           // GROQ_MAX_TOKENS (default 4096): Groq on_demand TPM/context can
-          // force smaller completion reserves (e.g. allam single-sentence
-          // mode at 512) — batch-25 output ≈ 3k tokens needs 4096.
+          // force smaller completion reserves. TPM accounting includes the
+          // reserve, so batch-2 mode runs at 1024.
           if (!body.max_tokens) {
             body.max_tokens = parseInt(process.env.GROQ_MAX_TOKENS || '4096', 10);
           }
+          // gpt-oss are reasoning models: at default effort the reasoning
+          // field consumes the whole completion budget and content comes
+          // back EMPTY ("empty completion" storm). Low effort keeps short
+          // reasoning + real content within small max_tokens.
+          if (/^openai\/gpt-oss/.test(model)) body.reasoning_effort = 'low';
           let lastErr;
           for (let t = 1; t <= MAX_TRIES; t++) {
             let retryAfter = 0;

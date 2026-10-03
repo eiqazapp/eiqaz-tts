@@ -1,0 +1,48 @@
+{
+ "engine": "ph3_engine_v53.mjs v5.3 (guide v2.1; v5.2 batched retry rounds for rounds 1-2 + v5-style focused individual retry as the last budget round — tashkeelSingle wording byte-identical to approved v5; per-unit budget unchanged (max 4 attempts); system prompt + validators byte-identical to v5.1/v5.2)",
+ "prompt_mode": "CONDENSED-EXPERIMENT (not the approved full guide v2.1 — Groq on_demand TPM caps are below the full ~10.5k-token prompt; core rule sections أ-ح kept verbatim, list appendices enforced engine-side by gates/maps as usual)",
+ "guide_path": "/kaggle/working/engine_workdir/tashkeel_guide_v2_condensed.md",
+ "guide_sha256": "4f5edd12e785bd34764b925257c76b8c5bf10fb704eaa40e946b7188e3e437ee",
+ "prompt_sha256": "d2cb3302d86c2d8a37e8b5a545798ea6fdfb13189a09432a979410c674f2088b",
+ "tanween_list_path": "/kaggle/working/engine_workdir/tanween_closed_list.json",
+ "tanween_list_sha256": "90d18ea69078b465ff9cca3dccf38606a1712f48e61d2346e5033601e5fce59a",
+ "tier_a_map_path": "/kaggle/working/engine_workdir/tier_a_map.json",
+ "tier_a_map_sha256": "3106f354c0e2550e9641b48191857a284c25ba2328eb9c1b939f30b0c3abf29e",
+ "tier_a_meta": {
+  "version": "v2.1 — 2026-09-30",
+  "total_corpus_positions": 88,
+  "n_entries": 18
+ },
+ "letter_fixes_path": "/kaggle/working/engine_workdir/ph1_letter_fixes.json",
+ "quarantine_path": "/kaggle/working/engine_workdir/ph1_quarantine.json",
+ "n_quarantined_written": 0,
+ "model": null,
+ "batch_size": 25,
+ "retry_batch_size": 5,
+ "max_retry_rounds": 3,
+ "token_stats": {
+  "first_calls": 0,
+  "retry_calls": 0,
+  "rate_limited": 0,
+  "usage_present": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "chars": {
+   "system": 8227,
+   "user_first": 0,
+   "out_first": 0,
+   "user_retry": 0,
+   "out_retry": 0
+  }
+ },
+ "finished": "2026-10-03T12:33:51.042Z",
+ "punct_rule": "U+060C->, U+061F->?",
+ "gates": [
+  "skeleton+punct two-sided",
+  "tanween closed list 191 structures",
+  "taa no-haraka (sukun stripped; Tier A spans exempt — قُوّةَ)",
+  "density>=1.2/w floor5",
+  "post-fixes: al_kasra + taa_sukun_strip",
+  "enforcement: letter_restore (§أ-1/§و) + Tier A map + rabbena + re-validation"
+ ]
+}

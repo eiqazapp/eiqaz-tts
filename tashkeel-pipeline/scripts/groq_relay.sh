@@ -25,7 +25,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # context fits the condensed prompt), then 20b / qwen:
 CANDIDATES="${GROQ_CANDIDATES:-openai/gpt-oss-120b allam-2-7b openai/gpt-oss-20b qwen/qwen3.8-27b}"
 MAX_MODELS="${GROQ_MAX_MODELS:-3}"
-PASS_TIMEOUT="${GROQ_PASS_TIMEOUT:-1500}"   # seconds per engine pass
+PASS_TIMEOUT="${GROQ_PASS_TIMEOUT:-2700}"   # seconds per engine pass (TPM-paced batch-2 passes ≈ 15-30 min)
 
 echo "== groq relay: input=$INPUT output=$OUTPUT =="
 echo "candidates: $CANDIDATES"
@@ -47,21 +47,20 @@ except Exception as e:
 PY
 
 # ---- 1) probe candidates with engine-shaped requests (shape ladder) ----
-echo "== [probe] shape ladder: system 25,398 chars; batch25/mt4096 -> batch5/mt1024 -> single/mt512|256 =="
+echo "== [probe] shape ladder: true SYSTEM_PROMPT; batch2/mt1024 -> single/mt512|256 (gpt-oss: reasoning_effort low) =="
 PROBE_OUT=$(python3 "$SCRIPT_DIR/probe_groq.py" "$INPUT" $CANDIDATES 2>&1)
 echo "$PROBE_OUT"
 
 # VERDICT lines -> parallel arrays: model / batch / max_tokens
+# USABLE-BATCH2 maps to engine batch 2 + RETRY_BATCH 2 + mt 1024 (the
+# proven-fit shape: call ≈ 4.9k tokens < all on_demand caps, retry feedback
+# included). USABLE-SINGLE maps to batch 1 (tashkeelSingle-like calls).
 declare -a OK_MODELS=() OK_BATCH=() OK_MT=()
 while IFS= read -r line; do
   case "$line" in
-    "VERDICT "*"USABLE-BATCH25"*)
+    "VERDICT "*"USABLE-BATCH2"*)
       m=$(echo "$line" | awk '{print $2}')
-      OK_MODELS+=("$m"); OK_BATCH+=(25); OK_MT+=("")
-      ;;
-    "VERDICT "*"USABLE-BATCH5"*)
-      m=$(echo "$line" | awk '{print $2}')
-      OK_MODELS+=("$m"); OK_BATCH+=(5); OK_MT+=("1024")
+      OK_MODELS+=("$m"); OK_BATCH+=(2); OK_MT+=("1024")
       ;;
     "VERDICT "*"USABLE-SINGLE mt="*)
       m=$(echo "$line" | awk '{print $2}')
@@ -105,6 +104,13 @@ for i in $(seq 0 $((N_MODELS - 1))); do
     export GROQ_MAX_TOKENS="$mt"
   else
     unset GROQ_MAX_TOKENS
+  fi
+  # batch-2 passes pair with retry-batch 2 (feedback-inflated retries still
+  # fit the tier at ~5.9k tokens/call)
+  if [ "$b" = "2" ]; then
+    export RETRY_BATCH=2
+  else
+    unset RETRY_BATCH
   fi
   GROQ_MODEL="$m" timeout "$PASS_TIMEOUT" node "$SCRIPT_DIR/ph3_engine_v53.mjs" \
     "$INPUT" "$OUTPUT" "$b" || echo "[engine] pass $PASS ended rc=$? (continuing to next model)"
