@@ -1,0 +1,59 @@
+{
+ "scanned_at": "2026-10-03 15:56",
+ "n_female_clients": 112,
+ "top_speakers": [
+  {
+   "client_id": "78c954e30fd3a81e4abc72008b6c25427f6cb545275c5943ce4738b03fa925b79f5e5030d5f94da8366238331eb35c0090ab27f2a0bc093caff1766115acc968",
+   "clips": 1283,
+   "hours": 1.38
+  },
+  {
+   "client_id": "5f810213ca8e05e0d27a618d7a9e06c8ce4a2f4ca21eabba89f66c39d71497884932c2eb438743f36962c6e64e90250189ac1735c27b82871ae3a172a4824f42",
+   "clips": 1016,
+   "hours": 1.21
+  },
+  {
+   "client_id": "cf4d8f89b96eba7a58ae067df81ab438464c208f12b5f0918edb9a666b5e4c51783d2529ed4ca8dcf5298c35194a174a7652231274a21f81fb0ab255b872b898",
+   "clips": 567,
+   "hours": 0.69
+  },
+  {
+   "client_id": "fc3b87e39142b5fced5eb2422f0f5277bdf471c8865e9a233c413e9271695f8e33e209c8b52065c951b7b4e8eef446a928074b5e28b9961a6f4c6cb9849325c7",
+   "clips": 527,
+   "hours": 0.69
+  }
+ ],
+ "next_8_for_reference": [
+  {
+   "client_id": "6daa180b5a8f3703a86898bbacdda8bb2e72f7af44850881e1ee8d17b67bdea94aa26dd2a3d781e6ce1f91a44ef58856e95dd9949eebdc1c0393ee37334cccb6",
+   "clips": 537,
+   "hours": 0.65
+  },
+  {
+   "client_id": "d7517b67ab736aa3e93a6ff78544e9f6e5be25406515228c0b8ab2b8a63df2ec848595f61d13d13d5401bfe2f6bd8bb72a494cc94f2e08cdb35644735606b4b0",
+   "clips": 491,
+   "hours": 0.58
+  },
+  {
+   "client_id": "b1ef6216d669e7d2540849db6b30a1ad44680991fb2d8fe4f12ed9db3ed26b73e0a103b02add208c8f9868a6ce200c067d2bc475143d321610dc55183a72fb77",
+   "clips": 387,
+   "hours": 0.47
+  },
+  {
+   "client_id": "897226a3aa51a7aa3533ac9f4370c2a346f21e343fbcb215c392c927895c8c3d5d15c5e091f923fb9b35abab574f561e24070f745a0bffb5862f06cebc3a1314",
+   "clips": 389,
+   "hours": 0.45
+  },
+  {
+   "client_id": "c8a5a7e7ec79a0962b671878dc7de66774a4c7c58afb3a3d7dbf29150c4414d92caf11a23d1e0935954a02b80d6f845bb589cb1fbdb2ec420e4c89ded7a4fd91",
+   "clips": 395,
+   "hours": 0.44
+  },
+  {
+   "client_id": "5146a10feae834c1b106996bf3a27c8f83008a19024e157c590607a181a5534f4ee2dd182cb79879d162887c033af907a0346ea58d45ebef8bdccb8dee6af7c5",
+   "clips": 293,
+   "hours": 0.38
+  }
+ ],
+ "selection_note": "top-4 female speakers selected (~4h total) to balance 12h ClArTTS male; train kernel can filter by speaker label"
+}
