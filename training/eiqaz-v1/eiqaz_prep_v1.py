@@ -33,6 +33,18 @@
 #   5) صف التنزيل الفاشل بعد المحاولات يُتخطى (resumable) بدل الانهيار
 #   6) علم complete بحقيقة أرضية في prep_report.json (بوابة نواة التدريب)
 #
+# v1.2 (2026-10-04) — خطأ بادئة MSA (اكتُشف بتحليل النسخة 2 الجارية):
+#   1) filelist utt بلا بادئة بينما الملامح msa_<utt>.pt — كان يفسد
+#      فلتر استئناف MSA (يعيد كل الصفوف كل جلسة) وحساب msa_remaining
+#      (يبقى = الكل أبدًا → complete=false أبدًا → بوابة التدريب موصدة).
+#      الاختبار المحلي فاته لأن محاكاة filelist كانت utt بالبادئة —
+#      الاختبار v1.2 يستخدم البيانات الواقعية (بلا بادئة).
+#   2) قوائم الحجر _dead_egy.json/_dead_msa.json: الصفوف المستسلمة
+#      نهائيًا (skip_tokens/skip_frames/error) تُسجَّل بالسبب وتُستثنى
+#      من remaining بشرط سقف DEAD_CAP لكل جهة — تجاوزه مشكلة نظامية
+#      → complete=false. تُنسخ عبر seed_from_prev وتُعاد محاولتها كل
+#      جلسة (رخيصة: عشرات صفوف) — نجاحها لاحقًا يرفعها من القائمة.
+#
 # المخرجات (مستقلة — /kaggle/working):
 #   features/{utt}.pt   : {ids, mel[80,T], pitch[T]} — نفس صيغة المرجع
 #   features/index.json : فهرس الخلط (مصري+فصحى) + pitch stats + خريطة
@@ -97,6 +109,8 @@ EGY_PROCESS_CAP = 8.0 * 3600           # سقف معالجة المصري في �
 MSA_PROCESS_CAP = 2.5 * 3600           # سقف معالجة MSA
 DOWNLOAD_CAP = 3.0 * 3600
 DL_WORKERS = 8                          # تنزيل متوازٍ من HF (v1.1)
+DEAD_CAP = {'egy': 150, 'msa': 150}     # سقف الحجر لكل جهة (v1.2)
+# 21,854 مصري / 13,110 فصحى → 150 ≈ 0.7% / 1.1%: فوقها مشكلة نظامية
 
 # خريطة المتحدثين الجديدة المستقلة v1 (7 متحدثين؛ سعة النموذج n_speakers=16)
 SPEAKER_MAP_V1 = {
@@ -426,6 +440,7 @@ def phase_egy():
     stats = {'rows_ok': 0, 'rows_err': 0, 'units': 0, 'drops': {},
              'rows_dl_fail': 0}
     all_units = []
+    dead_egy = _load_dead('egy')               # حجر مستأنف عبر الجلسات
     batch, batch_bytes = [], 0
     t_start = time.time()
 
@@ -461,13 +476,16 @@ def phase_egy():
             for res in pool.imap_unordered(egy_process_row, tasks):
                 if res['status'] == 'ok':
                     stats['rows_ok'] += 1
+                    for u in res['units']:
+                        dead_egy.pop(u['utt'], None)   # نجحت → تُرفع من الحجر
                 else:
                     stats['rows_err'] += 1
                     log(f"[egy] row error: {res.get('err')}")
                 stats['units'] += len(res['units'])
                 all_units.extend(res['units'])
-                for _, why in res['drops']:
+                for utt_d, why in res['drops']:
                     stats['drops'][why] = stats['drops'].get(why, 0) + 1
+                    dead_egy[utt_d] = why             # حجر بالسبب (v1.2)
         t_proc += time.time() - t1
         for dest, _src in pairs:
             try:
@@ -481,6 +499,7 @@ def phase_egy():
             f"elapsed={el_s/60:.1f}m")
         # حفظ تراكمي للفهرس بعد كل دفعة (استئناف آمن)
         _save_egy_units(all_units)
+        _save_dead('egy', dead_egy)
         if (t_dl + t_proc) > EGY_PROCESS_CAP:
             log('[egy] TIME CAP — stopping (resumable)')
             return False
@@ -500,8 +519,10 @@ def phase_egy():
         batch_bytes += sz
     flush(batch)
     _save_egy_units(all_units)
+    _save_dead('egy', dead_egy)
     log(f"[egy] DONE rows_ok={stats['rows_ok']} err={stats['rows_err']} "
-        f"units={stats['units']} drops={stats['drops']}")
+        f"units={stats['units']} drops={stats['drops']} "
+        f"dead={len(dead_egy)}")
     return True
 
 
@@ -530,6 +551,48 @@ def _load_egy_units():
     return []
 
 
+# ---------------------------------------------------------------------------
+# قوائم الحجر (v1.2): صفوف مستسلمة نهائيًا — تُستثنى من remaining بسقف
+# ---------------------------------------------------------------------------
+def _dead_path(which):
+    return os.path.join(FEAT_DIR, f'_dead_{which}.json')
+
+
+def _load_dead(which):
+    p = _dead_path(which)
+    if os.path.exists(p):
+        try:
+            return json.load(open(p, encoding='utf-8'))
+        except Exception:                      # noqa: BLE001
+            return {}
+    return {}
+
+
+def _save_dead(which, dead):
+    p = _dead_path(which)
+    tmp = p + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        json.dump(dead, f, ensure_ascii=False)
+    os.replace(tmp, p)
+
+
+def _reason_counts(dead):
+    """عد أسبائ الحجر لكل سبب (تقرير شفاف)."""
+    c = {}
+    for why in dead.values():
+        c[why] = c.get(why, 0) + 1
+    return c
+
+
+def _msa_done_map():
+    """أسماء وحدات MSA الجاهزة على القرص **بلا بادئة msa_** — تطابق
+    عمود utt في filelist.csv (v1.2: القديم كان يقارن بالبادئة فلا
+    تطابق أبدًا)."""
+    pre = len('msa_')
+    return {os.path.basename(f)[:-3][pre:]
+            for f in glob.glob(os.path.join(FEAT_DIR, 'msa_*.pt'))}
+
+
 def seed_from_prev():
     """استئناف عبر الجلسات (v1.1): نسخ ملامح مخرجات النسخة السابقة
     للنواة نفسها (self-attach في kernel_sources) إلى WORK/features —
@@ -546,6 +609,9 @@ def seed_from_prev():
     files = glob.glob(os.path.join(src, '*.pt')) + [
         os.path.join(src, '_egy_units.json'),
         os.path.join(src, '_msa_units.json')]
+    # قوائم الحجر عبر الجلسات (v1.2)
+    files += [os.path.join(src, f'_dead_{w}.json') for w in ('egy', 'msa')
+              if os.path.exists(os.path.join(src, f'_dead_{w}.json'))]
     n = 0
     for f in files:
         dest = os.path.join(FEAT_DIR, os.path.basename(f))
@@ -586,8 +652,7 @@ def phase_msa():
     df = pd.read_csv(os.path.join(msa_root, 'filelist.csv'))
     log(f'[msa] filelist rows: {len(df)}')
 
-    done = {os.path.basename(f)[:-3]
-            for f in glob.glob(os.path.join(FEAT_DIR, 'msa_*.pt'))}
+    done = _msa_done_map()          # v1.2: بلا بادئة — يطابق df.utt فعلاً
     df = df[~df.utt.isin(done)]
     log(f'[msa] todo: {len(df)} (done: {len(done)})')
 
@@ -604,6 +669,7 @@ def phase_msa():
     t_start = time.time()
     stats = {'ok': 0, 'skip_tokens': 0, 'skip_frames': 0, 'error': 0}
     units = []
+    dead_msa = _load_dead('msa')  # v1.2: حجر مستأنف
     with mp.get_context('spawn').Pool(
             n_proc, initializer=_worker_init,
             initargs=(data, eqz)) as pool:
@@ -612,15 +678,22 @@ def phase_msa():
             stats[res['status']] = stats.get(res['status'], 0) + 1
             if res['status'] == 'ok':
                 units.append(res['unit'])
+                # v1.2: نجاح بعد فشل سابق -> تُرفع من الحجر
+                dead_msa.pop(res['unit']['utt'][len('msa_'):], None)
+            else:
+                # v1.2: حجر بالسبب (skip_tokens/skip_frames/error)
+                dead_msa[res['utt']] = res['status']
             if (i + 1) % 1000 == 0:
                 log(f'[msa] {i+1}/{len(tasks)} ({stats}) '
                     f'{(time.time()-t_start)/60:.1f}m')
+                _save_dead('msa', dead_msa)
             if time.time() - t_start > MSA_PROCESS_CAP:
                 log('[msa] TIME CAP — stopping (resumable)')
                 pool.terminate()
                 break
+    _save_dead('msa', dead_msa)
     _save_msa_units(units)
-    log(f'[msa] DONE ({stats})')
+    log(f'[msa] DONE ({stats}) dead={len(dead_msa)}')
 
 
 # ---------------------------------------------------------------------------
@@ -645,13 +718,20 @@ def phase_report():
     # ---- اكتمال بحقيقة أرضية (v1.1): المتبقي فعلاً مقابل المؤهل ----
     tash_r, ex_r, _ = load_egy_inputs()
     egy_elig = ex_r[ex_r.utt.isin(set(tash_r.keys()))]
-    egy_remaining = int((~egy_elig.utt.isin(on_disk)).sum())
+    dead_egy = _load_dead('egy')
+    egy_remaining = int((~egy_elig.utt.isin(on_disk)
+                         & ~egy_elig.utt.isin(set(dead_egy))).sum())
     msa_root_r = find_root('filelist.csv', 'msa-tts-data-v1')
     dfm = pd.read_csv(os.path.join(msa_root_r, 'filelist.csv'))
     mapped = dfm.speaker.map(
         lambda s: SPEAKER_MAP_V1.get('msa_' + s) is not None)
-    msa_remaining = int((~dfm.utt.isin(on_disk) & mapped).sum())
-    complete = (egy_remaining == 0 and msa_remaining == 0)
+    msa_on_disk = _msa_done_map()  # v1.2: بلا بادئة — يطابق dfm.utt
+    dead_msa = _load_dead('msa')
+    msa_remaining = int((~dfm.utt.isin(msa_on_disk)
+                         & ~dfm.utt.isin(set(dead_msa)) & mapped).sum())
+    dead_ok = (len(dead_egy) <= DEAD_CAP['egy']
+               and len(dead_msa) <= DEAD_CAP['msa'])
+    complete = (egy_remaining == 0 and msa_remaining == 0 and dead_ok)
 
     pitch_sum, pitch_sq, pitch_n = 0.0, 0.0, 0
     for e in index:
@@ -700,6 +780,11 @@ def phase_report():
         'expected': {'egy_units': int(len(egy_elig)),
                      'msa_units': int(mapped.sum())},
         'remaining': {'egy': egy_remaining, 'msa': msa_remaining},
+        'dead': {'egy': {'n': len(dead_egy),
+                        'by_reason': _reason_counts(dead_egy)},
+                 'msa': {'n': len(dead_msa),
+                         'by_reason': _reason_counts(dead_msa)}},
+        'dead_cap': dict(DEAD_CAP),
     }
     with open(os.path.join(FEAT_DIR, 'index.json'), 'w') as f:
         json.dump(meta, f, ensure_ascii=False)
@@ -711,7 +796,9 @@ def phase_report():
     log(f'[report] per-speaker: ' + json.dumps(meta['per_speaker']))
     log(f"[report] PREP {'COMPLETE' if complete else 'INCOMPLETE'} — "
         f"remaining egy {egy_remaining}/{len(egy_elig)} | "
-        f"msa {msa_remaining}/{int(mapped.sum())}")
+        f"msa {msa_remaining}/{int(mapped.sum())} | "
+        f"dead egy={len(dead_egy)}/{DEAD_CAP['egy']} "
+        f"msa={len(dead_msa)}/{DEAD_CAP['msa']}")
     with open(os.path.join(WORK, 'prep_report.json'), 'w') as f:
         json.dump({k: v for k, v in meta.items() if k != 'index'},
                   f, ensure_ascii=False, indent=1)
