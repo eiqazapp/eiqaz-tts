@@ -1,0 +1,81 @@
+{
+ "n_pass": 15,
+ "n_total": 15,
+ "items": [
+  {
+   "name": "البيانات المصرية (corpus التشكيل)",
+   "ok": true,
+   "detail": "21854 نصًا مشكولًا (train 19699 / eval 2155)"
+  },
+  {
+   "name": "بيانات MSA (filelist)",
+   "ok": true,
+   "detail": "13110 مقطعًا / 15.87 ساعة / 5 متحدثين / n_q=10963"
+  },
+  {
+   "name": "تحميل الصوت المصري (NileTTS)",
+   "ok": true,
+   "detail": "3 وحدة مقطعة — general_10_00000: 44100Hz→22050, 1 وحدة; general_10_00001: 44100Hz→22050, 2 وحدة"
+  },
+  {
+   "name": "تحميل صوت MSA",
+   "ok": true,
+   "detail": "ClArTTS + CV_female عند 22050Hz"
+  },
+  {
+   "name": "النص المصري مشكول بالكامل كما هو",
+   "ok": true,
+   "detail": "uttd=0_00000_00 | حركات=70 | الهيكل مطابق للخام (تشكيل + تحويل ترقيم ph2 الموثق فقط): True"
+  },
+  {
+   "name": "نص MSA مشكول فصيح",
+   "ok": true,
+   "detail": "\"صَائِرٌ خَبَرًا فَكُنْ خَبَرًا يَرُوقُ جَمِيلَا\""
+  },
+  {
+   "name": "ترميز مصري",
+   "ok": true,
+   "detail": "n=120"
+  },
+  {
+   "name": "ترميز MSA",
+   "ok": true,
+   "detail": "n=47"
+  },
+  {
+   "name": "q (29) / hamza (9) / g-v (37) صحيحة",
+   "ok": true,
+   "detail": "قانون/قرآن/قطعة→q: True | قال/قيمة/قوة→همزة: True | رقم/قيراط/مقام→v: True | فصحى q خام: True | علامات مختلطة: q×2, v=True"
+  },
+  {
+   "name": "خريطة المتحدثين v1 (7)",
+   "ok": true,
+   "detail": "مصري→0 | clartts→2 | cvf→3 (سعة النموذج n_speakers=16)"
+  },
+  {
+   "name": "batch creation",
+   "ok": true,
+   "detail": "B=5 max_tok=120 max_fr=751 speakers=[0, 0, 0, 3, 2]"
+  },
+  {
+   "name": "forward pass",
+   "ok": true,
+   "detail": "spect=(5, 751, 80) | params=2.87M"
+  },
+  {
+   "name": "backward pass",
+   "ok": true,
+   "detail": "loss=49.633 mel=41.522 ctc=5.327 تدرجات nonzero=True"
+  },
+  {
+   "name": "optimizer step",
+   "ok": true,
+   "detail": "الأوزان تحركت (AdamW خطوة واحدة)"
+  },
+  {
+   "name": "checkpoint save/load",
+   "ok": true,
+   "detail": "حفظ + إعادة بناء + تحميل strict=True + تطابق المخرجات=True"
+  }
+ ]
+}
