@@ -838,6 +838,12 @@ def driver():
                 break
         assert feat_root, 'no features/index.json — run eiqaz-prep-v1 first'
         meta = json.load(open(feat_root))
+        # بوابة الاكتمال (v1.1): لا تدريب على بيانات جزئية — المزج 65/35
+        # بالمدة يفقد معناه إذا لم يكن الجانب المصري مكتملاً
+        assert meta.get('complete') is True, (
+            "prep INCOMPLETE (remaining=%s, expected=%s) — استأنف "
+            'eiqaz-prep-v1 حتى complete=true قبل التدريب'
+            % (meta.get('remaining'), meta.get('expected')))
         fdir = os.path.dirname(feat_root)
         e0 = next(e for e in meta['index'] if e['dialect'] == 'egy')
         e1 = next(e for e in meta['index'] if e['dialect'] == 'msa')

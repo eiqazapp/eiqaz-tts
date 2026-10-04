@@ -21,6 +21,18 @@
 # تطبيع ذروة الصف ≤0.95 — نفس معالجة المرجع حرفيًا) — لا إعادة اشتقاق
 # للتقطيع، فمحاذاة معرفات الوحدات مع corpus التشكيل مضمونة.
 #
+#   kernel eiqaz-prep-v1 output : features/ — استئناف عبر الجلسات (self-attach)
+#
+# v1.1 (2026-10-04) — دروس الجلسة 1 (انهيار عند 3h25m):
+#   1) hf_fetch: 5 محاولات بتراجع أسّي + كتابة ذرية .part→rename
+#      (ConnectionResetError واحد كان أسقط مرحلة المصرية كلها)
+#   2) تنزيل متوازٍ DL_WORKERS=8 (كان متسلسلًا)
+#   3) seed_from_prev: استئناف ملامح النسخة السابقة عبر self-attach
+#   4) _msa_units.json تراكمي (الكتابة الفوقية كانت ستمحو وحدات الجلسة
+#      السابقة عند الاستئناف)
+#   5) صف التنزيل الفاشل بعد المحاولات يُتخطى (resumable) بدل الانهيار
+#   6) علم complete بحقيقة أرضية في prep_report.json (بوابة نواة التدريب)
+#
 # المخرجات (مستقلة — /kaggle/working):
 #   features/{utt}.pt   : {ids, mel[80,T], pitch[T]} — نفس صيغة المرجع
 #   features/index.json : فهرس الخلط (مصري+فصحى) + pitch stats + خريطة
@@ -84,6 +96,7 @@ MAX_FRAMES = 950                       # سقف إطارات التدريب (ن�
 EGY_PROCESS_CAP = 8.0 * 3600           # سقف معالجة المصري في الجلسة
 MSA_PROCESS_CAP = 2.5 * 3600           # سقف معالجة MSA
 DOWNLOAD_CAP = 3.0 * 3600
+DL_WORKERS = 8                          # تنزيل متوازٍ من HF (v1.1)
 
 # خريطة المتحدثين الجديدة المستقلة v1 (7 متحدثين؛ سعة النموذج n_speakers=16)
 SPEAKER_MAP_V1 = {
@@ -295,16 +308,37 @@ def msa_process_row(args):
 # ---------------------------------------------------------------------------
 # تنزيل NileTTS من HF (مجرى على دفعات — منهج prep v2 القديم)
 # ---------------------------------------------------------------------------
-def hf_fetch(url, dest, timeout=300):
+def hf_fetch(url, dest, timeout=300, attempts=5):
+    """تنزيل مع إعادة محاولة + كتابة ذرية (.part ثم rename).
+
+    درس الجلسة 1: ConnectionResetError واحد أثناء urlopen أسقط مرحلة
+    المصرية كاملة عند 3h25m (8,008/21,854). الآن: محاولات بتراجع أسّي،
+    والملف الناقص لا يظهر أبدًا باسم الوجهة النهائية."""
     import urllib.request
-    req = urllib.request.Request(url, headers={'User-Agent': 'eiqaz-prep/1.0'})
-    with urllib.request.urlopen(req, timeout=timeout) as r, \
-            open(dest, 'wb') as f:
-        while True:
-            chunk = r.read(1 << 20)
-            if not chunk:
-                break
-            f.write(chunk)
+    last = None
+    for a in range(attempts):
+        tmp = dest + '.part'
+        try:
+            req = urllib.request.Request(
+                url, headers={'User-Agent': 'eiqaz-prep/1.1'})
+            with urllib.request.urlopen(req, timeout=timeout) as r, \
+                    open(tmp, 'wb') as f:
+                while True:
+                    chunk = r.read(1 << 20)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+            os.replace(tmp, dest)
+            return
+        except Exception as e:                     # noqa: BLE001
+            last = e
+            try:
+                os.remove(tmp)
+            except OSError:
+                pass
+            if a < attempts - 1:
+                time.sleep(min(30.0, 2.0 ** a) + (a % 2))
+    raise last
 
 
 def hf_row_size():
@@ -334,6 +368,8 @@ def hf_row_size():
 # ---------------------------------------------------------------------------
 def phase_egy():
     import pandas as pd
+    import concurrent.futures as cf
+    seed_from_prev()
     data, eqz = setup_paths()
     tash, ex, eqz_root = load_egy_inputs()
     log(f'[egy] tashkeel corpus: {len(tash)} | unit map: {len(ex)} rows')
@@ -359,7 +395,14 @@ def phase_egy():
     log(f'[egy] rows todo: {todo.src_row.nunique()} '
         f'(done rows: {len(done_rows)})')
 
-    sizes = hf_row_size()
+    sizes = {}
+    for attempt in range(3):
+        try:
+            sizes = hf_row_size()
+            break
+        except Exception as e:                     # noqa: BLE001
+            log(f'[egy] hf_row_size attempt {attempt + 1} failed: {e}')
+            time.sleep(10)
     log(f'[egy] HF tree: {len(sizes)} wavs')
 
     # تجميع مسبق حسب الصف (كفاءة: لا مسح عمود كامل داخل كل دفعة)
@@ -380,26 +423,38 @@ def phase_egy():
     log(f'[egy] pool workers: {n_proc} (spawn)')
 
     t_dl = t_proc = 0.0
-    stats = {'rows_ok': 0, 'rows_err': 0, 'units': 0, 'drops': {}}
+    stats = {'rows_ok': 0, 'rows_err': 0, 'units': 0, 'drops': {},
+             'rows_dl_fail': 0}
     all_units = []
     batch, batch_bytes = [], 0
     t_start = time.time()
+
+    def _dl_one(src):
+        dest = os.path.join(TMP, 'nile', src + '.wav')
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        if os.path.exists(dest):
+            return dest
+        try:
+            hf_fetch(HF_RESOLVE + f'wavs/{src}.wav', dest)
+            return dest
+        except Exception as e:                     # noqa: BLE001
+            log(f'[egy] download failed (row skipped — resumable): {src}'
+                f' — {type(e).__name__}: {e}')
+            return None
 
     def flush(batch):
         nonlocal t_dl, t_proc, stats, all_units
         if not batch:
             return
         t0 = time.time()
-        paths = []
-        for src in batch:
-            dest = os.path.join(TMP, 'nile', src + '.wav')
-            os.makedirs(os.path.dirname(dest), exist_ok=True)
-            if not os.path.exists(dest):
-                hf_fetch(HF_RESOLVE + f'wavs/{src}.wav', dest)
-            paths.append(dest)
+        with cf.ThreadPoolExecutor(max_workers=DL_WORKERS) as ex_:
+            paths = list(ex_.map(_dl_one, batch))
         t_dl += time.time() - t0
+        stats['rows_dl_fail'] += sum(1 for p in paths if p is None)
+        pairs = [(p, src) for p, src in zip(paths, batch)
+                 if p is not None]
         t1 = time.time()
-        tasks = [(dest, by_src[src]) for dest, src in zip(paths, batch)]
+        tasks = [(dest, by_src[src]) for dest, src in pairs]
         with mp.get_context('spawn').Pool(
                 n_proc, initializer=_worker_init,
                 initargs=(data, eqz_root)) as pool:
@@ -414,7 +469,7 @@ def phase_egy():
                 for _, why in res['drops']:
                     stats['drops'][why] = stats['drops'].get(why, 0) + 1
         t_proc += time.time() - t1
-        for dest in paths:
+        for dest, _src in pairs:
             try:
                 os.remove(dest)
             except OSError:
@@ -475,11 +530,57 @@ def _load_egy_units():
     return []
 
 
+def seed_from_prev():
+    """استئناف عبر الجلسات (v1.1): نسخ ملامح مخرجات النسخة السابقة
+    للنواة نفسها (self-attach في kernel_sources) إلى WORK/features —
+    idempotent: الموجود لا يُنسخ مجددًا."""
+    import shutil
+    cands = sorted(glob.glob(f'{INPUT}/**/features/_egy_units.json',
+                             recursive=True))
+    if not cands:
+        log('[seed] no previous kernel output — fresh start')
+        return
+    src = os.path.dirname(os.path.abspath(cands[0]))
+    if src == os.path.abspath(FEAT_DIR):
+        return
+    files = glob.glob(os.path.join(src, '*.pt')) + [
+        os.path.join(src, '_egy_units.json'),
+        os.path.join(src, '_msa_units.json')]
+    n = 0
+    for f in files:
+        dest = os.path.join(FEAT_DIR, os.path.basename(f))
+        if os.path.exists(dest):
+            continue
+        shutil.copy2(f, dest)
+        n += 1
+    log(f'[seed] resumed {n} files from previous output: {src}')
+
+
+def _save_msa_units(units):
+    """دمج تراكمي (v1.1 — نفس منهج _egy_units): الكتابة الفوقية كانت
+    ستحذف وحدات الجلسات السابقة من الفهرس عند الاستئناف."""
+    p = os.path.join(FEAT_DIR, '_msa_units.json')
+    prev = {}
+    if os.path.exists(p):
+        try:
+            for u in json.load(open(p, encoding='utf-8')):
+                prev[u['utt']] = u
+        except Exception:                          # noqa: BLE001
+            prev = {}
+    for u in units:
+        prev[u['utt']] = u
+    tmp = p + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        json.dump(list(prev.values()), f, ensure_ascii=False)
+    os.replace(tmp, p)
+
+
 # ---------------------------------------------------------------------------
 # PHASE: MSA
 # ---------------------------------------------------------------------------
 def phase_msa():
     import pandas as pd
+    seed_from_prev()
     data, eqz = setup_paths()
     msa_root = find_root('filelist.csv', 'msa-tts-data-v1')
     df = pd.read_csv(os.path.join(msa_root, 'filelist.csv'))
@@ -518,9 +619,7 @@ def phase_msa():
                 log('[msa] TIME CAP — stopping (resumable)')
                 pool.terminate()
                 break
-    with open(os.path.join(FEAT_DIR, '_msa_units.json'), 'w',
-              encoding='utf-8') as f:
-        json.dump(units, f, ensure_ascii=False)
+    _save_msa_units(units)
     log(f'[msa] DONE ({stats})')
 
 
@@ -529,6 +628,8 @@ def phase_msa():
 # ---------------------------------------------------------------------------
 def phase_report():
     import torch
+    import pandas as pd
+    seed_from_prev()
     egy = _load_egy_units()
     msa = []
     p = os.path.join(FEAT_DIR, '_msa_units.json')
@@ -540,6 +641,17 @@ def phase_report():
     egy = [u for u in egy if u['utt'] in on_disk]
     msa = [u for u in msa if u['utt'] in on_disk]
     index = egy + msa
+
+    # ---- اكتمال بحقيقة أرضية (v1.1): المتبقي فعلاً مقابل المؤهل ----
+    tash_r, ex_r, _ = load_egy_inputs()
+    egy_elig = ex_r[ex_r.utt.isin(set(tash_r.keys()))]
+    egy_remaining = int((~egy_elig.utt.isin(on_disk)).sum())
+    msa_root_r = find_root('filelist.csv', 'msa-tts-data-v1')
+    dfm = pd.read_csv(os.path.join(msa_root_r, 'filelist.csv'))
+    mapped = dfm.speaker.map(
+        lambda s: SPEAKER_MAP_V1.get('msa_' + s) is not None)
+    msa_remaining = int((~dfm.utt.isin(on_disk) & mapped).sum())
+    complete = (egy_remaining == 0 and msa_remaining == 0)
 
     pitch_sum, pitch_sq, pitch_n = 0.0, 0.0, 0
     for e in index:
@@ -584,6 +696,10 @@ def phase_report():
                      'pct_of_tokens': round(100 * n_q / max(1, n_tok), 3)},
         'v_tokens_egy': sum(e.get('n_v', 0) for e in egy),
         'source': 'Eiqaz v1: NileTTS(HF)+tashkeel-ai + msa-tts-data-v1',
+        'complete': complete,
+        'expected': {'egy_units': int(len(egy_elig)),
+                     'msa_units': int(mapped.sum())},
+        'remaining': {'egy': egy_remaining, 'msa': msa_remaining},
     }
     with open(os.path.join(FEAT_DIR, 'index.json'), 'w') as f:
         json.dump(meta, f, ensure_ascii=False)
@@ -593,6 +709,9 @@ def phase_report():
     log(f"[report] q tokens: {meta['q_tokens']} | v(egy): "
         f"{meta['v_tokens_egy']}")
     log(f'[report] per-speaker: ' + json.dumps(meta['per_speaker']))
+    log(f"[report] PREP {'COMPLETE' if complete else 'INCOMPLETE'} — "
+        f"remaining egy {egy_remaining}/{len(egy_elig)} | "
+        f"msa {msa_remaining}/{int(mapped.sum())}")
     with open(os.path.join(WORK, 'prep_report.json'), 'w') as f:
         json.dump({k: v for k, v in meta.items() if k != 'index'},
                   f, ensure_ascii=False, indent=1)
@@ -657,6 +776,16 @@ def driver():
         log(f'phase {ph} exit code: {r.returncode}')
         if r.returncode != 0 and ph != 'egy':
             sys.exit(r.returncode)
+    rep = os.path.join(WORK, 'prep_report.json')
+    if os.path.exists(rep):
+        try:
+            complete = json.load(open(rep)).get('complete')
+        except Exception:                          # noqa: BLE001
+            complete = None
+        log(f'PREP_COMPLETE={complete}')
+        if not complete:
+            log('!! PREP INCOMPLETE — أعد تشغيل هذه النواة لاستئناف '
+                'الوحدات المتبقية قبل أي تدريب')
     log('ALL_DONE')
 
 
