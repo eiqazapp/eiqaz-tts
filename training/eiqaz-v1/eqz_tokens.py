@@ -83,6 +83,11 @@ G_FAMILY_WORDS = ['رقم', 'قرش', 'مقال', 'قيراط', 'قنطار', '�
 _QAF_PROGRESSIVE_BAQR = re.compile(r'^[wf]?b(?:yt|y|t)?qr>')
 
 _QAF_DIAC = frozenset('auiFNK~o')
+# ترقيم باكوالتير الملتصق بالكلمات (زائد الشرطة) — يُستبعد من الهيكل:
+# الخطأ المُثبَت (2026-10-05): 'حَقِيقَة{ق}.' → هيكل 'Hqyqp.' لا يطابق
+# 'Hqyqp' فتسقط العلامة والقاموس معًا إلى الهمزة الافتراضية. (ة='p' حرف
+# تبقى — لا تُمس.)
+_QAF_PUNCT = frozenset('.,!?;:"\'،؛…()\u2014-')
 _QAF_CLITICS = ('w', 'f', 'b', 'l', 'k')
 
 _QAF_MARKER_MAP = {'ق': 'q', 'q': 'q', 'ء': 'h', 'أ': 'h', 'h': 'h',
@@ -236,7 +241,7 @@ def fix_qaf_v1(buck, word_actions=None):
         if 'q' not in w:
             continue
         skel = ''.join(
-            c for c in w if c not in _QAF_DIAC)
+            c for c in w if c not in _QAF_DIAC and c not in _QAF_PUNCT)
         if _QAF_PROGRESSIVE_BAQR.match(skel):
             words[i] = _hamza_word(w)
             hit = True
@@ -275,7 +280,8 @@ def fix_qaf_msa(buck, word_actions=None):
     for i, w in enumerate(words):
         if 'q' not in w:
             continue
-        skel = ''.join(c for c in w if c not in _QAF_DIAC)
+        skel = ''.join(c for c in w if c not in _QAF_DIAC
+                       and c not in _QAF_PUNCT)
         act = _lookup_action(skel, word_actions)
         if act == 'q':
             continue

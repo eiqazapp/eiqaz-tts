@@ -173,8 +173,12 @@ def phase_train():
         PatchDiscriminatorCond, extract_chunks, calc_feature_match_loss)
     from models.mixer_tts.modules.data_function import BetaBinomialInterpolator
 
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    log(f'[train] device={device}')
+    # بوابة GPU (مضاعفة داخل الطور — حماية من تشغيل الطور مباشرة)
+    if not torch.cuda.is_available():
+        log('FATAL [train]: no GPU visible — refusing to train on CPU')
+        sys.exit(2)
+    device = 'cuda'
+    log(f'[train] device={device} gpu={torch.cuda.get_device_name(0)}')
 
     def lr_at(current_it):
         progress = min(1.0, max(0.0,
@@ -659,6 +663,65 @@ def phase_train():
 # ============================================================================
 # PHASE: GENERATE — مجموعة التقييم الثابتة لكل المتحدثين + F0 + منحنى
 # ============================================================================
+def critical_test(model, out_base):
+    """الاختبار الحاسم (مواصفة المستخدم §8): نفس الكلمة مع العلامات
+    الثلاث {ق}/{ج}/{ء} لكل متحدث — والتركيز على المتحدثين المصريين
+    (0=SPEAKER_01 ذكر، 1=SPEAKER_02 أنثى): إذا أنتجا /q/ عند {ق} مع
+    بقاء هويتهما المصرية، فالقاف الفصحى أصبحت خاصية قابلة للتحكم
+    لا خاصية مرتبطة بمتحدثي MSA."""
+    import torch
+    import soundfile as sf
+    toks_ms, toks_egy, ids_of, _ = get_tokenizer()
+    device = next(model.parameters()).device
+    cdir = os.path.join(out_base, 'critical_haqiqa')
+    os.makedirs(cdir, exist_ok=True)
+    forms = [
+        # (اسم، نص، وضع الترميز) — عزلة بلا تشكيل + مشكول + جملة كاملة
+        ('bare', 'حقيقة', 'egy'),
+        ('q', 'حَقِيقَة{ق}', 'egy'),
+        ('g', 'حَقِيقَة{ج}', 'egy'),
+        ('h', 'حَقِيقَة{ء}', 'egy'),
+        ('q_sent', 'دِي هِيَ اِلْحَقِيقَة{ق}.', 'egy'),
+        ('g_sent', 'دِي هِيَ اِلْحَقِيقَة{ج}.', 'egy'),
+        ('h_sent', 'دِي هِيَ اِلْحَقِيقَة{ء}.', 'egy'),
+    ]
+    manifest = []
+    for spk in SPEAKERS_V1:
+        for name, text, mode in forms:
+            try:
+                toks = toks_egy(text) if mode == 'egy' else toks_ms(text)
+                ids = ids_of(toks)
+                x = torch.LongTensor([ids]).to(device)
+                with torch.inference_mode():
+                    mel = model.infer(x, pace=1.0, speaker=spk, emotion=0)
+                m = mel.transpose(1, 2)[0].cpu().numpy()
+                fn = os.path.join(cdir, f'spk{spk}_haqiqa_{name}.wav')
+                sf.write(fn, mel_to_wav(m), 22050, subtype='PCM_16')
+                manifest.append({
+                    'speaker': spk, 'form': name, 'text': text,
+                    'q': int('q' in toks), 'v': int('v' in toks),
+                    'hamza': int('<' in toks), 'n_tokens': len(ids),
+                })
+            except Exception as e:                # noqa: BLE001
+                log(f'[critical] FAILED spk{spk} {name}: '
+                    f'{type(e).__name__}: {e}')
+    # تقرير التمييز الرمزي: العلامات الثلاث تعطي توكنات مختلفة فعلًا؟
+    ok = {}
+    for form, want in (('q', 'q'), ('g', 'v'), ('h', 'hamza')):
+        rows = [m for m in manifest if m['form'] == form]
+        ok[form] = all(m[want] == 1 for m in rows) if rows else False
+    json.dump({'manifest': manifest, 'token_distinct': ok,
+               'egyptian_speakers': [0, 1],
+               'note': 'same word haqiqa with 3 markers — Egyptian '
+                       'identity must persist across q/g/h'},
+              open(os.path.join(cdir, 'critical_test.json'), 'w'),
+              ensure_ascii=False, indent=1)
+    log(f'[critical] haqiqa triple-test: token distinct '
+        f'q={ok["q"]} g={ok["g"]} h={ok["h"]} '
+        f'({len(manifest)} files for {len(SPEAKERS_V1)} speakers)')
+    return cdir
+
+
 def synth_eval(model, out_base, tag):
     """توليد مجموعة التقييم الثابتة كاملة لكل متحدثي v1."""
     import torch
@@ -779,6 +842,7 @@ def phase_generate():
     model = build_scratch_model(device)
     model.load_state_dict(st['model'], strict=True)
     model.eval()
+    critical_test(model, os.path.join(WORK, 'samples'))
     out = synth_eval(model, os.path.join(WORK, 'samples', 'eiqaz_v1_eval'),
                      ':new')
     f0_report(out, os.path.join(WORK, 'metrics', 'f0_eiqaz_v1.json'))
@@ -813,9 +877,29 @@ def driver():
     log('=== Eiqaz TTS v1 TRAIN (from scratch, 4h pilot) ===')
     import torch
     log(f'torch {torch.__version__} cuda={torch.cuda.is_available()}')
-    if torch.cuda.is_available():
-        for i in range(torch.cuda.device_count()):
-            log(f'  gpu {i}: {torch.cuda.get_device_name(i)}')
+    # ---- بوابة GPU الصارمة (مواصفة المستخدم §1) ----
+    # لا تدريب على CPU إطلاقًا: إذا لم يرَ PyTorch الـGPU نتوقف فورًا
+    # قبل حرق أي وقت — الإصلاح يكون في إعدادات النواة (enable_gpu/T4).
+    if not torch.cuda.is_available():
+        log('FATAL: torch.cuda.is_available() == False — GPU NOT VISIBLE.')
+        log('Aborting BEFORE training (user spec: no CPU fallback, '
+            'no local session). Fix kernel GPU settings and re-push.')
+        sys.exit(2)
+    for i in range(torch.cuda.device_count()):
+        name = torch.cuda.get_device_name(i)
+        cap = torch.cuda.get_device_capability(i)
+        log(f'  gpu {i}: {name} (compute {cap[0]}.{cap[1]}) '
+            f'cuda={torch.version.cuda}')
+    gpu_name = torch.cuda.get_device_name(0)
+    if 'T4' not in gpu_name:
+        log(f'NOTE: requested NVIDIA T4 if available; got {gpu_name} '
+            '(still a real GPU — proceeding per spec "T4 if available")')
+    else:
+        log(f'GPU CONFIRMED: NVIDIA T4 ({gpu_name})')
+    json.dump({'gpu': gpu_name, 'cuda_available': True,
+               'torch': torch.__version__, 'cuda': torch.version.cuda,
+               'n_gpu': torch.cuda.device_count()},
+              open(os.path.join(WORK, 'gpu_check.json'), 'w'), indent=1)
     try:
         import onnxruntime  # noqa
         log('onnxruntime available')
