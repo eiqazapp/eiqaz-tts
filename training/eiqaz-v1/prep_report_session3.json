@@ -1,0 +1,84 @@
+{
+ "project": "eiqaz-tts-v1",
+ "pitch_mean": 171.28261276587554,
+ "pitch_std": 78.65124654751926,
+ "speaker_map_v1": {
+  "egy_SPEAKER_01": 0,
+  "egy_SPEAKER_02": 1,
+  "msa_clartts_male": 2,
+  "msa_cvf_5f810213": 3,
+  "msa_cvf_78c954e3": 4,
+  "msa_cvf_cf4d8f89": 5,
+  "msa_cvf_fc3b87e3": 6
+ },
+ "per_speaker": {
+  "0": {
+   "clips": 11210,
+   "hours": 18.41269196271107
+  },
+  "1": {
+   "clips": 10644,
+   "hours": 18.048464399092904
+  },
+  "2": {
+   "clips": 9690,
+   "hours": 11.370437692113912
+  },
+  "3": {
+   "clips": 1514,
+   "hours": 1.9350058956916083
+  },
+  "4": {
+   "clips": 971,
+   "hours": 1.2529003779289474
+  },
+  "5": {
+   "clips": 464,
+   "hours": 0.6125746535651292
+  },
+  "6": {
+   "clips": 414,
+   "hours": 0.6029835222978086
+  }
+ },
+ "n_features": 34907,
+ "mix_hours": {
+  "egy": 36.46,
+  "msa": 15.77,
+  "file_ratio_egy": 0.6261
+ },
+ "q_tokens": {
+  "total": 12588,
+  "egy": 1660,
+  "msa": 10928,
+  "pct_of_tokens": 0.439
+ },
+ "v_tokens_egy": 19099,
+ "source": "Eiqaz v1: NileTTS(HF)+tashkeel-ai + msa-tts-data-v1",
+ "complete": true,
+ "expected": {
+  "egy_units": 21854,
+  "msa_units": 13110
+ },
+ "remaining": {
+  "egy": 0,
+  "msa": 0
+ },
+ "dead": {
+  "egy": {
+   "n": 0,
+   "by_reason": {}
+  },
+  "msa": {
+   "n": 19,
+   "by_reason": {
+    "error": 17,
+    "skip_frames": 2
+   }
+  }
+ },
+ "dead_cap": {
+  "egy": 150,
+  "msa": 150
+ }
+}
