@@ -10,6 +10,10 @@ env/
 # Checkpoints — كبيرة جدًا لـgit (تُدار محليًا، انظر README)
 *.pth
 *.ckpt
+# ⚠️ استثناء checkpoint الإنتاج — يأتي مع المستودع نفسه (48.3MB، أقل من
+# حد GitHub 100MB) حتى يعمل clean clone مباشرة بلا نسخ يدوي:
+# GitHub repository → inference/checkpoints/ → model loader
+!inference/checkpoints/states_cont_180516.pth
 
 # مخرجات توليد محلية شائعة (لا تُحفظ في المستودع)
 inference/out.wav

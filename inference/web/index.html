@@ -237,7 +237,7 @@
       </svg>
     </div>
     <div>
-      <h1>استوديو النطق — NileTTS 4h</h1>
+      <h1>استوديو النطق — Eiqaz TTS</h1>
       <p>اكتب النص العربي واضبط المعاملات ثم استمع للصوت — توليد محلي بالكامل على معالج جهازك</p>
     </div>
     <span class="badge">CPU · بلا إنترنت بعد التشغيل</span>
@@ -255,17 +255,14 @@
     <textarea id="text" placeholder="اكتب أو الصق النص العربي هنا&#10;مثال: السلام عليكم يا صديقي، إزيك النهارده؟"
               spellcheck="false"></textarea>
       <div class="mode-note on" id="markerNote" style="margin-top:6px">
-        <b>علامات نطق القاف (خيار نصي — داخل الجملة نفسها):</b>
-        اكتب بعد الكلمة مباشرة أو بمسافة <b>{ق}</b> = قاف أصيلة فصحى — الشكل
-        الموثق يُزرع خامًا عميقًا (قطعة/قرآن/قرآنا/قصص/القصة/القطعة...)،
-        وما عداها <b>جيم عميقة [g] مضمونة</b> — <b>لا همزة ولا كاف أبدًا</b>
-        (PATCH 14: [g] هي نوعية الصوت التي أكدتَها في الأشكال المزروعة
-        ونطق المصريين للقاف الرسمية: القرآن/القاهرة) · <b>{ء}</b> = همزة ·
-        <b>{ج}</b> = جيم [g] — الثلاثة تعمل مع أي كلمة فيها قاف وتُخلط في
-        جملة واحدة: «قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد
-        قال{ء} شكرًا». بلا علامة: الوضع المختار يقرر (زرع الأشكال الموثقة
-        تلقائيًا لكلمات الفصحى في التلقائي). العلامة تُنزع قبل التوليد
-        ولا تصل النموذج أبدًا.
+        <b>علامات نطق القاف (تحكم نصي — تصل النموذج فعليًا):</b>
+        اكتب بعد الكلمة مباشرة أو بمسافة أو قبلها: <b>{ق}</b> = قاف
+        أصيلة <b>/q/</b> · <b>{ء}</b> = همزة <b>/ʔ/</b> · <b>{ج}</b> =
+        جيم مصرية <b>[g]</b> — تُخلط في جملة واحدة: «قسّمنا قطعة{ق}
+        قماش على رقم{ج} أطفال وكل واحد قال{ء} شكرًا». بلا علامة تُطبَّق
+        سياسة القاف نفسها التي درّب بها النموذج النهائي (قانون/القرآن/
+        حقيقة/قطعة → قاف أصيلة · رقم/مقام/قرش → جيم [g] · الباقي →
+        همزة قاهرية).
       </div>
     <div class="examples" id="examples"></div>
     <div class="char-hint" id="charHint">0 حرفًا</div>
@@ -286,12 +283,12 @@
         <label>المتحدث</label>
         <div class="speaker-cards">
           <div class="spk" id="spk0" data-on="1">
-            <div class="name">صوت 1 — ذكر</div>
-            <div class="desc">SPEAKER_01</div>
+            <div class="name">الرجل المصري — صوت 1</div>
+            <div class="desc">egy_SPEAKER_01 · متحدث 0</div>
           </div>
           <div class="spk f" id="spk1" data-on="0">
-            <div class="name">صوت 2 — أنثى</div>
-            <div class="desc">SPEAKER_02</div>
+            <div class="name">المرأة المصرية — صوت 2</div>
+            <div class="desc">egy_SPEAKER_02 · متحدث 1</div>
           </div>
         </div>
       </div>
@@ -311,54 +308,11 @@
       <div class="field">
         <label>التشكيل</label>
         <select id="vocalize">
-          <option value="auto">تلقائي (يشكّل النص غير مشكول)</option>
-          <option value="never">استخدام تشكيل النص كما هو</option>
-          <option value="always">تشكيل تلقائي دائمًا</option>
+          <option value="egyptian" selected>مصري — catt + القواعد الصارمة (دليل v2.1: نهايات · تنوين قائمة مغلقة · ال التعريف · هو/هي)</option>
+          <option value="fusha">فصحى — catt فقط (بلا قواعد مصرية)</option>
+          <option value="manual">يدوي — تشكيل النص كما هو</option>
+          <option value="auto">تلقائي حسب كثافة التشكيل (غير مشكول → مصري)</option>
         </select>
-      </div>
-      <div class="field">
-        <label>نطق القاف
-          <span class="sub">(الافتراضي: تلقائي معتمد — لا يغيّر شيئًا)</span></label>
-        <select id="qaf">
-          <option value="auto" selected>تلقائي معتمد + زرع الأشكال المدروسة (قطعة/قسمة/قياس → قاف أصيلة متعلمة)</option>
-          <option value="qaf">فصحى المصطلحات — تعليمي (الأشكال الموثقة تُزرع أصيلة، والباقي جيم عميقة [g] — لا همزة ولا كاف أبدًا)</option>
-          <option value="hamza">همزة [ʔ] دائمًا — كل الكلمات</option>
-          <option value="g">جيم [g] دائمًا — كل الكلمات (كنطق g في good)</option>
-        </select>
-        <div class="mode-note" id="qafNote">
-          <b>فصحى المصطلحات (تعليمي):</b> قائمة مغلقة (81 هيكلًا: رقم، أرقام،
-          قسمة، يقسم، تقريب، قياس، قيمة، قاعدة، قانون، قطر، مقام الكسر،
-          مستقيم، قوة، طاقة، حقوق...) تُنطق قافها الفصحى — <b>ليست كل كلمة
-          فيها قاف</b>؛ عامية الكلام تبقى همزة/جيم. للمعلم التعليمي.
-        </div>
-        <div class="mode-note" id="qafNoteK">
-          <b>القاف الأصيلة (اكتشاف 2026-10-01 — مؤكد سمعيًا من المستخدم):</b>
-          التدريب نفسه شُكِّل بـcatt على جُمل الـcorpus، فزرعُ الشكل المطابق للتدريب
-          (قِطْعَةً) يستدعي <b>النطق الأصيل المتعلِّم</b> — مؤكد لقطعة/قطع، ومزرع
-          تلقائيًا للأشكال الموثقة (قسمة/قياس/حقوق/منطق/قصة...) + أشكال corpus
-          الحرفية للمعرفة (القطعة/القصة/الحقيقة). <b>لا همزة ولا كاف أبدًا</b>
-          (PATCH 14): ما لم يوثق زرعه يأخذ جيمًا عميقة [g] — نوعية الصوت
-          التي أكدتَها في الأشكال المزروعة ونطق المصريين للقاف الرسمية
-          (القرآن/القاهرة = [g]). القاف الأصيلة الشاملة لكل كلمة تبقى مشروع
-          إعادة تدريب مؤجلًا.
-        </div>
-      </div>
-      <div class="field">
-        <label>طبقة التصحيح الجزئي بعد التشكيل
-          <span class="sub">(خيار إضافي — غير مفعّل افتراضيًا)</span></label>
-        <label class="toggle">
-          <input type="checkbox" id="detPartial">
-          <span class="track"></span>
-          <span style="font-size:.85rem">مفعّلة</span>
-        </label>
-        <div class="det-label">
-          <b>تصحيح جزئي: أرقام وترقيم وقوائم مغلقة ونهايات فقط — ليست بديلًا
-          عن تشكيل tashkeel-ai.</b>
-          <span class="nums">تطابق كلمة-بكلمة كامل الحركات مع التشكيل المرجعي:
-          <b>45.2%</b> (عينة دخان معزولة — المقياس الأساسي) ·
-          <b>57.9%</b> (عينة الـ50 متحيزة — رقم ثاني موضَّح). الاستخدام
-          المقصود: تحسين سريع مؤقت — ليس مصدر بيانات للتدريب.</span>
-        </div>
       </div>
       <div class="field">
         <label>تقسيم النص الطويل تلقائيًا
@@ -442,10 +396,11 @@
   </section>
 
   <footer>
-    تلميحات: <b>النص المشكول جودته أعلى</b> · النموذج مدرَّب على جمل حتى
-    <b>160 توكن</b> (~15–20 كلمة) · الترقيم والأرقام والحروف اللاتينية
-    <b>تُقص تلقائيًا</b> كما في بيانات التدريب · التفاصيل الكاملة في ملفات
-    README داخل الحزمة.
+  تلميحات: <b>النص المشكول جودته أعلى</b> · النموذج مدرَّب على جمل حتى
+    <b>160 توكن</b> (~15–20 كلمة) · <b>الأرقام تُنطق كلمات عربية</b>
+    (5 → خمسة · 2026 → ألفين وستة وعشرين) · <b>الترقيم محفوظ</b>
+    (. ، ؟ ! توكنات مدربة تُنتج وقفات طبيعية) · الكلمات اللاتينية
+    <b>تُنقهر عربيًا</b> (meeting → ميتينج) · التفاصيل في README الحزمة.
   </footer>
 </div>
 
@@ -460,7 +415,9 @@ const state = {
 const EXAMPLES = [
   'السلام عليكم يا صديقي، إزيك النهارده؟',
   'دلوقتي هنبدأ الدرس يا عمر.',
-  'أنا عايز أعرف إنت عملت إيه النهارده.',
+  'عندي 5 كتب وعمره 10 سنين وسعر الكتاب 250 جنيه.',
+  'أنا رايح أعمل meeting بكرة الصبح.',
+  'قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد قال{ء} شكرًا.',
   'اَللُّغَةُ الْعَرَبِيَّةُ مِنْ أَكْثَرِ اللُّغَاتِ انتِشَارًا فِي الْعَالَم.'
 ];
 EXAMPLES.forEach((t, i) => {
@@ -492,11 +449,6 @@ $('denoise').oninput = () => $('denoiseVal').textContent =
   parseFloat($('denoise').value).toFixed(3);
 $('split').onchange = schedulePreview;
 $('vocalize').onchange = schedulePreview;
-$('qaf').onchange = () => {
-  const v = $('qaf').value;
-  $('qafNote').classList.toggle('on', v === 'qaf');
-  $('qafNoteK').classList.toggle('on', v === 'qaf');
-};
 
 function params(){
   return {
@@ -504,9 +456,7 @@ function params(){
     speaker: state.speaker,
     dialect: state.dialect,
     pace: parseFloat($('pace').value),
-    vocalize: $('vocalize').value,
-    qaf: $('qaf').value || 'auto',
-    det_partial: $('detPartial').checked,
+    diacritize: $('vocalize').value || 'egyptian',
     denoise: parseFloat($('denoise').value),
     split: $('split').checked,
     checkpoint: $('checkpoint').value || 'auto'
@@ -543,7 +493,7 @@ async function doPreview(){
       (d.n_chunks === 1 ? 'مقطع' : 'مقاطع') + ' · <b>' + d.total_tokens +
       '</b> توكن · ' + d.arabic_chars + ' حرفًا عربيًا · ' +
       (d.will_vocalize
-        ? 'سيُشكَّل النص تلقائيًا (catt_eo)'
+        ? 'سيُشكَّل النص تلقائيًا (مصري: catt + القواعد الصارمة)'
         : 'سيُستخدم تشكيل النص كما هو');
     (d.warnings || []).forEach(w => {
       html += '<span class="warn">تنبيه: ' + w + '</span>';
@@ -648,11 +598,11 @@ async function poll(jobId){
 
 function sleep(ms){ return new Promise(res => setTimeout(res, ms)); }
 
-function qafLabel(v){
+function diacLabel(v){
   return {
-    auto: 'تلقائي معتمد', qaf: 'فصحى المصطلحات (تعليمي)',
-    hamza: 'همزة دائمًا', g: 'جيم [g] دائمًا'
-  }[v] || v || 'تلقائي معتمد';
+    egyptian: 'مصري (catt + قواعد صارمة)', fusha: 'فصحى (catt)',
+    manual: 'يدوي (كما هو)', auto: 'تلقائي'
+  }[v] || v || 'تلقائي';
 }
 
 async function fetchAudio(jobId, info){
@@ -670,21 +620,20 @@ async function fetchAudio(jobId, info){
     '<span>المدة: <b>' + info.duration + ' ث</b></span>' +
     '<span>التوكنز: <b>' + info.n_tokens + '</b></span>' +
     '<span>المقاطع: <b>' + info.n_chunks + '</b></span>' +
-    '<span>المتحدث: <b>' + (state.speaker === 0 ? 'ذكر' : 'أنثى') + '</b></span>' +
-    '<span>نطق القاف: <b>' + qafLabel(info.qaf) + '</b></span>' +
+    '<span>المتحدث: <b>' + (state.speaker === 0 ? 'الرجل المصري' : 'المرأة المصرية') + '</b></span>' +
+    '<span>التشكيل: <b>' + diacLabel(info.diacritize) + '</b></span>' +
+    (info.numbers_spoken
+      ? '<span style="color:#065f46">أرقام: <b>نُطقت كلمات عربية</b></span>' : '') +
+    (info.translit_applied
+      ? '<span style="color:#065f46">لاتيني: <b>نُقحر عربيًا</b></span>' : '') +
+    (info.qaf_markers
+      ? '<span style="color:#065f46">علامات قاف: <b>نشطة — وصلت النموذج</b></span>' : '') +
     (info.tone_unified
       ? '<span style="color:#065f46">نبرة موحدة: <b>دمج جمل أطول + تعادل جهارة لطيف + تطبيع واحد (PATCH 14)</b></span>'
       : '') +
-    (info.qaf_planted && info.qaf_planted.length
-      ? '<span style="color:#065f46">قاف مزروعة: <b>' +
-        info.qaf_planted.map(function(p){return p.was + '→' + p.now;}).join(' · ') + '</b></span>'
-      : '') +
-    (info.qaf_un_deep && info.qaf_un_deep.length
-      ? '<span style="color:#92400e">نزع كسرة {ء}: <b>' +
-        info.qaf_un_deep.map(function(u){return u.was + '→' + u.now;}).join(' · ') + '</b></span>'
-      : '') +
-    (info.det_partial
-      ? '<span style="color:#b45309">التصحيح الجزئي: <b>مفعّل (ليس بديلًا عن tashkeel-ai)</b></span>'
+    (info.chunks_detail && info.chunks_detail.length > 1
+      ? '<span style="color:#065f46">ثبات المتحدث: <b>' + info.chunks_detail.length +
+        ' مقاطع — كلها متحدث ' + info.chunks_detail[0].speaker + '</b></span>'
       : '') +
     '<span>الـcheckpoint: <b>' + info.checkpoint + '</b></span>' +
     '<span>زمن التوليد: <b>' + info.elapsed + ' ث</b></span>';
@@ -693,12 +642,13 @@ async function fetchAudio(jobId, info){
 
   state.history.unshift({
     text: $('text').value.trim().slice(0, 60),
-    meta: info.duration + ' ث · ' + (state.speaker === 0 ? 'ذكر' : 'أنثى') +
+    meta: info.duration + ' ث · ' +
+      (state.speaker === 0 ? 'الرجل المصري' : 'المرأة المصرية') +
       ' · ' + info.n_chunks + ' مقطع' +
-      (info.qaf && info.qaf !== 'auto' ? ' · قاف: ' + qafLabel(info.qaf) : '') +
-      (info.qaf_planted && info.qaf_planted.length
-        ? ' · قاف مزروعة: ' + info.qaf_planted.length : '') +
-      (info.det_partial ? ' · تصحيح جزئي' : ''),
+      (info.diacritize && info.diacritize !== 'auto'
+        ? ' · تشكيل: ' + diacLabel(info.diacritize) : '') +
+      (info.numbers_spoken ? ' · أرقام منطوقة' : '') +
+      (info.translit_applied ? ' · نقحرة' : ''),
     url: url, name: info.saved_to || 'nile_tts.wav'
   });
   renderHistory();

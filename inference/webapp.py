@@ -101,7 +101,7 @@ def list_checkpoints():
     """قائمة checkpoints المتاحة في مجلد checkpoints/ (states_*.pth)."""
     items = []
     for p in glob.glob(os.path.join(infer.CKPT_DIR, 'states_*.pth')):
-        m = re.search(r'states_(\d+)\.pth$', p)
+        m = re.search(r'(\d+)(?=\.pth$)', p)
         it = int(m.group(1)) if m else 0
         items.append({'name': os.path.basename(p), 'iter': it,
                       'size_mb': round(os.path.getsize(p) / 1e6, 1)})
@@ -114,6 +114,9 @@ def list_checkpoints():
 
 
 def default_checkpoint():
+    pinned = os.path.join(infer.CKPT_DIR, infer.DEFAULT_CHECKPOINT)
+    if os.path.exists(pinned):
+        return infer.DEFAULT_CHECKPOINT
     snaps = list_checkpoints()
     return snaps[0]['name'] if snaps else None
 
@@ -122,7 +125,7 @@ def default_checkpoint():
 # تقسيم النص الطويل إلى مقاطع (قبل التنظيف — على النص الخام)
 # ============================================================================
 _SENT_END = re.compile(r'(?<=[.!؟?…])\s+')
-_SOFT_SPLIT = re.compile(r'\s*[,،؛;:]+\s*')
+_SOFT_SPLIT = re.compile(r'(?<=[,،؛;:])\s+')
 # PATCH 12: ربط الوسم المنفصل بكلمته قبل التقسيم — «كلمة {ق}» → «كلمة{ق}»
 # حتى لا يفصل تقطيع حدود الكلمات (مجموعات الـ12) الوسم عن كلمته فيطبق
 # على كلمة أخرى أو يضيع. لا يمس الوسوم الملتحقة أصلًا ولا غير العربية.
@@ -135,16 +138,13 @@ def bind_markers_to_words(raw_text):
     return _TAG_BIND_RE.sub(r'\1\2', raw_text)
 
 
-def _n_tokens_of(text, dialect, tok_fns):
-    toks_ms, toks_egy, ids_of = tok_fns
-    cleaned = infer.keep_arabic_only(text)
-    if not infer._AR_LETTERS.search(cleaned):
-        return 0
-    toks = toks_ms(cleaned) if dialect == 'msa' else toks_egy(cleaned)
-    return len(ids_of(toks))
+def _n_tokens_of(text, dialect, tok_fns=None):
+    # بعد التطبيع الموحد (أرقام→كلمات يغيّر العدد) — infer.count_tokens
+    # هو مصدر الحقيقة الوحيد (نفس مسار CLI)
+    return infer.count_tokens(text, dialect)
 
 
-def split_into_chunks(raw_text, dialect, tok_fns,
+def split_into_chunks(raw_text, dialect, tok_fns=None,
                       max_tokens=infer.TRAIN_MAX_TOKENS):
     """تقسيم النص الخام إلى مقاطع عند نهايات الجمل.
 
@@ -162,7 +162,7 @@ def split_into_chunks(raw_text, dialect, tok_fns,
     pieces = []
     for seg in segments:
         for p in _SENT_END.split(seg):
-            p = p.strip(' \t\r,.،؛;:…!؟?')
+            p = p.strip(' \t\r')          # الترقيم يبقى — توكن مدرب
             if p:
                 pieces.append(p)
 
@@ -223,12 +223,10 @@ def split_into_chunks(raw_text, dialect, tok_fns,
         infer.keep_arabic_only(c))]
 
 
-def effective_vocalize_mode(raw_text, mode):
-    """توحيد قرار التشكيل على كل المقاطع (كما يحسمه auto في infer.py)."""
-    if mode in ('always', 'never'):
-        return mode
-    density, _ = infer.diacritic_density(infer.keep_arabic_only(raw_text))
-    return 'always' if density < 0.30 else 'never'
+def effective_vocalize_mode(raw_text, mode, dialect='egy'):
+    # مصدر الحقيقة الوحيد: infer.effective_diacritize_mode — يعيد وضع
+    # التشكيل النهائي (egyptian/fusha/manual)
+    return infer.effective_diacritize_mode(raw_text, mode, dialect)
 
 
 # ---------------------------------------------------------------- PATCH 13 --
@@ -308,12 +306,11 @@ def run_job(job_id, params):
     job = JOBS[job_id]
     t0 = time.time()
     tmp_dir = None
-    qaf_mode = params.get('qaf') or 'auto'
-    det_partial = bool(params.get('det_partial'))
+    diac_mode_req = params.get('diacritize') or 'auto'
     try:
         with GEN_LOCK:
             job['status'] = 'running'
-            tok_fns = infer.get_tokenizer(qaf_mode)
+            tok_fns = infer.get_tokenizer()
 
             # ----- checkpoint -----
             ckpt_name = params['checkpoint']
@@ -322,7 +319,8 @@ def run_job(job_id, params):
             if not ckpt_name:
                 raise SystemExit(
                     '[خطأ] لا يوجد checkpoint في مجلد checkpoints/ — '
-                    'ضع states_79590.pth هناك أولًا.')
+                    'checkpoint الإنتاج المعتمد (يأتي مع المستودع): '
+                    + infer.DEFAULT_CHECKPOINT)
             ckpt_path = os.path.join(infer.CKPT_DIR, os.path.basename(ckpt_name))
             if not os.path.exists(ckpt_path):
                 raise SystemExit(f'[خطأ] checkpoint غير موجود: {ckpt_name}')
@@ -345,40 +343,46 @@ def run_job(job_id, params):
                     f'{MAX_CHUNKS}). قسّمه على دفعات أصغر.')
             job['total'] = len(chunks)
 
-            voc_mode = effective_vocalize_mode(raw, params['vocalize'])
-            job['vocalized'] = voc_mode == 'always'
+            diac_mode = effective_vocalize_mode(
+                raw, diac_mode_req, params['dialect'])
+            job['vocalized'] = diac_mode in ('egyptian', 'fusha')
+            job['diacritize'] = diac_mode
 
             # ----- توليد كل مقطع بنفس دالتي infer.py -----
             # PATCH 13: peak_normalize=False — الموجات الخام؛ توحيد الجهارة
             # والتطبيع الواحد في _unify_chunks_tone بعد اكتمال المقاطع
             import tempfile
-            tmp_dir = tempfile.mkdtemp(prefix='nile_web_')
+            tmp_dir = tempfile.mkdtemp(prefix='eiqaz_web_')
             waves = []
             n_tokens_total = 0
-            qaf_planted_all = []
-            qaf_un_deep_all = []
-            qaf_actions = None
-            qaf_native = None
+            had_numbers = False
+            had_translit = False
+            had_markers = False
+            chunks_detail = []      # تتبع المتحدث لكل مقطع (اختبار الثبات)
+            speaker = infer.validate_speaker(params['speaker'])
             for i, chunk_raw in enumerate(chunks):
                 job['chunk'] = i + 1
                 job['msg'] = f'جاري توليد المقطع {i + 1} من {len(chunks)}'
-                res = infer.prepare_text_rich(chunk_raw, voc_mode,
-                                              params['dialect'], qaf_mode,
-                                              det_partial)
+                res = infer.prepare_text_rich(chunk_raw, diac_mode,
+                                              params['dialect'])
                 text = res['text']
-                qaf_planted_all.extend(res['qaf_planted'])
-                qaf_un_deep_all.extend(res['qaf_un_deep'])
-                qaf_actions = res['qaf_actions'] or None
-                qaf_native = res['qaf_native'] or None
+                had_numbers = had_numbers or res['numbers']
+                had_translit = had_translit or res['translit']
+                had_markers = had_markers or res['markers']
                 tmp_wav = os.path.join(tmp_dir, f'chunk_{i:03d}.wav')
                 n_tok, _ = infer.synthesize(
-                    model, text, params['dialect'], params['speaker'],
+                    model, text, params['dialect'], speaker,
                     params['pace'], tmp_wav, params['denoise'],
-                    qaf_mode=qaf_mode, qaf_word_actions=qaf_actions,
-                    qaf_native_skel=qaf_native, peak_normalize=False)
+                    peak_normalize=False)
                 n_tokens_total += n_tok
                 w, _ = sf.read(tmp_wav, dtype='float32')
                 waves.append(w)
+                chunks_detail.append({
+                    'i': i + 1, 'speaker': speaker, 'n_tokens': n_tok,
+                    'duration_s': round(len(w) / SAMPLE_RATE, 2),
+                    'rms': round(float(np.sqrt(np.mean(np.square(w)))), 4),
+                    'sample_rate': SAMPLE_RATE, 'channels': 1,
+                })
                 job['elapsed'] = round(time.time() - t0, 1)
 
             # ----- PATCH 13: تجميع الموجات بتوحيد النبرة -----
@@ -406,10 +410,11 @@ def run_job(job_id, params):
                 'saved_to': os.path.basename(saved),
                 'elapsed': round(time.time() - t0, 1),
                 'wav': wav_bytes,
-                'qaf': qaf_mode,
-                'qaf_planted': qaf_planted_all,
-                'qaf_un_deep': qaf_un_deep_all,
-                'det_partial': det_partial,
+                'diacritize': diac_mode,
+                'numbers_spoken': had_numbers,
+                'translit_applied': had_translit,
+                'qaf_markers': had_markers,
+                'chunks_detail': chunks_detail,
                 'tone_unified': bool(tone_info['n_chunks'] > 1),
                 'tone_rms_gains': tone_info['rms_gains'],
                 'msg': 'تم التوليد بنجاح',
@@ -548,13 +553,14 @@ class Handler(BaseHTTPRequestHandler):
                 text = str(data.get('text') or '')[:MAX_TEXT_CHARS]
                 dialect = 'msa' if data.get('dialect') == 'msa' else 'egy'
                 split = bool(data.get('split', True))
-                voc = data.get('vocalize') or 'auto'
+                voc = data.get('diacritize') or data.get('vocalize') or 'auto'
                 if not text.strip():
                     return self._error('لا يوجد نص للمعاينة.')
                 if not infer._AR_LETTERS.search(
                         infer.keep_arabic_only(text)):
                     return self._error('النص لا يحتوي حروفًا عربية.')
                 tok_fns = infer.get_tokenizer()
+                dialect_pv = dialect
                 chunks = (split_into_chunks(text, dialect, tok_fns)
                           if split else [text])
                 infos = [{'text': c[:80],
@@ -571,7 +577,8 @@ class Handler(BaseHTTPRequestHandler):
                 if len(chunks) > MAX_CHUNKS:
                     warnings.append(f'عدد المقاطع {len(chunks)} يتجاوز الحد '
                                     f'{MAX_CHUNKS}.')
-                will_voc = effective_vocalize_mode(text, voc) == 'always'
+                will_voc = effective_vocalize_mode(text, voc, dialect_pv) \
+                    in ('egyptian', 'fusha')
                 arabic_n = len(infer._AR_LETTERS.findall(text))
                 self._json({
                     'chars': len(text),
@@ -601,13 +608,13 @@ class Handler(BaseHTTPRequestHandler):
                 except (TypeError, ValueError):
                     pace = 1.0
                 pace = min(max(pace, 0.5), 2.0)
-                vocalize = data.get('vocalize') or 'auto'
-                if vocalize not in ('auto', 'always', 'never'):
-                    vocalize = 'auto'
-                qaf = data.get('qaf') or 'auto'
-                if qaf not in getattr(infer, 'QAF_MODES', ('auto',)):
-                    qaf = 'auto'
-                det_partial = bool(data.get('det_partial', False))
+                diacritize = (data.get('diacritize')
+                              or data.get('vocalize') or 'auto')
+                if diacritize not in ('auto', 'egyptian', 'fusha', 'manual',
+                                      'always', 'never'):
+                    diacritize = 'auto'
+                diacritize = {'always': 'auto', 'never': 'manual'}.get(
+                    diacritize, diacritize)
                 try:
                     denoise = float(data.get('denoise', 0.005))
                 except (TypeError, ValueError):
@@ -634,9 +641,8 @@ class Handler(BaseHTTPRequestHandler):
                     'params': {
                         'text': text, 'speaker': speaker,
                         'dialect': dialect, 'pace': pace,
-                        'vocalize': vocalize, 'denoise': denoise,
+                        'diacritize': diacritize, 'denoise': denoise,
                         'split': split, 'checkpoint': ckpt,
-                        'qaf': qaf, 'det_partial': det_partial,
                     },
                 }
                 with JOBS_LOCK:
@@ -708,8 +714,9 @@ def main():
         if not chosen:
             raise SystemExit(
                 '[خطأ] لا يوجد أي checkpoint في مجلد checkpoints/\n'
-                '  ضع states_79590.pth (من مخرجات Kaggle) هناك ثم أعد '
-                'التشغيل.')
+                '  checkpoint الإنتاج المعتمد (يأتي مع المستودع): '
+                + infer.DEFAULT_CHECKPOINT
+                + ' — استعده من Git (clean clone) ثم أعد التشغيل.')
         ckpt_path = os.path.join(infer.CKPT_DIR, chosen)
 
     log(f'[1/3] تحميل المُشكِّل والمُصوِّت (onnx) ...')

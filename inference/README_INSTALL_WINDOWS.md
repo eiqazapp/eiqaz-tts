@@ -15,7 +15,7 @@
 | `requirements.txt` | المكتبات بنسخ مضبوطة (6 مكتبات فقط) |
 | `run.bat` | مشغّل سطر الأوامر السريع لنظام Windows |
 | `run_web.bat` | مشغّل واجهة الويب السريع |
-| `checkpoints/` | **ضع هنا ملف الـcheckpoint الخاص بك** (مثل `states_79590.pth`) |
+| `checkpoints/` | **checkpoint الإنتاج مضمّن**: `states_cont_180516.pth` |
 | `lib/mixer_repo/` | تعريف نموذج MixerTTS (كود البنية كما في التدريب) |
 | `lib/tts_arabic/` | مكتبة الترميز + المُشكِّل النصي |
 | `lib/tts_arabic/data/catt_eo.onnx` | أوزان المُشكِّل catt_eo (مضمّنة — 75MB) |
@@ -24,14 +24,7 @@
 | `samples/example_output.wav` | مخرج مرجعي للتأكد من سلامة التركيب (انظر الخطوة 6) |
 | `PATCHES.md` | توثيق التعديلات الجراحية الخمسة على الكود المضمّن |
 
-> الـcheckpoint نفسه (مثل `states_79590.pth`) **غير مضمّن** لأنه موجود
-> عندك بالفعل محليًا — انظر الخطوة 3.
-
----
-
-## المتطلبات قبل البدء
-
-- Windows 10 أو 11 (**64-bit** — الزامي).
+> checkpoint الإنتاج `states_cont_180516.pth` **مضمّن مع المستودع** — يأتي مع الـclone تلقائيًا.ndows 10 أو 11 (**64-bit** — الزامي).
 - حوالي **1.5 GB** مساحة حرة على القرص (بايثون + المكتبات ≈ 900MB + الحزمة 140MB).
 - إنترنت **للتركيب مرة واحدة فقط** (تنزيل بايثون + ~250MB مكتبات).
 - لا تحتاج GPU ولا أي أدوات لينكس إطلاقًا.
@@ -75,11 +68,11 @@
 ## الخطوة 3 — وضع الـcheckpoint الخاص بك
 
 1. من مخرجات نواة التدريب على Kaggle (Output)، كان عندك ملف
-   **`states_79590.pth`** محفوظًا محليًا (هو نفسه الذي في مجلد
+   **`states_cont_180516.pth`** محفوظًا محليًا (هو نفسه الذي في مجلد
    `Output\checkpoints` عندك).
 2. انسخه والصقه داخل مجلد الحزمة:
    ```
-   C:\NileTTS-4h-Inference\checkpoints\states_79590.pth
+   C:\NileTTS-4h-Inference\checkpoints\states_cont_180516.pth
    ```
    (يمكنك وضع أكثر من ملف `states_*.pth` — السكريبت يختار الأحدث تلقائيًا.)
 
@@ -111,7 +104,7 @@ python -m pip install -r requirements.txt
 في نفس نافذة موجه الأوامر:
 
 ```
-python infer.py --checkpoint states_79590.pth --text "السلام عليكم يا صديقي" --out out.wav
+python infer.py --checkpoint states_cont_180516.pth --text "السلام عليكم يا صديقي" --out out.wav
 ```
 
 - انتظر ثانيتين إلى ~6 ثوانٍ (حسب سرعة المعالج).
