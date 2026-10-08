@@ -1,0 +1,700 @@
+{
+ "cases": [
+  {
+   "name": "S01 معلم (كسرة+شدة)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "l",
+     "m",
+     "u",
+     "E",
+     "a",
+     "l",
+     "_dbl_",
+     "i",
+     "m",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "i",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S02 الدرس (فتحة+شدة + إدغام شمسي)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "d",
+     "_dbl_",
+     "a",
+     "r",
+     "s",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "a",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S03 كله (ضمة+شدة)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "k",
+     "u",
+     "l",
+     "_dbl_",
+     "u",
+     "h",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "u",
+    "n_hamza": 0
+   }
+  },
+  {
+   "name": "S04 مدرسة (شدتان في كلمة)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "l",
+     "m",
+     "u",
+     "m",
+     "a",
+     "d",
+     "_dbl_",
+     "a",
+     "r",
+     "s",
+     "a",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "a",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S05 اتصلت (شدة أول الكلمة)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "t",
+     "_dbl_",
+     "a",
+     "S",
+     "a",
+     "l",
+     "t",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "a",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S06 شدة (كلمة الاختبار نفسها)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "$",
+     "_dbl_",
+     "a",
+     "d",
+     "_dbl_",
+     "a",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "a",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S07 جدة حكت (شدة + جيم مصرية)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "l",
+     "v",
+     "a",
+     "d",
+     "_dbl_",
+     "a",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "a",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S08 جمع وتضعيف (جملة المرجع)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "t",
+     "_dbl_",
+     "a",
+     "D",
+     "E",
+     "ii",
+     "f",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "a",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S09 الحقيقة (قاف خام — تحكم سلبي بلا شدة)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "l",
+     "H",
+     "a",
+     "q",
+     "ii",
+     "q",
+     "a",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "negative_control": true
+   }
+  },
+  {
+   "name": "S10 كتب مشوقة (شدة وسط الكلمة)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "m",
+     "u",
+     "$",
+     "a",
+     "w",
+     "_dbl_",
+     "a",
+     "<",
+     "i",
+     "a",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "a",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S11 تجمعوا (شدة داخل كلمة مركبة)",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "<",
+     "i",
+     "t",
+     "_dbl_",
+     "a",
+     "v",
+     "a",
+     "m",
+     "_dbl_",
+     "a",
+     "E",
+     "u",
+     "w",
+     "aa",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "a",
+    "n_hamza": 1
+   }
+  },
+  {
+   "name": "S12 جملة المسبار المرجعية كاملة",
+   "ok": true,
+   "detail": {
+    "word_tokens": [
+     "k",
+     "u",
+     "l",
+     "_dbl_",
+     "u",
+     "h",
+     "_+_",
+     "_eos_"
+    ],
+    "clean": true,
+    "has_dbl": true,
+    "vowel_ok": true,
+    "expected_vowel": "u",
+    "n_hamza": 0
+   }
+  },
+  {
+   "name": "Z محاكاة التالفة تُكشف (≥11/12)",
+   "ok": true,
+   "detail": {
+    "n_cases": 12,
+    "n_detected": 11,
+    "reference": "11/12 FAIL on broken (المرجع السابق)",
+    "verdict": "BROKEN VERSION DETECTED",
+    "details": [
+     {
+      "name": "S01 معلم (كسرة+شدة)",
+      "detected": true,
+      "word_tokens_broken": [
+       "<",
+       "i",
+       "l",
+       "m",
+       "u",
+       "E",
+       "a",
+       "l",
+       "<",
+       "m",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S02 الدرس (فتحة+شدة + إدغام شمسي)",
+      "detected": true,
+      "word_tokens_broken": [
+       "<",
+       "i",
+       "l",
+       "d",
+       "<",
+       "r",
+       "s",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S03 كله (ضمة+شدة)",
+      "detected": true,
+      "word_tokens_broken": [
+       "k",
+       "u",
+       "l",
+       "<",
+       "h",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S04 مدرسة (شدتان في كلمة)",
+      "detected": true,
+      "word_tokens_broken": [
+       "<",
+       "i",
+       "l",
+       "m",
+       "u",
+       "m",
+       "a",
+       "d",
+       "<",
+       "r",
+       "s",
+       "a",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S05 اتصلت (شدة أول الكلمة)",
+      "detected": true,
+      "word_tokens_broken": [
+       "<",
+       "i",
+       "t",
+       "<",
+       "S",
+       "a",
+       "l",
+       "t",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S06 شدة (كلمة الاختبار نفسها)",
+      "detected": true,
+      "word_tokens_broken": [
+       "<",
+       "i",
+       "l",
+       "$",
+       "<",
+       "d",
+       "<",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S07 جدة حكت (شدة + جيم مصرية)",
+      "detected": true,
+      "word_tokens_broken": [
+       "<",
+       "i",
+       "l",
+       "v",
+       "a",
+       "d",
+       "<",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S08 جمع وتضعيف (جملة المرجع)",
+      "detected": true,
+      "word_tokens_broken": [
+       "<",
+       "i",
+       "l",
+       "t",
+       "<",
+       "D",
+       "E",
+       "ii",
+       "f",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S09 الحقيقة (قاف خام — تحكم سلبي بلا شدة)",
+      "detected": false,
+      "note": "لا شدة في الكلمة (تحكم سلبي)"
+     },
+     {
+      "name": "S10 كتب مشوقة (شدة وسط الكلمة)",
+      "detected": true,
+      "word_tokens_broken": [
+       "m",
+       "u",
+       "$",
+       "a",
+       "uu",
+       "<",
+       "<",
+       "i",
+       "a",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S11 تجمعوا (شدة داخل كلمة مركبة)",
+      "detected": true,
+      "word_tokens_broken": [
+       "<",
+       "i",
+       "t",
+       "<",
+       "v",
+       "a",
+       "m",
+       "<",
+       "E",
+       "u",
+       "w",
+       "aa",
+       "_+_",
+       "_eos_"
+      ]
+     },
+     {
+      "name": "S12 جملة المسبار المرجعية كاملة",
+      "detected": true,
+      "word_tokens_broken": [
+       "k",
+       "u",
+       "l",
+       "<",
+       "h",
+       "_+_",
+       "_eos_"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "name": "G ملف الإنتاج نظيف وبه سطر الإصلاح",
+   "ok": true,
+   "detail": {
+    "no_control_byte": true,
+    "has_fixed_line": true
+   }
+  }
+ ],
+ "tamper_simulation": {
+  "n_cases": 12,
+  "n_detected": 11,
+  "reference": "11/12 FAIL on broken (المرجع السابق)",
+  "verdict": "BROKEN VERSION DETECTED",
+  "details": [
+   {
+    "name": "S01 معلم (كسرة+شدة)",
+    "detected": true,
+    "word_tokens_broken": [
+     "<",
+     "i",
+     "l",
+     "m",
+     "u",
+     "E",
+     "a",
+     "l",
+     "<",
+     "m",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S02 الدرس (فتحة+شدة + إدغام شمسي)",
+    "detected": true,
+    "word_tokens_broken": [
+     "<",
+     "i",
+     "l",
+     "d",
+     "<",
+     "r",
+     "s",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S03 كله (ضمة+شدة)",
+    "detected": true,
+    "word_tokens_broken": [
+     "k",
+     "u",
+     "l",
+     "<",
+     "h",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S04 مدرسة (شدتان في كلمة)",
+    "detected": true,
+    "word_tokens_broken": [
+     "<",
+     "i",
+     "l",
+     "m",
+     "u",
+     "m",
+     "a",
+     "d",
+     "<",
+     "r",
+     "s",
+     "a",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S05 اتصلت (شدة أول الكلمة)",
+    "detected": true,
+    "word_tokens_broken": [
+     "<",
+     "i",
+     "t",
+     "<",
+     "S",
+     "a",
+     "l",
+     "t",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S06 شدة (كلمة الاختبار نفسها)",
+    "detected": true,
+    "word_tokens_broken": [
+     "<",
+     "i",
+     "l",
+     "$",
+     "<",
+     "d",
+     "<",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S07 جدة حكت (شدة + جيم مصرية)",
+    "detected": true,
+    "word_tokens_broken": [
+     "<",
+     "i",
+     "l",
+     "v",
+     "a",
+     "d",
+     "<",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S08 جمع وتضعيف (جملة المرجع)",
+    "detected": true,
+    "word_tokens_broken": [
+     "<",
+     "i",
+     "l",
+     "t",
+     "<",
+     "D",
+     "E",
+     "ii",
+     "f",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S09 الحقيقة (قاف خام — تحكم سلبي بلا شدة)",
+    "detected": false,
+    "note": "لا شدة في الكلمة (تحكم سلبي)"
+   },
+   {
+    "name": "S10 كتب مشوقة (شدة وسط الكلمة)",
+    "detected": true,
+    "word_tokens_broken": [
+     "m",
+     "u",
+     "$",
+     "a",
+     "uu",
+     "<",
+     "<",
+     "i",
+     "a",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S11 تجمعوا (شدة داخل كلمة مركبة)",
+    "detected": true,
+    "word_tokens_broken": [
+     "<",
+     "i",
+     "t",
+     "<",
+     "v",
+     "a",
+     "m",
+     "<",
+     "E",
+     "u",
+     "w",
+     "aa",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "name": "S12 جملة المسبار المرجعية كاملة",
+    "detected": true,
+    "word_tokens_broken": [
+     "k",
+     "u",
+     "l",
+     "<",
+     "h",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ]
+ },
+ "n_pass": 14,
+ "n_fail": 0,
+ "byte_guard": {
+  "no_control_byte": true,
+  "has_fixed_line": true
+ },
+ "fix": {
+  "file": "inference/lib/eqz_tokens.py",
+  "function": "normalize_diacritic_order",
+  "broken": "r'<STX>}' (raw 0x02 control byte + })",
+  "fixed": "r'\\2\\1' (shadda-before-vowel canonical swap)",
+  "reference": "Kaggle r4-reeval-v1 (R1F arm) — production = R1 + corrected inference interface"
+ }
+}

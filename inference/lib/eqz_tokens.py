@@ -107,7 +107,7 @@ _DIAC_SWAP_RE = re.compile('([ً-ِ])(ّ)')
 
 def normalize_diacritic_order(text):
     """(حركة/تنوين + شدة) → (شدة + حركة) — ترتيب كانوني بلا تغيير نطق."""
-    return _DIAC_SWAP_RE.sub(r'}', text)
+    return _DIAC_SWAP_RE.sub(r'\2\1', text)
 
 # خريطة الأصوات المصرية — الفرق الجوهري عن NileTTS القديم:
 # 'q' ليست في الخريطة! كل قرارات القاف تتم على مستوى الكلمة في باكوالتير
