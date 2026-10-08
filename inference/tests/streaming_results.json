@@ -1,0 +1,684 @@
+{
+ "sections": {
+  "A": {
+   "pass": [
+    "egy_multi: 4 مقاطع · سلامة النص",
+    "mixed_msa: 4 مقاطع · سلامة النص",
+    "markers_shadda: 2 مقاطع · سلامة النص",
+    "no_punct_end: 2 مقاطع · سلامة النص",
+    "tiny_sentences: 4 مقاطع · سلامة النص",
+    "digits_only_piece: 3 مقاطع · سلامة النص",
+    "الوسوم {ق}/{ج}/{ء} ملتحمة بكلماتها",
+    "الجملة العملاقة: تقسيم آمن بلا قصّ كلمات"
+   ],
+   "fail": []
+  },
+  "B": {
+   "pass": [
+    "أول صوت قبل اكتمال النص (قبل آخر feed)",
+    "أول صوت قبل finish()",
+    "تدفق متعدد المقاطع (9) + نهاية سليمة",
+    "TTFA مقيس (من أول تغذية إلى أول مقطع جاهز)"
+   ],
+   "fail": []
+  },
+  "C": {
+   "pass": [
+    "إلغاء → StreamEnd(cancelled) سريع",
+    "المنتج خرج وطابور فارغ",
+    "لا مقاطع جديدة بعد الإلغاء"
+   ],
+   "fail": []
+  },
+  "D": {
+   "pass": [
+    "المقاطع المنتظرة حُذفت كلها",
+    "لا صوت بعد التفريغ — فقط الحدث النهائي"
+   ],
+   "fail": []
+  },
+  "E": {
+   "pass": [
+    "chunk من 101 بعد بدء 102 يُرفض",
+    "chunk بعد interrupt (قبل طلب جديد) يُسقط"
+   ],
+   "fail": []
+  },
+  "F": {
+   "pass": [
+    "طلب B اكتمل بعد مقاطعة A",
+    "بلا إعادة تحميل النموذج + معرفات متصاعدة"
+   ],
+   "fail": []
+  },
+  "G": {
+   "pass": [
+    "G1: مقاطعة لحظة جاهزية المقطع — نظيفة",
+    "G2: إلغاء قبل التشغيل — لا وصول صوت",
+    "G3: أثناء التشغيل — توقف فوري + B كامل + لا قديم بعد B",
+    "G4: نتيجة inference متأخرة بعد الإلغاء تُهمَل",
+    "G5: إلغاءات متكررة آمنة + المنتهية لا تفسد",
+    "G6: feed بعد cancel/finish يُرفض"
+   ],
+   "fail": []
+  },
+  "H": {
+   "pass": [
+    "متحدث 0: F0 ثابت عبر المقاطع (مدى < 60Hz)",
+    "انفصال F0 رجل/مرأة (هوية متمايزة)",
+    "ECAPA (centroid): نفس المتحدث عبر المقاطع — أعلى بوضوح من العابر"
+   ],
+   "fail": []
+  },
+  "I": {
+   "pass": [
+    "pitch continuity: مدى F0 < 60Hz وقفزة متجاورة < 45Hz",
+    "loudness continuity: نسبة RMS بين المقاطع ≤ 2.2",
+    "speaking rate: CV ≤ 0.30",
+    "مدة المقاطع معقولة (متوسط 1.5-8ث)",
+    "chunk transitions: لا نقرات + فاصل صمت نظيف",
+    "انتقال مصرية↔فصحى: هوية المتحدث ثابتة عبر الحد"
+   ],
+   "fail": []
+  },
+  "I2": {
+   "pass": [
+    "bit-identity لكل مقطع: التدفق الخام == مسار الإنتاج",
+    "توكنات النطق متطابقة (باستثناء _eos_ لكل حد مقطع)",
+    "المكافئ الصوتي: ECAPA ≥ 0.90 + F0/RMS/مدة متقاربة"
+   ],
+   "fail": []
+  },
+  "J": {
+   "pass": [
+    "infer.synthesize (CLI path) يعمل كما هو"
+   ],
+   "fail": []
+  },
+  "K": {
+   "pass": [
+    "الأداء: الأربعة اكتملت بصوت (CPU)",
+    "مقارنة أحجام المقاطع (صغير/وسط/كبير) مقيسة"
+   ],
+   "fail": []
+  }
+ },
+ "failures": [],
+ "n_pass": 42,
+ "n_fail": 0,
+ "details": {
+  "A": {
+   "egy_multi: 4 مقاطع · سلامة النص": {
+    "chunks": [
+     "بص يا عمر، النهاردة هنتكلم عن القسمة.",
+     "القسمة معناها إننا بنوزع الحاجة بالتساوي.",
+     "عندنا 10 تفاحات وعايزين نقسمها على 5 أطفال.",
+     "كل واحد هياخد تفاحتين."
+    ],
+    "toks": [
+     52,
+     62,
+     75,
+     36
+    ],
+    "join": true,
+    "words": true,
+    "cap": true,
+    "min": true,
+    "arabic": true
+   },
+   "mixed_msa: 4 مقاطع · سلامة النص": {
+    "chunks": [
+     "يلا نبدأ الدرس.",
+     "اليوم هنتكلم عن القسمة{ق} يا عمر.",
+     "والآن ننتقل إلى الفصحى: القسمةُ عمليةٌ حسابيةٌ أساسيةٌ.",
+     "هل فهمت الدرس؟"
+    ],
+    "toks": [
+     24,
+     50,
+     92,
+     22
+    ],
+    "join": true,
+    "words": true,
+    "cap": true,
+    "min": true,
+    "arabic": true
+   },
+   "markers_shadda: 2 مقاطع · سلامة النص": {
+    "chunks": [
+     "قسّمنا قطعة{ق} قماش على رقم{ج} أطفال وكل واحد قال{ء} شكرًا.",
+     "الدَّرْس مُفيد جدًا."
+    ],
+    "toks": [
+     93,
+     21
+    ],
+    "join": true,
+    "words": true,
+    "cap": true,
+    "min": true,
+    "arabic": true
+   },
+   "no_punct_end: 2 مقاطع · سلامة النص": {
+    "chunks": [
+     "جملة أولى.",
+     "وجملة تانية بدون نقطة في الآخر"
+    ],
+    "toks": [
+     16,
+     45
+    ],
+    "join": true,
+    "words": true,
+    "cap": true,
+    "min": true,
+    "arabic": true
+   },
+   "tiny_sentences: 4 مقاطع · سلامة النص": {
+    "chunks": [
+     "بص. يا.",
+     "عمر. النهاردة.",
+     "هنبدأ.",
+     "الدرس."
+    ],
+    "toks": [
+     14,
+     21,
+     12,
+     12
+    ],
+    "join": true,
+    "words": true,
+    "cap": true,
+    "min": true,
+    "arabic": true
+   },
+   "digits_only_piece: 3 مقاطع · سلامة النص": {
+    "chunks": [
+     "عندي 5 كتب.",
+     "وقرأت 12 صفحة.",
+     "هل فهمت؟"
+    ],
+    "toks": [
+     22,
+     28,
+     15
+    ],
+    "join": true,
+    "words": true,
+    "cap": true,
+    "min": true,
+    "arabic": true
+   },
+   "الوسوم {ق}/{ج}/{ء} ملتحمة بكلماتها": {
+    "chunks": [
+     "قسّمنا قطعة{ق} قماش",
+     "على رقم{ج} أطفال وكل",
+     "واحد قال{ء} شكرًا.",
+     "الدَّرْس مُفيد جدًا."
+    ]
+   },
+   "الجملة العملاقة: تقسيم آمن بلا قصّ كلمات": {
+    "n": 30,
+    "toks": [
+     48,
+     50,
+     50,
+     50,
+     51,
+     48,
+     46,
+     48,
+     51,
+     48,
+     48,
+     51,
+     51,
+     52,
+     54,
+     54,
+     51,
+     54,
+     54,
+     54,
+     51,
+     60,
+     60,
+     60,
+     62,
+     58,
+     57,
+     58,
+     62,
+     58
+    ]
+   }
+  },
+  "B": {
+   "أول صوت قبل اكتمال النص (قبل آخر feed)": {
+    "first_audio": 1791485863.5,
+    "last_feed": 1791485865.4,
+    "fed_fraction_at_first_audio": 0.33
+   },
+   "أول صوت قبل finish()": {
+    "first_audio": 1791485863.5,
+    "finish": 1791485865.7
+   },
+   "تدفق متعدد المقاطع (9) + نهاية سليمة": {
+    "n_chunks": 9,
+    "end": "end"
+   },
+   "TTFA مقيس (من أول تغذية إلى أول مقطع جاهز)": {
+    "ttfa_s": 0.551,
+    "rtf": 0.0661,
+    "n_chunks": 9
+   }
+  },
+  "C": {
+   "إلغاء → StreamEnd(cancelled) سريع": {
+    "wake_s": 0.13,
+    "kind": "cancelled"
+   },
+   "المنتج خرج وطابور فارغ": {
+    "alive": false,
+    "pending": 0,
+    "discarded_inflight": 1
+   },
+   "لا مقاطع جديدة بعد الإلغاء": {
+    "emitted": 1,
+    "consumed": 1,
+    "state": "cancelled"
+   }
+  },
+  "D": {
+   "المقاطع المنتظرة حُذفت كلها": {
+    "emitted": 3,
+    "pending_before": 3,
+    "pending_after": 0
+   },
+   "لا صوت بعد التفريغ — فقط الحدث النهائي": {
+    "audio_after": 0,
+    "end": "cancelled"
+   }
+  },
+  "E": {
+   "chunk من 101 بعد بدء 102 يُرفض": {
+    "r1": "played",
+    "r_stale": "stale",
+    "r_new": "played"
+   },
+   "chunk بعد interrupt (قبل طلب جديد) يُسقط": {
+    "r_drop": "dropped"
+   }
+  },
+  "F": {
+   "طلب B اكتمل بعد مقاطعة A": {
+    "n_chunks_B": 4,
+    "elapsed": 0.63
+   },
+   "بلا إعادة تحميل النموذج + معرفات متصاعدة": {
+    "model_loads": 1,
+    "request_ids": [
+     4,
+     5
+    ]
+   }
+  },
+  "G": {
+   "G1: مقاطعة لحظة جاهزية المقطع — نظيفة": {
+    "state": "cancelled",
+    "first_seq": 1
+   },
+   "G2: إلغاء قبل التشغيل — لا وصول صوت": {
+    "emitted": 2,
+    "seen_after_cancel": 0,
+    "end": "cancelled"
+   },
+   "G3: أثناء التشغيل — توقف فوري + B كامل + لا قديم بعد B": {
+    "stop_latency_s": 0.036,
+    "cleared": 1,
+    "b_played": 4,
+    "a_after_b": 0,
+    "a1_interrupted": true
+   },
+   "G4: نتيجة inference متأخرة بعد الإلغاء تُهمَل": {
+    "discarded": 1,
+    "audio_seen": 0,
+    "emitted": 0
+   },
+   "G5: إلغاءات متكررة آمنة + المنتهية لا تفسد": {
+    "second": false,
+    "third": false,
+    "late_on_done": true,
+    "state": "done"
+   },
+   "G6: feed بعد cancel/finish يُرفض": {
+    "after_cancel": true,
+    "after_finish": true
+   }
+  },
+  "H": {
+   "متحدث 0: F0 ثابت عبر المقاطع (مدى < 60Hz)": {
+    "n_chunks": 9,
+    "f0s": [
+     147.0,
+     157.5,
+     157.5,
+     177.8,
+     165.8,
+     149.0,
+     155.3,
+     148.0,
+     182.2
+    ],
+    "spread": 35.2
+   },
+   "انفصال F0 رجل/مرأة (هوية متمايزة)": {
+    "spk0_f0_median": 157.5,
+    "spk1_f0_median": 218.3
+   },
+   "ECAPA (centroid): نفس المتحدث عبر المقاطع — أعلى بوضوح من العابر": {
+    "mean_to_centroid": 0.8305,
+    "min_to_centroid": 0.565,
+    "mean_pairwise": 0.6518,
+    "mean_cross_speaker_to_centroid": 0.327,
+    "n_chunks": 9
+   }
+  },
+  "I": {
+   "pitch continuity: مدى F0 < 60Hz وقفزة متجاورة < 45Hz": {
+    "f0s": [
+     153.1,
+     157.5,
+     158.6,
+     158.6,
+     152.1,
+     150.0,
+     158.6,
+     179.3
+    ],
+    "spread": 29.3,
+    "max_adjacent": 20.6
+   },
+   "loudness continuity: نسبة RMS بين المقاطع ≤ 2.2": {
+    "rms": [
+     0.121,
+     0.1163,
+     0.1192,
+     0.1163,
+     0.1111,
+     0.1156,
+     0.115,
+     0.1103
+    ],
+    "ratio": 1.097
+   },
+   "speaking rate: CV ≤ 0.30": {
+    "rates_tok_s": [
+     19.6,
+     19.87,
+     18.94,
+     18.78,
+     19.19,
+     20.35,
+     20.01,
+     18.31
+    ],
+    "cv": 0.033
+   },
+   "مدة المقاطع معقولة (متوسط 1.5-8ث)": {
+    "durations": [
+     2.3,
+     2.62,
+     5.39,
+     3.41,
+     1.56,
+     3.44,
+     3.65,
+     1.58
+    ],
+    "avg": 2.99
+   },
+   "chunk transitions: لا نقرات + فاصل صمت نظيف": {
+    "max_junction_jump": 0.0,
+    "gap_silence_clean": true
+   },
+   "انتقال مصرية↔فصحى: هوية المتحدث ثابتة عبر الحد": {
+    "transition_chunk": 4,
+    "n_chunks": 8,
+    "min_post_to_pre_centroid": 0.6598,
+    "mean_post_to_pre_centroid": 0.8085
+   }
+  },
+  "I2": {
+   "bit-identity لكل مقطع: التدفق الخام == مسار الإنتاج": {
+    "chunks": [
+     {
+      "seq": 1,
+      "n_tokens": 66,
+      "bit_equal": true
+     },
+     {
+      "seq": 2,
+      "n_tokens": 20,
+      "bit_equal": true
+     }
+    ]
+   },
+   "توكنات النطق متطابقة (باستثناء _eos_ لكل حد مقطع)": {
+    "n_stream": 86,
+    "n_single": 85,
+    "n_eos_stream": 2,
+    "n_eos_single": 1,
+    "equal_after_strip": true
+   },
+   "المكافئ الصوتي: ECAPA ≥ 0.90 + F0/RMS/مدة متقاربة": {
+    "ecapa_sim": 0.9781,
+    "f0_stream": 160.9,
+    "f0_single": 165.8,
+    "rms_stream": 0.1144,
+    "rms_single": 0.1066,
+    "dur_stream": 4.55,
+    "dur_single": 4.79,
+    "dur_ratio": 0.95
+   }
+  },
+  "J": {
+   "infer.synthesize (CLI path) يعمل كما هو": {
+    "n_tokens": 36,
+    "duration": 1.88,
+    "sr": 22050
+   }
+  },
+  "K": {
+   "الأداء: الأربعة اكتملت بصوت (CPU)": {
+    "rows": [
+     {
+      "test": "short",
+      "n_chunks": 1,
+      "ttfa_s": 0.109,
+      "rtf": 0.0622,
+      "total_gen_s": 0.11,
+      "wall_s": 0.2,
+      "audio_dur_s": 1.75,
+      "avg_chunk_dur_s": 1.75,
+      "first_chunk_tokens": 36,
+      "cpu_avg_pct": 0.0,
+      "cpu_max_pct": 0.0,
+      "rss_peak_mb": 875.0,
+      "cpu_cores": 2
+     },
+     {
+      "test": "medium",
+      "n_chunks": 4,
+      "ttfa_s": 0.166,
+      "rtf": 0.0586,
+      "total_gen_s": 0.6,
+      "wall_s": 0.8,
+      "audio_dur_s": 10.31,
+      "avg_chunk_dur_s": 2.58,
+      "first_chunk_tokens": 52,
+      "cpu_avg_pct": 94.9,
+      "cpu_max_pct": 100.0,
+      "rss_peak_mb": 878.0,
+      "cpu_cores": 2
+     },
+     {
+      "test": "long",
+      "n_chunks": 9,
+      "ttfa_s": 0.193,
+      "rtf": 0.0562,
+      "total_gen_s": 1.46,
+      "wall_s": 1.6,
+      "audio_dur_s": 25.95,
+      "avg_chunk_dur_s": 2.88,
+      "first_chunk_tokens": 77,
+      "cpu_avg_pct": 94.2,
+      "cpu_max_pct": 100.0,
+      "rss_peak_mb": 888.0,
+      "cpu_cores": 2
+     },
+     {
+      "test": "mixed",
+      "n_chunks": 8,
+      "ttfa_s": 0.106,
+      "rtf": 0.0577,
+      "total_gen_s": 1.38,
+      "wall_s": 1.4,
+      "audio_dur_s": 23.94,
+      "avg_chunk_dur_s": 2.99,
+      "first_chunk_tokens": 45,
+      "cpu_avg_pct": 96.2,
+      "cpu_max_pct": 100.0,
+      "rss_peak_mb": 894.0,
+      "cpu_cores": 2
+     }
+    ]
+   },
+   "مقارنة أحجام المقاطع (صغير/وسط/كبير) مقيسة": {
+    "small": {
+     "n_chunks": 21,
+     "ttfa_s": 0.086,
+     "rtf": 0.0777,
+     "avg_chunk_dur_s": 1.26,
+     "f0_spread": 47.6,
+     "rms_ratio": 1.845,
+     "total_gen_s": 2.05,
+     "n_inferences": 21
+    },
+    "medium": {
+     "n_chunks": 10,
+     "ttfa_s": 0.225,
+     "rtf": 0.062,
+     "avg_chunk_dur_s": 2.58,
+     "f0_spread": 35.2,
+     "rms_ratio": 1.14,
+     "total_gen_s": 1.6,
+     "n_inferences": 10
+    },
+    "large": {
+     "n_chunks": 9,
+     "ttfa_s": 0.201,
+     "rtf": 0.0581,
+     "avg_chunk_dur_s": 2.88,
+     "f0_spread": 35.2,
+     "rms_ratio": 1.15,
+     "total_gen_s": 1.51,
+     "n_inferences": 9
+    }
+   }
+  }
+ },
+ "h_ecapa": {
+  "mean_to_centroid": 0.8305,
+  "min_to_centroid": 0.565,
+  "mean_pairwise": 0.6518,
+  "mean_cross_to_centroid": 0.327
+ },
+ "i_prosody": {
+  "dialect_transition": {
+   "transition_chunk": 4,
+   "min_post_to_pre_centroid": 0.6598,
+   "mean_post_to_pre_centroid": 0.8085
+  },
+  "n_chunks": 8,
+  "f0s": [
+   153.1,
+   157.5,
+   158.6,
+   158.6,
+   152.1,
+   150.0,
+   158.6,
+   179.3
+  ],
+  "rms": [
+   0.121,
+   0.1163,
+   0.1192,
+   0.1163,
+   0.1111,
+   0.1156,
+   0.115,
+   0.1103
+  ],
+  "rates": [
+   19.6,
+   19.87,
+   18.94,
+   18.78,
+   19.19,
+   20.35,
+   20.01,
+   18.31
+  ],
+  "f0_spread": 29.3,
+  "rms_ratio": 1.097,
+  "rate_cv": 0.033,
+  "max_junction_jump": 0.0
+ },
+ "k_sizes": {
+  "small": {
+   "n_chunks": 21,
+   "ttfa_s": 0.086,
+   "rtf": 0.0777,
+   "avg_chunk_dur_s": 1.26,
+   "f0_spread": 47.6,
+   "rms_ratio": 1.845,
+   "total_gen_s": 2.05,
+   "n_inferences": 21
+  },
+  "medium": {
+   "n_chunks": 10,
+   "ttfa_s": 0.225,
+   "rtf": 0.062,
+   "avg_chunk_dur_s": 2.58,
+   "f0_spread": 35.2,
+   "rms_ratio": 1.14,
+   "total_gen_s": 1.6,
+   "n_inferences": 10
+  },
+  "large": {
+   "n_chunks": 9,
+   "ttfa_s": 0.201,
+   "rtf": 0.0581,
+   "avg_chunk_dur_s": 2.88,
+   "f0_spread": 35.2,
+   "rms_ratio": 1.15,
+   "total_gen_s": 1.51,
+   "n_inferences": 9
+  }
+ },
+ "environment": {
+  "checkpoint": "states_cont_180516.pth",
+  "model_iter": 180516,
+  "model_load_s": 3.01,
+  "cpu_cores": 2,
+  "ram_total_mb": 4238.0,
+  "rss_after_model_mb": 385.0,
+  "torch_threads": 2
+ },
+ "overall": "PASS"
+}
