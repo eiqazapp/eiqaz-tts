@@ -1,0 +1,9 @@
+# ============================================================================
+# متطلبات تصدير ONNX والتكميم (فوق requirements.txt الأساسي للحزمة)
+# تُثبَّت داخل بيئة الحزمة نفسها:
+#     python -m pip install -r requirements-onnx.txt
+# ============================================================================
+# الموجودة أصلًا في requirements.txt (لا تكرر): torch, onnxruntime, numpy,
+# soundfile, einops, packaging
+onnx==1.23.2
+onnxconverter-common==1.16.0

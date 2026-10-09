@@ -34,5 +34,21 @@ kaggle.json
 .env
 *.pem
 
+<<<<<<< HEAD
 # سجل خادم اختبار البث (يُولَد محليًا عند تشغيل test_webapp_ws.py)
 inference/tests/webapp_ws_server.log
+=======
+# تجربة المتصفح (web-exp) — نماذج ONNX مخرجات بناء تُولَّد محليًا
+# (build_models.bat) مثل checkpoints؛ البيانات الصغيرة المولدة
+# (textpipe_data.js/json ومراجع التكافؤ) تُرفع لأنها مشتقة من كود
+# المستودع نفسه ومطلوبة للاختبارات.
+web-exp/models/*.onnx
+web-exp/models/manifest.json
+web-exp/models/_*
+web-exp/models/baseline_wavs/
+web-exp/cert/
+inference/onnx/baseline_wavs/
+inference/onnx/baseline_sanity.json
+inference/onnx/baseline_results.json
+inference/onnx/bench_onnx_results.json
+>>>>>>> 7d2164b (onnx toolkit: export FP32 (parity 14/14 vs PyTorch) + quantize FP16/INT8-dyn/INT8-static + golden set + benchmarks + inspect baseline)
