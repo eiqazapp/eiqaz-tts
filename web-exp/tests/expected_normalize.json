@@ -1,0 +1,202 @@
+[
+ {
+  "raw": "عندي 5 كتب",
+  "dialect": "egy",
+  "normalized": "عندي خمسة كتب"
+ },
+ {
+  "raw": "عندي 5 كتب",
+  "dialect": "msa",
+  "normalized": "عندي خمسة كتب"
+ },
+ {
+  "raw": "عمره 10 سنين",
+  "dialect": "egy",
+  "normalized": "عمره عشرة سنين"
+ },
+ {
+  "raw": "عمره 10 سنين",
+  "dialect": "msa",
+  "normalized": "عمره عشرة سنين"
+ },
+ {
+  "raw": "عام 2026",
+  "dialect": "egy",
+  "normalized": "عام ألفين وستة وعشرين"
+ },
+ {
+  "raw": "عام 2026",
+  "dialect": "msa",
+  "normalized": "عام ألفان وستة وعشرون"
+ },
+ {
+  "raw": "250 جنيه",
+  "dialect": "egy",
+  "normalized": "ميتين وخمسين جنيه"
+ },
+ {
+  "raw": "250 جنيه",
+  "dialect": "msa",
+  "normalized": "مئتان وخمسون جنيه"
+ },
+ {
+  "raw": "12345",
+  "dialect": "egy",
+  "normalized": "اتناشر ألف وتلاتمية وخمسة وأربعين"
+ },
+ {
+  "raw": "12345",
+  "dialect": "msa",
+  "normalized": "اثنا عشر ألف وثلاثمائة وخمسة وأربعون"
+ },
+ {
+  "raw": "٥ كتب",
+  "dialect": "egy",
+  "normalized": "خمسة كتب"
+ },
+ {
+  "raw": "٥ كتب",
+  "dialect": "msa",
+  "normalized": "خمسة كتب"
+ },
+ {
+  "raw": "استهلكت 80% من الباقة",
+  "dialect": "egy",
+  "normalized": "استهلكت تمانين في المية من الباقة"
+ },
+ {
+  "raw": "استهلكت 80% من الباقة",
+  "dialect": "msa",
+  "normalized": "استهلكت ثمانون في المية من الباقة"
+ },
+ {
+  "raw": "3.5",
+  "dialect": "egy",
+  "normalized": "تلاتة ونص"
+ },
+ {
+  "raw": "3.5",
+  "dialect": "msa",
+  "normalized": "ثلاثة ونص"
+ },
+ {
+  "raw": "5.4",
+  "dialect": "egy",
+  "normalized": "خمسة فاصل أربعة"
+ },
+ {
+  "raw": "5.4",
+  "dialect": "msa",
+  "normalized": "خمسة فاصل أربعة"
+ },
+ {
+  "raw": "192.168.1.1",
+  "dialect": "egy",
+  "normalized": "واحد تسعة اتنين نقطة واحد ستة تمانية نقطة واحد نقطة واحد"
+ },
+ {
+  "raw": "192.168.1.1",
+  "dialect": "msa",
+  "normalized": "واحد تسعة اثنين نقطة واحد ستة ثمانية نقطة واحد نقطة واحد"
+ },
+ {
+  "raw": "1,000 جنيه",
+  "dialect": "egy",
+  "normalized": "ألف جنيه"
+ },
+ {
+  "raw": "1,000 جنيه",
+  "dialect": "msa",
+  "normalized": "ألف جنيه"
+ },
+ {
+  "raw": "meeting بكرة",
+  "dialect": "egy",
+  "normalized": "ميتينج بكرة"
+ },
+ {
+  "raw": "meeting بكرة",
+  "dialect": "msa",
+  "normalized": "ميتينج بكرة"
+ },
+ {
+  "raw": "{ق}انون",
+  "dialect": "egy",
+  "normalized": "قانون{ق}"
+ },
+ {
+  "raw": "{ق}انون",
+  "dialect": "msa",
+  "normalized": "قانون{ق}"
+ },
+ {
+  "raw": "{ق}قانون",
+  "dialect": "egy",
+  "normalized": "قانون{ق}"
+ },
+ {
+  "raw": "{ق}قانون",
+  "dialect": "msa",
+  "normalized": "قانون{ق}"
+ },
+ {
+  "raw": "هل أنت جاهز؟",
+  "dialect": "egy",
+  "normalized": "هل أنت جاهز?"
+ },
+ {
+  "raw": "هل أنت جاهز؟",
+  "dialect": "msa",
+  "normalized": "هل أنت جاهز?"
+ },
+ {
+  "raw": "دلوقتي هنبدأ الدرس، يا عمر.",
+  "dialect": "egy",
+  "normalized": "دلوقتي هنبدأ الدرس, يا عمر."
+ },
+ {
+  "raw": "دلوقتي هنبدأ الدرس، يا عمر.",
+  "dialect": "msa",
+  "normalized": "دلوقتي هنبدأ الدرس, يا عمر."
+ },
+ {
+  "raw": "خلينا الساعة 7 الصبح ونرجع 3 العصر",
+  "dialect": "egy",
+  "normalized": "خلينا الساعة سبعة الصبح ونرجع تلاتة العصر"
+ },
+ {
+  "raw": "خلينا الساعة 7 الصبح ونرجع 3 العصر",
+  "dialect": "msa",
+  "normalized": "خلينا الساعة سبعة الصبح ونرجع ثلاثة العصر"
+ },
+ {
+  "raw": "عندي 2500000 جنيه",
+  "dialect": "egy",
+  "normalized": "عندي مليونين وخمسمية ألف جنيه"
+ },
+ {
+  "raw": "عندي 2500000 جنيه",
+  "dialect": "msa",
+  "normalized": "عندي مليونان وخمسمائة ألف جنيه"
+ },
+ {
+  "raw": "الالتحاق بويندوز 11 ممتاز",
+  "dialect": "egy",
+  "normalized": "الالتحاق بويندوز حداشر ممتاز"
+ },
+ {
+  "raw": "الالتحاق بويندوز 11 ممتاز",
+  "dialect": "msa",
+  "normalized": "الالتحاق بويندوز أحد عشر ممتاز"
+ },
+ {
+  "raw": "نزل الupdate الجديد",
+  "dialect": "egy",
+  "normalized": "نزل الأبديت الجديد"
+ },
+ {
+  "raw": "نزل الupdate الجديد",
+  "dialect": "msa",
+  "normalized": "نزل الأبديت الجديد"
+ }
+]

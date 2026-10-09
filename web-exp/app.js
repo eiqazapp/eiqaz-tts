@@ -23,7 +23,8 @@
   const els = {
     modelSel: $('modelSel'), vocoderSel: $('vocoderSel'), epSel: $('epSel'),
     speakerSel: $('speakerSel'), dialectSel: $('dialectSel'),
-    paceRange: $('paceRange'), paceVal: $('paceVal'), useCatt: $('useCatt'),
+    paceRange: $('paceRange'), paceVal: $('paceVal'),
+    diacritizeSel: $('diacritizeSel'),
     modelHint: $('modelHint'), vocoderHint: $('vocoderHint'), epHint: $('epHint'),
     sanityWarn: $('sanityWarn'), loadModelStatus: $('loadModelStatus'),
     textInput: $('textInput'), runStatus: $('runStatus'), metrics: $('metrics'),
@@ -259,7 +260,6 @@
   let cattInfo = null;
   async function ensureCatt(onProgress) {
     if (cattInfo) return cattInfo;
-    if (!els.useCatt.checked) return null;
     const ort = globalThis.ort;
     const { buf, fetchMs } = await fetchWithProgress('models/catt_eo.onnx',
       (got, total) => onProgress && onProgress('المشكل', got, total));
@@ -416,42 +416,21 @@
     const TP = globalThis.TextPipe;
     const { mix, voc } = opts.sessions;
 
-    // قرار التشكيل موحد مسبقًا على النص الكامل (كما في webapp)
-    // التشكيل غير متزامن (جلسة ONNX) — يُنفَّذ هنا قبل خط الأنابيب
-    // المتزامن، بنفس دلالات بايثون حرفيًا: catt يستقبل النص بعد
-    // توحيد المسافات ونزع علامات {ق}/{ء}/{ج} (parse_qaf_markers أولًا)
-    const vocMode = opts.vocMode;
-    let pipeInput = rawText;
-    let pipeMode = 'never';
-    if (vocMode === 'always') {
+    // المسار الجديد (Eiqaz v1): prepareTextRich يقوم بالتطبيع كله
+    // (أرقام→كلمات، ترقيم، نقحرة) والتشكيل حسب الوضع — catt يُحمَّل
+    // كسولًا فقط إن حسم الوضع التلقائي تشكيلًا (نص غير مشكول).
+    // الوضع egyptian الكامل (قواعد det) بايثون فقط — هنا بلا det (موثق).
+    const cattFn = async (t) => {
       const catt = await ensureCatt(opts.onProgress);
-      if (myEpoch !== state.epoch) return null;
-      if (!catt) throw new Error('التشكيل مطلوب (نص غير مشكول) لكن catt معطَّل');
-      const normalized = TP.pySplit(rawText).join(' ');
-      const [clean] = TP.parseQafMarkers(normalized);
-      const vocalized = await globalThis.CattTashkeel.predict(
-        catt.session, clean);
-      if (myEpoch !== state.epoch) return null;
-      pipeInput = vocalized;
-      // بايثون: voc = ' '.join(catt(text).split()) — catt يقص غير العربي
-      // بنفسه؛ تمريره بنمط never يطبق keepArabicOnly (idempotent عليه)
-      pipeMode = 'never';
-    }
-
-    const res = TP.prepareTextRich(pipeInput, pipeMode,
-      opts.dialect, 'auto', null);
+      if (myEpoch !== state.epoch) throw new Error('canceled');
+      return globalThis.CattTashkeel.predict(catt.session, t);
+    };
+    const res = await TP.prepareTextRich(rawText, opts.diacritize,
+      opts.dialect, cattFn);
     if (myEpoch !== state.epoch) return null;
 
-    const acts = (res.qafActions && Object.keys(res.qafActions).length)
-      ? res.qafActions : null;
-    const nat = (res.qafNative && res.qafNative.length)
-      ? new Set(res.qafNative) : null;
-    let toks;
-    if (opts.dialect === 'msa') {
-      toks = TP.msaSynthesisTokens(res.text, 'auto', acts);
-    } else {
-      toks = TP.toksEgy(res.text, 'auto', acts, nat);
-    }
+    const toks = opts.dialect === 'msa'
+      ? TP.toksMs(res.text) : TP.toksEgy(res.text);
     const ids = TP.tokensToIds(toks);
     if (ids.length < 2) throw new Error('مقطع قصير جدًا بعد الترميز');
     if (myEpoch !== state.epoch) return null;
@@ -518,14 +497,13 @@
       const raw = els.textInput.value.trim();
       const TP = globalThis.TextPipe;
       const dialect = els.dialectSel.value;
-      const vocMode = TP.effectiveVocalizeMode(raw,
-        els.useCatt.checked ? 'auto' : 'never');
+      const diacritize = els.diacritizeSel.value;
       setStatus('تقسيم النص وتوليد المقاطع…', null);
 
       const chunks = TP.splitIntoChunks(raw, dialect);
       if (!chunks.length) throw new Error('النص لا يحتوي حروفًا عربية');
       const opts = {
-        sessions, dialect, vocMode,
+        sessions, dialect, diacritize,
         speaker: +els.speakerSel.value, pace: +els.paceRange.value,
       };
 
@@ -604,10 +582,9 @@
       const raw = els.textInput.value.trim();
       const TP = globalThis.TextPipe;
       const dialect = els.dialectSel.value;
-      const vocMode = TP.effectiveVocalizeMode(raw,
-        els.useCatt.checked ? 'auto' : 'never');
+      const diacritize = els.diacritizeSel.value;
       const opts = {
-        sessions, dialect, vocMode,
+        sessions, dialect, diacritize,
         speaker: +els.speakerSel.value, pace: +els.paceRange.value,
       };
 
@@ -916,14 +893,10 @@
     for (const item of expected) {
       if (item.error) { rows.push({ id: item.id, skipped: true }); continue; }
       try {
-        const res = TP.prepareTextRich(item.text, 'never', item.dialect, 'auto', null);
-        const acts = (res.qafActions && Object.keys(res.qafActions).length)
-          ? res.qafActions : null;
-        const nat = (res.qafNative && res.qafNative.length)
-          ? new Set(res.qafNative) : null;
+        const res = await TP.prepareTextRich(item.text, 'manual',
+          item.dialect, null);
         const toks = item.dialect === 'msa'
-          ? TP.msaSynthesisTokens(res.text, 'auto', acts)
-          : TP.toksEgy(res.text, 'auto', acts, nat);
+          ? TP.toksMs(res.text) : TP.toksEgy(res.text);
         const ids = TP.tokensToIds(toks);
         rows.push({
           id: item.id,

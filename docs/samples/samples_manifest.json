@@ -1,0 +1,109 @@
+{
+  "checkpoint": "states_cont_180516.pth",
+  "iter": "180516",
+  "note_ar": "عينات استماع للمقارنة — نفس النص والتوكنز والمتحدث وpace لكل النسخ؛ baseline هو مسار PyTorch الإنتاجي كما هو",
+  "samples": [
+    {
+      "id": "egy_short_01",
+      "variant": "baseline_pytorch",
+      "file": "egy_short_01_baseline_pytorch.wav",
+      "gen_s": 1.42
+    },
+    {
+      "id": "egy_short_01",
+      "variant": "fp32",
+      "file": "egy_short_01_fp32.wav",
+      "gen_s": 0.04,
+      "audio_s": 1.49
+    },
+    {
+      "id": "egy_short_01",
+      "variant": "fp16",
+      "file": "egy_short_01_fp16.wav",
+      "gen_s": 0.143,
+      "audio_s": 1.49
+    },
+    {
+      "id": "egy_short_01",
+      "variant": "int8dyn",
+      "file": "egy_short_01_int8dyn.wav",
+      "gen_s": 0.108,
+      "audio_s": 1.49
+    },
+    {
+      "id": "egy_short_01",
+      "variant": "int8static",
+      "file": "egy_short_01_int8static.wav",
+      "gen_s": 0.094,
+      "audio_s": 1.51
+    },
+    {
+      "id": "marker_qaf_01",
+      "variant": "baseline_pytorch",
+      "file": "marker_qaf_01_baseline_pytorch.wav",
+      "gen_s": 1.539
+    },
+    {
+      "id": "marker_qaf_01",
+      "variant": "fp32",
+      "file": "marker_qaf_01_fp32.wav",
+      "gen_s": 0.195,
+      "audio_s": 3.03
+    },
+    {
+      "id": "marker_qaf_01",
+      "variant": "fp16",
+      "file": "marker_qaf_01_fp16.wav",
+      "gen_s": 0.289,
+      "audio_s": 3.03
+    },
+    {
+      "id": "marker_qaf_01",
+      "variant": "int8dyn",
+      "file": "marker_qaf_01_int8dyn.wav",
+      "gen_s": 0.293,
+      "audio_s": 3.05
+    },
+    {
+      "id": "marker_qaf_01",
+      "variant": "int8static",
+      "file": "marker_qaf_01_int8static.wav",
+      "gen_s": 0.214,
+      "audio_s": 3.04
+    },
+    {
+      "id": "msa_01",
+      "variant": "baseline_pytorch",
+      "file": "msa_01_baseline_pytorch.wav",
+      "gen_s": 2.501
+    },
+    {
+      "id": "msa_01",
+      "variant": "fp32",
+      "file": "msa_01_fp32.wav",
+      "gen_s": 0.206,
+      "audio_s": 4.01
+    },
+    {
+      "id": "msa_01",
+      "variant": "fp16",
+      "file": "msa_01_fp16.wav",
+      "gen_s": 0.266,
+      "audio_s": 4.01
+    },
+    {
+      "id": "msa_01",
+      "variant": "int8dyn",
+      "file": "msa_01_int8dyn.wav",
+      "gen_s": 0.282,
+      "audio_s": 3.99
+    },
+    {
+      "id": "msa_01",
+      "variant": "int8static",
+      "file": "msa_01_int8static.wav",
+      "gen_s": 0.307,
+      "audio_s": 4.05
+    }
+  ]
+}

@@ -145,8 +145,13 @@
       <div>
         <label for="speakerSel">المتحدث</label>
         <select id="speakerSel">
-          <option value="0" selected>٠ — SPEAKER_01 (ذكر)</option>
-          <option value="1">١ — SPEAKER_02 (أنثى)</option>
+          <option value="0" selected>٠ — ذكر مصري (SPEAKER_01)</option>
+          <option value="1">١ — أنثى مصرية (SPEAKER_02)</option>
+          <option value="2">٢ — فصحى ذكر كلاسيكي</option>
+          <option value="3">٣ — فصحى أنثى</option>
+          <option value="4">٤ — فصحى (متقدم)</option>
+          <option value="5">٥ — فصحى (متقدم)</option>
+          <option value="6">٦ — فصحى (متقدم)</option>
         </select>
       </div>
       <div>
@@ -161,9 +166,23 @@
         <input type="range" id="paceRange" min="0.5" max="1.6" step="0.05" value="1">
       </div>
     </div>
-    <div class="toggle-row">
-      <input type="checkbox" id="useCatt" checked>
-      <label for="useCatt" style="margin:0">تشكيل تلقائي داخل المتصفح (catt_eo — يُحمَّل عند الحاجة 78MB)</label>
+    <div class="grid2" style="margin-top:12px">
+      <div>
+        <label for="diacritizeSel">التشكيل</label>
+        <select id="diacritizeSel">
+          <option value="auto" selected>تلقائي (كثافة النص تحسم)</option>
+          <option value="fusha">تشكيل catt (بلا قواعد det)</option>
+          <option value="manual">النص كما هو (مشكول يدويًا)</option>
+        </select>
+        <div class="hint">«مصري كامل + قواعد det» يعمل في واجهة الإنتاج بايثون — هنا catt فقط (موثق في التقرير)</div>
+      </div>
+      <div>
+        <label>ملاحظة</label>
+        <div class="hint" style="margin-top:6px">
+          الأرقام واللاتيني تُطبَّع تلقائيًا (٣ → «تلاتة»، meeting → «ميتينج») —
+          نفس eqz_text الإنتاجي، مثبت تكافؤه.
+        </div>
+      </div>
     </div>
     <div class="warnbox" id="sanityWarn">
       ⚠️ النماذج الحالية مبنية على <b>أوزان عشوائية (sanity)</b> — للتحقق الميكانيكي فقط؛

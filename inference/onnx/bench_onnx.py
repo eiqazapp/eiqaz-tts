@@ -58,21 +58,14 @@ def main():
     with open(args.gold, encoding='utf-8') as f:
         gold = json.load(f)
 
-    # توكنز ذهبية + تقسيم جمل (كما يفعل المتصفح)
-    toks_ms, toks_egy, ids_of = infer.get_tokenizer('auto')
+    toks_ms, toks_egy, ids_of = infer.get_tokenizer()
     cases = []
     for item in gold['items']:
         try:
-            res = infer.prepare_text_rich(item['text'], 'never',
-                                          item['dialect'], 'auto')
-            acts = res['qaf_actions'] or None
-            nat = frozenset(res['qaf_native']) or None
-            if item['dialect'] == 'msa':
-                toks = infer.get_msa_synthesis_tokens(res['text'], 'auto',
-                                                      acts)
-            else:
-                _, te, ids_of = infer.get_tokenizer('auto', acts, nat)
-                toks = te(res['text'])
+            res = infer.prepare_text_rich(item['text'], 'manual',
+                                          item['dialect'])
+            toks = toks_ms(res['text']) if item['dialect'] == 'msa' \
+                else toks_egy(res['text'])
             ids = ids_of(toks)
             if 2 <= len(ids) <= 160:
                 cases.append((item['id'], item['text'], ids))
@@ -135,11 +128,9 @@ def main():
                 stream_text = next(g['text'] for g in gold['items']
                                    if g['id'] == 'stream_long_01')
                 first_sent = stream_text.split('.')[0].strip() + '.'
-                res1 = infer.prepare_text_rich(first_sent, 'never', 'egy',
-                                               'auto')
-                _, te1, _ = infer.get_tokenizer('auto', res1['qaf_actions']
-                                                or None, None)
-                ids1 = infer.get_tokenizer('auto')[2](te1(res1['text']))
+                res1 = infer.prepare_text_rich(first_sent, 'manual', 'egy')
+                toks_ms, toks_egy, ids_of = infer.get_tokenizer()
+                ids1 = ids_of(toks_egy(res1['text']))
                 t0 = time.perf_counter()
                 mel1 = run_mel(sess, ids1)
                 vocos.run(None, {'mel_spec': mel1.astype('float32'),

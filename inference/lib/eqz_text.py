@@ -158,16 +158,22 @@ def _under_1000(n, egy):
 
 
 def _big_scale(n, one, two, plurals, egy):
-    """مساعدة النطاقات الكبيرة (آلاف/ملايين/مليارات)."""
+    """مساعدة النطاقات الكبيرة (آلاف/ملايين/مليارات).
+
+    [إصلاح معزول موثق 2026-10-09 — اكتشفه منفذ JS للمتصفح]: كان
+    plurals[(3,)] بمفتاح صفّي (tuple) بينما المتصل يمرر قاموسًا بمفاتيح
+    int {3:…, 5:…} — KeyError يسقط أي طلب يحوي عددًا ≥ مليون (لم يظهر
+    في الاختبارات الذاتية لأنها لا تتجاوز 12345). الصواب البنيوي:
+    plurals[3]. لا يمس أي نطق — نفس الصيغ الجمعية المقصودة."""
     out = []
     if n == 1:
         out.append(one)
     elif n == 2:
         out.append(two)
     elif 3 <= n <= 10:
-        out.append(f'{_under_100(n, egy)} {plurals[(3,)]}')
+        out.append(f'{_under_100(n, egy)} {plurals[3]}')
     else:
-        out.append(f'{_under_1000(n, egy)} {plurals[(5,)]}')
+        out.append(f'{_under_1000(n, egy)} {plurals[5]}')
     return ' '.join(out)
 
 

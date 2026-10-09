@@ -120,14 +120,14 @@ def fp16_blocklist(model):
 def golden_token_sets(gold_path):
     with open(gold_path, encoding='utf-8') as f:
         gold = json.load(f)
-    toks_ms, toks_egy, ids_of = infer.get_tokenizer('auto')
+    toks_ms, toks_egy, ids_of = infer.get_tokenizer()
     out = []
     for item in gold['items']:
         try:
-            res = infer.prepare_text_rich(item['text'], 'auto',
-                                          item['dialect'], 'auto')
-            toks = (infer.get_msa_synthesis_tokens(res['text'], 'auto')
-                    if item['dialect'] == 'msa' else toks_egy(res['text']))
+            res = infer.prepare_text_rich(item['text'], 'manual',
+                                          item['dialect'])
+            toks = toks_ms(res['text']) if item['dialect'] == 'msa' \
+                else toks_egy(res['text'])
             ids = ids_of(toks)
             if 2 <= len(ids) <= 160:
                 out.append((item['id'], ids))
@@ -147,6 +147,27 @@ def run_mel(sess, ids, pace=1.0, speaker=0):
 # ---------------------------------------------------------------------------
 # القياس
 # ---------------------------------------------------------------------------
+def _stft_mag(w, n=1024, hop=256):
+    """طيف القدرة التقريبي (بلا مكتبات خارجية) — مقاوم للانزياح الزمني."""
+    if len(w) < n:
+        w = np.pad(w, (0, n - len(w)))
+    n_frames = 1 + (len(w) - n) // hop
+    win = np.hanning(n).astype(w.dtype)
+    frames = np.stack([w[i * hop:i * hop + n] * win
+                       for i in range(n_frames)])
+    return np.abs(np.fft.rfft(frames, axis=1))
+
+
+def _spec_cos(wa, wb):
+    ma, mb = _stft_mag(wa), _stft_mag(wb)
+    L = min(len(ma), len(mb))
+    if L < 2:
+        return None
+    a, b = ma[:L].ravel(), mb[:L].ravel()
+    na, nb = np.linalg.norm(a), np.linalg.norm(b)
+    return float(np.dot(a, b) / (na * nb)) if na > 0 and nb > 0 else None
+
+
 def parity_rows(sess_q, refs, vocos_sess=None):
     rows = []
     for gid, ids, ref in refs:
@@ -176,8 +197,13 @@ def parity_rows(sess_q, refs, vocos_sess=None):
                 row['wav_cos'] = round(
                     float(np.dot(va, vb) / (nva * nvb)), 6) \
                     if nva > 0 and nvb > 0 else None
+                # ارتباط طيف القدرة — مقاوم لانزياح 1-2 إطار (~23-46مل)
+                # الذي يفسد ارتباط الموجة الخام بلا أثر إدراكي مكافئ
+                sc = _spec_cos(va, vb)
+                row['spec_cos'] = round(sc, 6) if sc is not None else None
             except Exception:                                  # noqa: BLE001
                 row['wav_cos'] = None
+                row['spec_cos'] = None
         rows.append(row)
     return rows
 
@@ -188,7 +214,9 @@ def summarize(rows):
               default=None)
     wcos = min((r['wav_cos'] for r in rows if r['wav_cos'] is not None),
                default=None)
-    return fd, cos, wcos
+    scos = min((r['spec_cos'] for r in rows if r['spec_cos'] is not None),
+               default=None)
+    return fd, cos, wcos, scos
 
 
 def bench_load_and_run(path, token_sets, n=5):
@@ -275,7 +303,7 @@ def main():
         sess16 = ort.InferenceSession(p16,
                                       providers=['CPUExecutionProvider'])
         rows = parity_rows(sess16, refs, vocos_sess)
-        fd, cos, wcos = summarize(rows)
+        fd, cos, wcos, scos = summarize(rows)
         load_s, run_ms = bench_load_and_run(p16, calib)
         verdict = ('PASS' if fd == 0 and (cos or 0) > 0.9999 else 'PARTIAL')
         manifest.append({
@@ -285,12 +313,13 @@ def main():
             'server_bench': {'load_s': load_s, 'avg_run_ms': run_ms},
             'parity': {'verdict': verdict, 'frames_diff_max': fd,
                        'mel_cos_min': cos, 'wav_cos_min': wcos,
+                       'spec_cos_min': scos,
                        'rows': rows},
             'notes_ar': ('نصف الدقة مع حماية عقد Cast والشكل والمتنبئات — '
                          'حجم ~63% من FP32'),
         })
         print(f'  fp16: {os.path.getsize(p16)/1e6:.1f}MB fd={fd} '
-              f'cos={cos} wav_cos={wcos}')
+              f'cos={cos} wav_cos={wcos} spec_cos={scos}')
     except Exception as e:                                      # noqa: BLE001
         manifest.append({**base, 'id': 'fp16', 'file': 'mixertts_fp16.onnx',
                          'precision': 'fp16', 'status': 'failed',
@@ -305,9 +334,9 @@ def main():
         s8d = ort.InferenceSession(p8d,
                                    providers=['CPUExecutionProvider'])
         rows = parity_rows(s8d, refs, vocos_sess)
-        fd, cos, wcos = summarize(rows)
+        fd, cos, wcos, scos = summarize(rows)
         load_s, run_ms = bench_load_and_run(p8d, calib)
-        verdict = ('PASS' if fd <= 2 and (wcos or 0) > 0.95 else 'PARTIAL')
+        verdict = ('PASS' if fd <= 2 and (scos or 0) > 0.97 else 'PARTIAL')
         manifest.append({
             **base, 'id': 'int8dyn', 'file': 'mixertts_int8dyn.onnx',
             'precision': 'int8-dynamic',
@@ -315,14 +344,16 @@ def main():
             'server_bench': {'load_s': load_s, 'avg_run_ms': run_ms},
             'parity': {'verdict': verdict, 'frames_diff_max': fd,
                        'mel_cos_min': cos, 'wav_cos_min': wcos,
-                       'tolerance_ar': ('frames<=2 و wav_cos>0.95 — '
-                                        'بأوزان عشوائية هذا متشائم؛ أعِد '
-                                        'القياس بالأوزان الحقيقية'),
+                       'spec_cos_min': scos,
+                       'tolerance_ar': ('frames<=2 و spec_cos>0.97 (ارتباط '
+                                        'الطيف — مقاوم للانزياح الزمني؛ '
+                                        'wav_cos الخام ينهار عند انزياح '
+                                        'إطار واحد ~23مل بلا أثر إدراكي)'),
                        'rows': rows},
             'notes_ar': 'تكميم ديناميكي INT8 (أوزان QInt8، المتنبئات محمية)',
         })
         print(f'  int8dyn: {os.path.getsize(p8d)/1e6:.1f}MB fd={fd} '
-              f'cos={cos} wav_cos={wcos}')
+              f'cos={cos} wav_cos={wcos} spec_cos={scos}')
     except Exception as e:                                      # noqa: BLE001
         manifest.append({**base, 'id': 'int8dyn',
                          'file': 'mixertts_int8dyn.onnx',
@@ -357,9 +388,9 @@ def main():
         s8s = ort.InferenceSession(p8s,
                                    providers=['CPUExecutionProvider'])
         rows = parity_rows(s8s, refs, vocos_sess)
-        fd, cos, wcos = summarize(rows)
+        fd, cos, wcos, scos = summarize(rows)
         load_s, run_ms = bench_load_and_run(p8s, calib)
-        verdict = ('PASS' if fd <= 4 and (wcos or 0) > 0.90 else 'PARTIAL')
+        verdict = ('PASS' if fd <= 4 and (scos or 0) > 0.95 else 'PARTIAL')
         manifest.append({
             **base, 'id': 'int8static', 'file': 'mixertts_int8static.onnx',
             'precision': 'int8-static-qdq',
@@ -367,15 +398,15 @@ def main():
             'server_bench': {'load_s': load_s, 'avg_run_ms': run_ms},
             'parity': {'verdict': verdict, 'frames_diff_max': fd,
                        'mel_cos_min': cos, 'wav_cos_min': wcos,
-                       'tolerance_ar': ('frames<=4 و wav_cos>0.90 — '
-                                        'بأوزان عشوائية متشائم؛ أعِد '
-                                        'القياس بالأوزان الحقيقية'),
+                       'spec_cos_min': scos,
+                       'tolerance_ar': ('frames<=4 و spec_cos>0.95 (ارتباط '
+                                        'الطيف — انظر ملاحظة int8dyn)'),
                        'rows': rows},
             'notes_ar': ('تكميم ثابت QDQ بمعايرة MinMax على توكنز النصوص '
                          'الذهبية (per-channel)'),
         })
         print(f'  int8static: {os.path.getsize(p8s)/1e6:.1f}MB fd={fd} '
-              f'cos={cos} wav_cos={wcos}')
+              f'cos={cos} wav_cos={wcos} spec_cos={scos}')
     except Exception as e:                                      # noqa: BLE001
         manifest.append({**base, 'id': 'int8static',
                          'file': 'mixertts_int8static.onnx',

@@ -82,17 +82,18 @@ def sha256_of(path, chunk=1 << 20):
 
 
 def golden_token_sets(gold_path):
-    """توكنز حقيقية من النصوص الذهبية عبر مسار النص الإنتاجي نفسه."""
+    """توكنز حقيقية من النصوص الذهبية عبر مسار النص الإنتاجي نفسه
+    (وضع manual — بلا تشكيل آلي — مرجع حتمي للتكافؤ)."""
     with open(gold_path, encoding='utf-8') as f:
         gold = json.load(f)
-    toks_ms, toks_egy, ids_of = infer.get_tokenizer('auto')
+    toks_ms, toks_egy, ids_of = infer.get_tokenizer()
     out = []
     for item in gold['items']:
         try:
-            res = infer.prepare_text_rich(item['text'], 'auto',
-                                          item['dialect'], 'auto')
-            toks = (infer.get_msa_synthesis_tokens(res['text'], 'auto')
-                    if item['dialect'] == 'msa' else toks_egy(res['text']))
+            res = infer.prepare_text_rich(item['text'], 'manual',
+                                          item['dialect'])
+            toks = toks_ms(res['text']) if item['dialect'] == 'msa' \
+                else toks_egy(res['text'])
             ids = ids_of(toks)
             if 2 <= len(ids) <= 160:          # داخل سقف التدريب
                 out.append((item['id'], ids))
@@ -192,12 +193,10 @@ def main():
           f'ضمن 1e-3')
 
     # ---- حفظ net_config + الرموز للمتصفح ----------------------------------
-    net_config = dict(getattr(model, '_net_config', None) or
-                      infer.NET_CONFIG_FALLBACK)
-    # المصدر الحقيقي: أعد قراءته من الـcheckpoint
     st = torch.load(ckpt, map_location='cpu', weights_only=False)
     net_config = dict(st.get('net_config') or infer.NET_CONFIG_FALLBACK)
     from tts_arabic.text.symbols import symbols as SYMBOLS  # noqa: E402
+    import eqz_tokens  # noqa: E402
     meta = {
         'name': 'mixertts_fp32.onnx',
         'file': 'mixertts_fp32.onnx',
@@ -214,7 +213,9 @@ def main():
         'pitch_mean': float(getattr(model, 'pitch_mean', 212.35853576660156)),
         'pitch_std': float(getattr(model, 'pitch_std', 67.24)),
         'symbols': SYMBOLS,
-        'egy_token_map': infer.EGY_TOKEN_MAP,
+        'egy_sound_map': eqz_tokens.EGY_SOUND_MAP,
+        'allowed_speakers': list(infer.ALLOWED_SPEAKERS),
+        'egyptian_speakers': list(infer.EGYPTIAN_SPEAKERS),
         'inputs': {'text': 'int64[1,T]', 'pace': 'float32',
                    'speaker': 'int64'},
         'outputs': {'mel': 'float32[1,80,T_out]'},

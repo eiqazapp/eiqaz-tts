@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""توليد بيانات خط النص لمنفذ JS (textpipe.js).
+"""توليد بيانات خط النص لمنفذ JS (textpipe.js) — Eiqaz v1.
 
-يستخرج كل المعاجم والقوائم والرموز منinfer.py نفسه (المصدر الوحيد
-للحقيقة) ويكتبها JSON — لا نسخ يدوي يخطئ أبدًا.
+يستخرج كل المعاجم والقوائم والرموز من eqz_tokens.py/eqz_text.py نفسها
+(المصدر الوحيد للحقيقة) ويكتبها JSON/JS — لا نسخ يدوي يخطئ أبدًا.
 
 المخرجات:
-  web-exp/models/textpipe_data.json — كل ثوابت القاف + الرموز + الخرائط
-  web-exp/tests/expected_tokens.json — التوكنز المتوقعة للنصوص الذهبية
-                                        (مسار never — بلا تشكيل catt)
-  web-exp/tests/expected_catt.json   — مخرجات catt_eo المتوقعة للنصوص الذهبية
+  web-exp/models/textpipe_data.json + .js — ثوابت سياسة القاف v1 + الرموز
+  web-exp/tests/expected_tokens.json — التوكنز المتوقعة (وضع manual الحتمي)
+  web-exp/tests/expected_catt.json   — مخرجات catt_eo المتوقعة
+  web-exp/tests/expected_normalize.json — تطبيع eqz_text المتوقع (مرجع فوري)
 """
 import json
 import os
@@ -21,40 +21,33 @@ REPO = os.path.dirname(INF_DIR)
 WEBEXP = os.path.join(REPO, 'web-exp')
 
 sys.path.insert(0, INF_DIR)
+sys.path.insert(0, os.path.join(INF_DIR, 'lib'))
 sys.path.insert(0, os.path.join(INF_DIR, 'lib', 'mixer_repo'))
 
 import infer  # noqa: E402
 
 
 def main():
+    import eqz_tokens
     from tts_arabic.text.symbols import symbols as SYMBOLS
 
     data = {
-        'version': 1,
-        'generated_from': 'inference/infer.py + tts_arabic.text.symbols',
-        'EGY_TOKEN_MAP': infer.EGY_TOKEN_MAP,
+        'version': 2,
+        'generated_from': ('inference/lib/eqz_tokens.py + eqz_text.py + '
+                           'tts_arabic.text.symbols (Eiqaz v1)'),
+        'EGY_SOUND_MAP': eqz_tokens.EGY_SOUND_MAP,
         'TRAIN_MAX_TOKENS': infer.TRAIN_MAX_TOKENS,
         'symbols': SYMBOLS,
-        'QAF_G_SKELETONS': sorted(infer.QAF_G_SKELETONS),
-        'QAF_Q_SKELETONS': sorted(infer.QAF_Q_SKELETONS),
-        'QAF_Q_STUDY_FORMS': dict(infer.QAF_Q_STUDY_FORMS),
-        'QAF_Q_AFFIX_OK': sorted(infer.QAF_Q_AFFIX_OK),
-        'QAF_Q_CORPUS_FORMS': dict(infer.QAF_Q_CORPUS_FORMS),
-        'QAF_Q_TRUST': sorted(infer.QAF_Q_TRUST),
-        'QAF_Q_VERIFIED': sorted(infer.QAF_Q_VERIFIED),
-        'QAF_Q_TIER1': sorted(infer.QAF_Q_TIER1),
-        'QAF_Q_SENTENCE_SKIP': sorted(infer.QAF_Q_SENTENCE_SKIP),
-        'QAF_Q_DEEP_OK': sorted(infer.QAF_Q_DEEP_OK),
-        'QAF_MARKER_MAP': dict(infer._QAF_MARKER_MAP),
-        'SUN_LETTERS': sorted(infer._SUN_LETTERS),
-        'QAF_CLITICS': list(infer._QAF_CLITICS),
-        'QAF_DIAC': 'auiFNK~o',
+        'FORCED_Q_SKELETONS': sorted(eqz_tokens.FORCED_Q_SKELETONS),
+        'FORCED_G_SKELETONS': sorted(eqz_tokens.FORCED_G_SKELETONS),
+        'QAF_MARKER_MAP': dict(eqz_tokens._QAF_MARKER_MAP),
+        'ALLOWED_SPEAKERS': list(infer.ALLOWED_SPEAKERS),
+        'EGYPTIAN_SPEAKERS': list(infer.EGYPTIAN_SPEAKERS),
     }
     os.makedirs(os.path.join(WEBEXP, 'models'), exist_ok=True)
     out = os.path.join(WEBEXP, 'models', 'textpipe_data.json')
     with open(out, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=1)
-    # نسخة سكريبت كلاسيكي (توافق أوسع مع متصفحات الهواتف — بلا ES modules)
     out_js = os.path.join(WEBEXP, 'models', 'textpipe_data.js')
     with open(out_js, 'w', encoding='utf-8') as f:
         f.write('// مولَّد آليًا بواسطة inference/onnx/gen_textpipe_data.py '
@@ -64,38 +57,50 @@ def main():
         f.write(';\n')
     print('written:', out, '+', out_js)
 
-    # ---- التوكنز المتوقعة (مسار never — بلا catt) -------------------------
+    # ---- مراجع التطبيع (eqz_text مباشرة — فحص فوري بلا نماذج) --------------
+    import eqz_text
+    norm_cases = [
+        'عندي 5 كتب', 'عمره 10 سنين', 'عام 2026', '250 جنيه', '12345',
+        '٥ كتب', 'استهلكت 80% من الباقة', '3.5', '5.4',
+        '192.168.1.1', '1,000 جنيه', 'meeting بكرة', '{ق}انون',
+        '{ق}قانون', 'هل أنت جاهز؟', 'دلوقتي هنبدأ الدرس، يا عمر.',
+        'خلينا الساعة 7 الصبح ونرجع 3 العصر', 'عندي 2500000 جنيه',
+        'الالتحاق بويندوز 11 ممتاز', 'نزل الupdate الجديد',
+    ]
+    norm_expected = []
+    for raw in norm_cases:
+        for dialect in ('egy', 'msa'):
+            norm_expected.append({
+                'raw': raw, 'dialect': dialect,
+                'normalized': eqz_text.normalize_text(raw, dialect),
+            })
+    outn = os.path.join(WEBEXP, 'tests', 'expected_normalize.json')
+    os.makedirs(os.path.join(WEBEXP, 'tests'), exist_ok=True)
+    with open(outn, 'w', encoding='utf-8') as f:
+        json.dump(norm_expected, f, ensure_ascii=False, indent=1)
+    print(f'written: {outn} ({len(norm_expected)} حالة)')
+
+    # ---- التوكنز المتوقعة (وضع manual — بلا تشكيل آلي: حتمي) ---------------
     with open(os.path.join(HERE, 'golden_texts.json'), encoding='utf-8') as f:
         gold = json.load(f)
+    toks_ms, toks_egy, ids_of = infer.get_tokenizer()
     expected = []
     for item in gold['items'] + gold.get('extra_parity', []):
         try:
-            # مسار الإنتاج نفسه (كما في synthesize): التحضير يضبط
-            # qaf_actions/qaf_native وتُمرَّر للمرمِّز صراحةً
-            res = infer.prepare_text_rich(item['text'], 'never',
-                                          item['dialect'], 'auto')
-            acts = res['qaf_actions'] or None
-            nat = frozenset(res['qaf_native']) or None
-            if item['dialect'] == 'msa':
-                toks = infer.get_msa_synthesis_tokens(res['text'], 'auto',
-                                                      acts)
-                _, _, ids_of = infer.get_tokenizer('auto', acts, nat)
-            else:
-                _, toks_egy, ids_of = infer.get_tokenizer('auto', acts, nat)
-                toks = toks_egy(res['text'])
+            res = infer.prepare_text_rich(item['text'], 'manual',
+                                          item['dialect'])
+            toks = toks_ms(res['text']) if item['dialect'] == 'msa' \
+                else toks_egy(res['text'])
             ids = ids_of(toks)
             expected.append({
                 'id': item['id'], 'text': item['text'],
                 'dialect': item['dialect'],
                 'prepared': res['text'], 'tokens': toks, 'ids': ids,
-                'qaf_actions': res['qaf_actions'],
-                'qaf_native': list(res['qaf_native']),
             })
         except Exception as e:                                  # noqa: BLE001
             expected.append({'id': item['id'], 'text': item['text'],
                              'dialect': item['dialect'],
                              'error': f'{type(e).__name__}: {e}'})
-    os.makedirs(os.path.join(WEBEXP, 'tests'), exist_ok=True)
     out2 = os.path.join(WEBEXP, 'tests', 'expected_tokens.json')
     with open(out2, 'w', encoding='utf-8') as f:
         json.dump(expected, f, ensure_ascii=False, indent=1)
