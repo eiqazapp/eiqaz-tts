@@ -111,6 +111,7 @@
       + `WebGPU adapter: ${diag.webgpuAdapter === null ? 'قيد الفحص…'
         : diag.webgpuAdapter ? 'متاح' : 'غير متاح'}\n`
       + `crossOriginIsolated (خيوط متعددة): ${diag.crossOriginIsolated}\n`
+      + `مسار WASM: ${diag.wasmPaths || '—'}\n`
       + `مسار التنفيذ المطلوب: ${diag.requestedEP || '—'} | الفعلي: ${diag.activeEP || '—'}`
       + (diag.epFallback ? ` (رجع احتياطيًا: ${diag.epFallback})` : '') + '\n'
       + `الجلسات:\n${sess.join('\n') || '  —'}\n`
@@ -166,12 +167,17 @@
   function configureOrt() {
     if (diag.ortVersion) return;
     const ort = globalThis.ort;
-    ort.env.wasm.wasmPaths = 'vendor/ort/';
+    // ⚠️ يجب أن يكون المسار URL مطلقًا: ORT يحمّل ملف .mjs عبر import()
+    // ديناميكي، والمسار النسبي بلا «./» أو «/» يُفسَّر كـ bare module specifier
+    // فيفشل initWasm() فشلًا لزجًا (previous call to 'initWasm()' failed)
+    // يسمّم مساري WASM وWebGPU معًا حتى إعادة تحميل الصفحة.
+    ort.env.wasm.wasmPaths = new URL('vendor/ort/', document.baseURI).href;
     ort.env.logLevel = 'error';
     // خيوط متعددة تتطلب عزل المصدر — وإلا خيط واحد (يعمل لكن أبطأ)
     ort.env.wasm.numThreads = diag.crossOriginIsolated
       ? Math.min(4, (navigator.hardwareConcurrency || 4)) : 1;
     diag.ortVersion = ort.version || '1.30.x';
+    diag.wasmPaths = ort.env.wasm.wasmPaths;
     renderDiag();
   }
 
@@ -216,14 +222,27 @@
     try {
       session = await ort.InferenceSession.create(
         new Uint8Array(buf), { executionProviders: epList });
-    } catch (e) {
+    } catch (firstErr) {
       if (epList.length > 1 && epList[0] === 'webgpu') {
         usedEp = 'wasm';
         diag.epFallback = 'webgpu→wasm';
-        session = await ort.InferenceSession.create(
-          new Uint8Array(buf), { executionProviders: ['wasm'] });
+        try {
+          session = await ort.InferenceSession.create(
+            new Uint8Array(buf), { executionProviders: ['wasm'] });
+        } catch (retryErr) {
+          // الفشل اللزج في ORT يخفي السبب الجذري — ندمج الخطأين دائمًا
+          // (الأول هو الأصل غالبًا) ونضيف توجيه إعادة التحميل عند اللزوجة.
+          const sticky = /initWasm|no available backend/.test(
+            String(retryErr) + String(firstErr));
+          throw new Error(
+            `${String(retryErr.message || retryErr)}`
+            + ` — [السبب الأول] ${String(firstErr.message || firstErr)}`
+            + (sticky
+              ? ' — فشل تهيئة WASM يظل عالقًا في الصفحة نفسها: أعد تحميل الصفحة (F5) ثم أعد المحاولة.'
+              : ''));
+        }
       } else {
-        throw e;
+        throw firstErr;
       }
     }
     const info = { session, file, ep: usedEp, fetchMs,
@@ -232,13 +251,30 @@
     return info;
   }
 
-  // اختيار قائمة مسارات التنفيذ
-  function epListFor() {
+  // اختيار قائمة مسارات التنفيذ — بعد فحص WebGPU الفعلي.
+  // ملاحظة حرجة: طلب webgpu من ORT على متصفح بلا محوّل GPU (requestAdapter=null)
+  // كان يسمّم initWasm فشلًا لزجًا — لذلك لا نطلب webgpu أبدًا دون محوّل مؤكد.
+  async function epListFor() {
     const sel = els.epSel.value;
     diag.requestedEP = sel;
     if (sel === 'wasm') return ['wasm'];
-    if (sel === 'webgpu') return ['webgpu'];
-    return ['webgpu', 'wasm'];    // auto
+    const hasAdapter = await detectWebGPU();
+    if (sel === 'webgpu') {
+      if (!hasAdapter) {
+        throw new Error(
+          'WebGPU غير متاح (requestAdapter رجّع null). '
+          + 'فعّل «استخدام تسريع العتاد» في إعدادات كروم (chrome://settings/system) '
+          + 'ثم أعد تشغيل المتصفح، أو اختر مسار WASM.');
+      }
+      return ['webgpu'];
+    }
+    // auto: مع محوّل نطلب webgpu ثم wasm (احتياط ORT الداخلي)،
+    // وبلا محوّل نذهب إلى wasm مباشرة (بلا أي محاولة webgpu).
+    if (!hasAdapter) {
+      diag.epFallback = 'لا يوجد محوّل WebGPU — wasm مباشرة';
+      return ['wasm'];
+    }
+    return ['webgpu', 'wasm'];
   }
 
   async function ensureSessions(onProgress) {
@@ -246,7 +282,7 @@
     const modelFile = els.modelSel.value;
     const vocFile = els.vocoderSel.value;
     if (!modelFile || !vocFile) throw new Error('لا توجد نماذج — شغّل سكريبت البناء أولًا');
-    const eps = epListFor();
+    const eps = await epListFor();
 
     const mix = await createSession(modelFile, eps, 'النموذج الصوتي', onProgress);
     diag.sessions.mixer = mix;
@@ -260,6 +296,7 @@
   let cattInfo = null;
   async function ensureCatt(onProgress) {
     if (cattInfo) return cattInfo;
+    configureOrt();   // نفس إعداد ORT لكل الجلسات — لا اعتماد على ترتيب التحميل
     const ort = globalThis.ort;
     const { buf, fetchMs } = await fetchWithProgress('models/catt_eo.onnx',
       (got, total) => onProgress && onProgress('المشكل', got, total));
@@ -959,6 +996,7 @@
   };
 
   // ---- تشغيل أولي ---------------------------------------------------------
+  configureOrt();        // إعداد ORT فورًا — قبل أي جلسة وبأي ترتيب تحميل
   detectWebGPU();
   renderCompat();
   initFromManifest();

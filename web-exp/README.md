@@ -271,6 +271,7 @@ Remove-NetFirewallRule -DisplayName "Eiqaz Web Exp 8777"
 | «رمز غير معروف» أو انحراف نطق | textpipe_data.js قديم | أعد `gen_textpipe_data.py` بعد أي تعديل على infer.py |
 | فشل تصدير ONNX | checkpoint قديم بلا net_config | حدّث checkpoint من مخرجات Kaggle الأخيرة |
 | صفحة الهاتف تتعطل عند تحميل 78MB (catt) | ذاكرة الهاتف | عطّل «تشكيل تلقائي» واستخدم نصًا مشكولًا مسبقًا |
+| «no available backend found … initWasm() failed» | إصدار أقدم من app.js: مسار wasm نسبي يجعل ORT يفسّر ملف `.mjs` كـ bare module specifier فيفشل التحميل فشلًا لزجًا | حدّث المستودع (`git pull`) — أُصلح بتحويل المسار إلى URL مطلق. بعد أي رسالة initWasm: أعد تحميل الصفحة (F5) ثم أعد المحاولة (الفشل يظل عالقًا في الصفحة نفسها) |
 
 <a id="الحدود-الصادقة"></a>
 ## ١٢) الحدود الصادقة لهذه التجربة

@@ -237,6 +237,40 @@ async def main_async():
 
         await browser.close()
 
+        # ---- 8) سيناريو المستخدم: لا WebGPU + auto + التوليد أول إجراء ----------
+        # (محاكاة كروم ويندوز بلا محوّل GPU: navigator.gpu موجود لكن requestAdapter
+        #  يرجع null). يجب أن يذهب التطبيق إلى WASM مباشرة وينجح التوليد.
+        # هذا الاختبار كان سيفشل قبل إصلاح wasmPaths النسبي (initWasm اللزج).
+        browser2 = await pw.chromium.launch(
+            args=['--autoplay-policy=no-user-gesture-required'])
+        page2 = await browser2.new_page()
+        page2.on('pageerror', lambda e: print('  [pageerror]', str(e)[:200]))
+        await page2.add_init_script("""
+            Object.defineProperty(navigator, 'gpu', {
+              configurable: true,
+              value: { requestAdapter: async () => null,
+                       requestAdapterInfo: async () => ({}) }
+            });
+        """)
+        await page2.goto(BASE + '/index.html', wait_until='load')
+        await page2.select_option('#modelSel', 'mixertts_fp16.onnx')
+        await page2.select_option('#vocoderSel', 'vocos22_fp16.onnx')
+        await page2.select_option('#epSel', 'auto')
+        await page2.fill('#textInput', 'التوليد أول إجراء بلا محول جرافيك.')
+        await page2.click('#btnGenerate')       # أول إجراء — بلا أي إحماء سابق
+        await page2.wait_for_function(
+            "document.getElementById('runStatus').textContent.includes('تم —')"
+            "|| document.getElementById('runStatus').textContent.includes('خطأ')",
+            timeout=180000)
+        status5 = await page2.inner_text('#runStatus')
+        diag5 = await page2.evaluate('__EIQAZ_DIAG__')
+        no_backend = 'no available backend' in (diag5.get('lastError') or '')
+        record('no_gpu_adapter_auto_first_action',
+               ('تم —' in status5) and diag5.get('activeEP') == 'wasm'
+               and not no_backend,
+               f"EP={diag5.get('activeEP')} | {status5[:60]}")
+        await browser2.close()
+
 
 def main():
     import asyncio
