@@ -172,6 +172,30 @@
   .btn-ghost{background:#fff; color:var(--primary-dark);
     border:2px solid var(--border)}
   .btn-ghost:hover{border-color:var(--primary); background:#f6fafa}
+  .btn-danger{background:var(--danger); color:#fff; flex:1;
+    min-width:180px; display:none}
+  .btn-danger:hover{background:#991b1b;
+    box-shadow:0 6px 16px rgba(185,28,28,.35)}
+
+  /* ---------- حالة البث المباشر ---------- */
+  .stream-note{
+    margin-top:10px; font-size:.8rem; display:none;
+    background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46;
+    border-radius:10px; padding:9px 13px; line-height:1.9;
+  }
+  .stream-note b{color:#047857}
+  .stream-note .live{
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .stream-note .dot{
+    width:9px; height:9px; border-radius:50%; background:#10b981;
+    animation:pulse 1.2s infinite; display:inline-block;
+  }
+  @keyframes pulse{
+    0%{opacity:1; box-shadow:0 0 0 0 rgba(16,185,129,.6)}
+    70%{opacity:.75; box-shadow:0 0 0 7px rgba(16,185,129,0)}
+    100%{opacity:1; box-shadow:0 0 0 0 rgba(16,185,129,0)}
+  }
 
   /* ---------- التقدم ---------- */
   .progress-card{display:none}
@@ -316,9 +340,18 @@
       </div>
       <div class="field">
         <label>تقسيم النص الطويل تلقائيًا
-          <span class="sub">(يقسم عند نهايات الجمل — يوصى به)</span></label>
+          <span class="sub">(يقسم عند نهايات الجمل — للمسار الدفعي)</span></label>
         <label class="toggle">
           <input type="checkbox" id="split" checked>
+          <span class="track"></span>
+          <span style="font-size:.85rem">فعّال</span>
+        </label>
+      </div>
+      <div class="field">
+        <label>البث التدريجي الفوري (Streaming)
+          <span class="sub">(يبدأ الصوت فور جاهزية أول مقطع — بلا انتظار اكتمال النص)</span></label>
+        <label class="toggle">
+          <input type="checkbox" id="streaming" checked>
           <span class="track"></span>
           <span style="font-size:.85rem">فعّال</span>
         </label>
@@ -337,6 +370,13 @@
           <input type="range" id="denoise" min="0" max="0.02" step="0.001"
                  value="0.005">
         </div>
+        <div class="field">
+          <label>فترة تغذية النص المتدفق <span class="range-val"
+            id="feedMsVal">40ms</span>
+            <span class="sub">(محاكاة وصول توكنات LLM — كل قطعة 3 كلمات)</span></label>
+          <input type="range" id="feedMs" min="0" max="200" step="10"
+                 value="40">
+        </div>
       </div>
     </details>
   </section>
@@ -349,7 +389,15 @@
            stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
         <path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>
       </svg>
-      توليد الصوت
+      <span id="btnGenLabel">توليد الصوت</span>
+    </button>
+    <button class="btn btn-danger" id="btnStop">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"
+              stroke="none"/>
+      </svg>
+      إيقاف ومقاطعة
     </button>
   </div>
 
@@ -357,9 +405,10 @@
 
   <!-- ======================= التقدم ======================= -->
   <section class="card progress-card" id="progressCard">
-    <h2>جاري التوليد ...</h2>
+    <h2 id="progTitle">جاري التوليد ...</h2>
     <div class="pbar"><div id="pfill"></div></div>
     <div class="ptext" id="ptext">بدء التوليد ...</div>
+    <div class="stream-note" id="streamNote"></div>
   </section>
 
   <!-- ======================= النتيجة ======================= -->
@@ -533,13 +582,39 @@ function showError(msg){
 function hideError(){ $('errBox').style.display = 'none'; }
 
 /* ---------- التوليد ---------- */
-$('btnGen').onclick = generate;
+$('btnGen').onclick = onGenerate;
+$('btnStop').onclick = () => stopStream(true);
 $('btnAgain').onclick = () => {
   $('resultCard').style.display = 'none';
   $('text').focus();
   window.scrollTo({top: 0, behavior: 'smooth'});
 };
 $('btnPreview').onclick = doPreview;
+
+/* حفظ تفضيل وضع البث */
+try{
+  const saved = localStorage.getItem('eiqaz_streaming');
+  if (saved === '0') $('streaming').checked = false;
+}catch(e){}
+$('streaming').onchange = () => {
+  try{ localStorage.setItem('eiqaz_streaming',
+    $('streaming').checked ? '1' : '0'); }catch(e){}
+};
+$('feedMs').oninput = () => $('feedMsVal').textContent =
+  $('feedMs').value + 'ms';
+
+function onGenerate(){
+  if ($('streaming').checked){
+    streamGenerate().catch(e => {
+      // تعذر البث (خادم قديم/اتصال مقطوع) — تراجع شفاف للمسار الدفعي
+      showError('تعذر بدء البث التدريجي (' + e.message +
+                ') — جاري التوليد بالمسار الدفعي الكامل ...');
+      generate();
+    });
+  }else{
+    generate();
+  }
+}
 
 async function generate(){
   hideError();
@@ -548,6 +623,9 @@ async function generate(){
   $('btnGen').disabled = true;
   $('resultCard').style.display = 'none';
   $('progressCard').style.display = 'block';
+  $('btnStop').style.display = 'none';
+  $('streamNote').style.display = 'none';
+  $('progTitle').textContent = 'جاري التوليد ...';
   setProgress(0, 'إرسال طلب التوليد ...');
   try{
     const r = await fetch('/api/generate', {
@@ -680,6 +758,400 @@ function renderHistory(){
     row.append(play, txt, meta, dl);
     list.appendChild(row);
   });
+}
+
+/* ============================================================
+   البث التدريجي (Streaming) — PATCH 18
+   اتصال WebSocket بنقطة /ws: النص يُغذّى قطعًا صغيرة (محاكاة وصول
+   توكنات LLM) والمقاطع الصوتية تعود فور جاهزيتها فتُجدولة للتشغيل
+   المتواصل فورًا (Web Audio API) — أول صوت يُسمع قبل اكتمال إرسال
+   النص. المقاطعة توقف التشغيل فورًا وتلغي التوليد القديم؛ وطلب جديد
+   يزيح القديم بالبناء (request_id) فلا يُسمع مقطع قديم بعده أبدًا.
+   ============================================================ */
+const S = {
+  ws: null, active: false, reqId: null,
+  ctx: null, tNext: 0, sources: [],
+  chunks: [],                    // {seq, meta, pcm} — لتجميع WAV
+  metrics: null,                 // window.__streamMetrics (اختبار/قياس)
+  feedTimer: null, feeding: false,
+  endInfo: null, sampleRate: 22050, checkpoint: null,
+  playedCount: 0, stopped: false,
+};
+let pendingChunkMeta = null, skipNextBinary = false;
+window.__streamMetrics = null;
+
+function wsURL(){
+  const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+  return proto + '://' + location.host + '/ws';
+}
+
+function ensureAudioCtx(){
+  if (!S.ctx){
+    try{ S.ctx = new AudioContext({sampleRate: 22050}); }
+    catch(e){ S.ctx = new AudioContext(); }
+  }
+  if (S.ctx.state === 'suspended'){
+    S.ctx.resume().catch(() => {});
+  }
+  return S.ctx;
+}
+
+function wsSend(obj){
+  if (S.ws && S.ws.readyState === 1){
+    S.ws.send(JSON.stringify(obj));
+    return true;
+  }
+  return false;
+}
+
+async function ensureWS(){
+  if (S.ws && S.ws.readyState === 1) return S.ws;
+  return new Promise((res, rej) => {
+    let settled = false;
+    const ws = new WebSocket(wsURL());
+    ws.binaryType = 'arraybuffer';
+    const to = setTimeout(() => {
+      if (!settled){ settled = true; try{ ws.close(); }catch(e){}
+        rej(new Error('مهلة اتصال البث')); }
+    }, 4000);
+    ws.onopen = () => {
+      clearTimeout(to);
+      if (!settled){ settled = true; S.ws = ws; res(ws); }
+    };
+    ws.onerror = () => {
+      clearTimeout(to);
+      if (!settled){ settled = true; rej(new Error('تعذر فتح اتصال البث')); }
+    };
+    ws.onclose = () => { if (S.ws === ws) S.ws = null; };
+    ws.onmessage = onWSMessage;
+  });
+}
+
+function rmsOfPCM16(pcm){
+  let s = 0;
+  for (let i = 0; i < pcm.length; i++) s += pcm[i] * pcm[i];
+  return Math.sqrt(s / Math.max(1, pcm.length)) / 32768;
+}
+
+/* ---------- بدء البث ---------- */
+async function streamGenerate(){
+  hideError();
+  const p = params();
+  if (!p.text){ showError('اكتب النص أولًا.'); return; }
+
+  // مقاطعة أي بث سابق فورًا + إسكات أي تشغيل متبقٍ من طلب سابق
+  if (S.active) stopStream(true);
+  hardStopPlayback();
+
+  const ctx = ensureAudioCtx();          // إيماءة المستخدم — تفويض الصوت
+  const ws = await ensureWS();
+
+  $('btnGen').disabled = true;
+  $('resultCard').style.display = 'none';
+  $('progressCard').style.display = 'block';
+  $('btnStop').style.display = 'inline-flex';
+  $('streamNote').style.display = 'block';
+  $('progTitle').textContent = 'البث المباشر جارٍ ...';
+  setProgress(3, 'بدء طلب البث ...');
+
+  // حالة القياس (خطّاف الاختبار من المتصفح)
+  S.metrics = {
+    t0: performance.now(),
+    feed_pieces_total: 0, feed_pieces_sent: 0,
+    feed_fraction_at_first_audio: null, first_audio_while_feeding: null,
+    ttfa_ms: null, chunks: [], played_chunks: 0,
+    stale_dropped: 0, interrupted: false, end_kind: null,
+    overlap_drift_ms: 0, ctx_state_at_first: null,
+    server_stats: null, fallback_used: false,
+  };
+  window.__streamMetrics = S.metrics;
+
+  // قطع التغذية: كل 3 كلمات (محاكاة تدفق توكنات LLM)
+  const words = p.text.split(/\s+/).filter(Boolean);
+  const pieces = [];
+  for (let i = 0; i < words.length; i += 3)
+    pieces.push(words.slice(i, i + 3).join(' '));
+  S.metrics.feed_pieces_total = pieces.length;
+
+  S.active = true; S.stopped = false;
+  S.chunks = []; S.playedCount = 0; S.endInfo = null;
+  S.tNext = 0; S.sources = [];
+
+  wsSend({
+    type: 'start', speaker: p.speaker, dialect: p.dialect,
+    diacritize: p.diacritize, pace: p.pace, denoise: p.denoise,
+  });
+
+  // تغذية تدريجية بفترة قابلة للضبط — تستمر أثناء تشغيل الصوت
+  S.feeding = true;
+  const feedMs = parseInt($('feedMs').value || '40', 10);
+  const feedNext = (i) => {
+    if (!S.active || i >= pieces.length){
+      S.feeding = false;
+      if (S.active) wsSend({type: 'finish'});
+      updateStreamStatus();
+      return;
+    }
+    wsSend({type: 'feed', text: pieces[i] + ' '});
+    S.metrics.feed_pieces_sent = i + 1;
+    updateStreamStatus();
+    S.feedTimer = setTimeout(() => feedNext(i + 1), feedMs);
+  };
+  feedNext(0);
+}
+
+/* ---------- استقبال رسائل الخادم ---------- */
+function onWSMessage(ev){
+  if (typeof ev.data === 'string'){
+    let d;
+    try{ d = JSON.parse(ev.data); }catch(e){ return; }
+    switch (d.type){
+      case 'started':
+        // طلب جديد بدأ — أي تشغيل قديم يتوقف صلبًا هنا (لا صوت قديم
+        // بعد بدء الطلب الجديد مهما سبق أن جُدول)
+        if (S.reqId !== null && S.reqId !== d.request_id){
+          hardStopPlayback();
+        }
+        S.reqId = d.request_id;
+        S.sampleRate = d.sample_rate || 22050;
+        S.checkpoint = d.checkpoint;
+        updateStreamStatus();
+        break;
+      case 'chunk':
+        if (d.request_id !== S.reqId){
+          // مقطع من طلب قديم متأخر — يُسقط ولا يُشغّل أبدًا
+          S.metrics && S.metrics.stale_dropped++;
+          pendingChunkMeta = null;
+          skipNextBinary = true;
+          return;
+        }
+        pendingChunkMeta = d;
+        break;
+      case 'interrupted':
+        break;
+      case 'end':
+        onStreamEnd(d);
+        break;
+      case 'error':
+        if (d.request_id === null || d.request_id === S.reqId){
+          showError(d.error || 'خطأ غير معروف في البث');
+        }
+        break;
+      default: break;
+    }
+  }else{                            // إطار PCM16 ثنائي — مقطع صوتي
+    if (skipNextBinary){ skipNextBinary = false; return; }
+    const meta = pendingChunkMeta;
+    pendingChunkMeta = null;
+    if (!meta || !S.active) return;
+    playChunk(meta, ev.data);
+  }
+}
+
+/* ---------- تشغيل مقطع فور وصوله (بلا فجوات ولا تراكب) ---------- */
+function playChunk(meta, buf){
+  const pcm = new Int16Array(buf);
+  const ctx = S.ctx;
+  const f32 = new Float32Array(pcm.length);
+  for (let i = 0; i < pcm.length; i++) f32[i] = pcm[i] / 32768;
+  const audioBuf = ctx.createBuffer(1, f32.length, meta.sample_rate);
+  audioBuf.copyToChannel(f32, 0);
+
+  const src = ctx.createBufferSource();
+  src.buffer = audioBuf;
+  src.connect(ctx.destination);
+  const when = Math.max(ctx.currentTime + 0.12, S.tNext);
+  // جدولة متواصلة بالضبط: بلا فجوة ولا تراكب — فاصل الجملة (0.2s)
+  // مدرج في موجات المقاطع نفسها من محرك الاستمرارية
+  src.start(when);
+  if (S.tNext > 0){
+    const drift = Math.abs(when - S.tNext) * 1000;
+    if (S.metrics && drift > S.metrics.overlap_drift_ms)
+      S.metrics.overlap_drift_ms = Math.round(drift * 10) / 10;
+  }
+  S.tNext = when + audioBuf.duration;
+  S.sources.push(src);
+  src.onended = () => {
+    if (!S.stopped){
+      S.playedCount++;
+      if (S.metrics) S.metrics.played_chunks = S.playedCount;
+      updateStreamStatus();
+    }
+  };
+
+  S.chunks.push({seq: meta.seq, meta: meta, pcm: pcm});
+  const m = S.metrics;
+  if (m){
+    if (m.chunks.length === 0){
+      m.ttfa_ms = Math.round(performance.now() - m.t0);
+      m.feed_fraction_at_first_audio =
+        m.feed_pieces_total ? m.feed_pieces_sent / m.feed_pieces_total : null;
+      m.first_audio_while_feeding =
+        m.feed_fraction_at_first_audio !== null &&
+        m.feed_fraction_at_first_audio < 1;
+      m.ctx_state_at_first = ctx.state;
+    }
+    m.chunks.push({
+      seq: meta.seq, n_samples: meta.n_samples,
+      duration_s: meta.duration_s, synth_time_s: meta.synth_time_s,
+      sched_at: Math.round(when * 1000) / 1000,
+      ctx_time: Math.round(ctx.currentTime * 1000) / 1000,
+      rms: Math.round(rmsOfPCM16(pcm) * 10000) / 10000,
+    });
+  }
+  updateStreamStatus();
+}
+
+function hardStopPlayback(){
+  S.sources.forEach(s => {
+    try{ s.onended = null; s.stop(0); }catch(e){}
+  });
+  S.sources = [];
+}
+
+/* ---------- المقاطعة ---------- */
+function stopStream(userInitiated){
+  hardStopPlayback();                    // الصمت فورًا
+  S.stopped = true;
+  if (S.feedTimer){ clearTimeout(S.feedTimer); S.feedTimer = null; }
+  S.feeding = false;
+  if (userInitiated){
+    wsSend({type: 'interrupt'});         // إلغاء التوليد القديم خادميًا
+    if (S.metrics) S.metrics.interrupted = true;
+  }
+  if (S.active){
+    S.active = false;
+    setProgress(0, 'أُلغي البث — أوقفنا التشغيل وألغينا التوليد القديم.');
+  }
+  $('btnGen').disabled = false;
+  $('btnStop').style.display = 'none';
+}
+
+/* ---------- نهاية الطلب ---------- */
+function onStreamEnd(d){
+  if (S.reqId !== null && d.request_id !== S.reqId){
+    return;          // نهاية طلب قديم بعد بدء طلب جديد — تجاهل
+  }
+  S.active = false;
+  S.endInfo = d;
+  if (S.feedTimer){ clearTimeout(S.feedTimer); S.feedTimer = null; }
+  if (S.metrics){
+    S.metrics.end_kind = d.kind;
+    S.metrics.server_stats = d.stats || null;
+  }
+  $('btnStop').style.display = 'none';
+  $('btnGen').disabled = false;
+
+  if (d.kind === 'end'){
+    showStreamResult(d);
+  }else if (d.kind === 'cancelled'){
+    if (S.metrics && !S.metrics.interrupted){
+      // أُزيح بطلب جديد (من هذه الصفحة أو أخرى) — الصمت مفروض بالفعل
+      setProgress(0, 'أُلغي الطلب لأن طلبًا جديدًا بدأ.');
+    }
+    $('progressCard').style.display = 'none';
+  }else{
+    showError(d.error || 'خطأ غير معروف في البث');
+    $('progressCard').style.display = 'none';
+  }
+}
+
+/* ---------- الحالة الحية ---------- */
+function updateStreamStatus(){
+  if (!S.active && !S.feeding) return;
+  const m = S.metrics;
+  const feedPct = m && m.feed_pieces_total
+    ? Math.round(100 * m.feed_pieces_sent / m.feed_pieces_total) : 0;
+  const n = S.chunks.length;
+  const ttfa = m && m.ttfa_ms ? (m.ttfa_ms / 1000).toFixed(2) : null;
+  let txt = 'إرسال النص: ' + feedPct + '%';
+  if (n > 0) txt += ' · وصلت ' + n + ' مقاطع · شُغّل ' +
+    S.playedCount + ' منها';
+  if (ttfa) txt += ' · أول صوت بعد ' + ttfa + ' ثانية';
+  setProgress(Math.max(4, feedPct * 0.9), txt);
+
+  const note = $('streamNote');
+  if (m && m.first_audio_while_feeding && n > 0){
+    note.innerHTML = '<span class="live"><span class="dot"></span>' +
+      '<b>البث حي:</b> بدأ الصوت أثناء استمرار إرسال النص</span> — ' +
+      'أُرسل ' + Math.round(100 * m.feed_fraction_at_first_audio) +
+      '% فقط من النص لحظة سماع أول كلمة.';
+  }else if (n > 0){
+    note.innerHTML = '<b>البث حي:</b> المقاطع تصل وتُشغّل فور جاهزيتها.';
+  }else{
+    note.innerHTML = '<b>البث حي:</b> يُرسل النص تدريجيًا وسيبدأ الصوت ' +
+      'فور جاهزية أول جملة آمنة ...';
+  }
+}
+
+/* ---------- النتيجة (بث) ---------- */
+function chunksToWavBlob(chunks, sampleRate){
+  let total = 0;
+  chunks.forEach(c => total += c.pcm.length);
+  const buf = new ArrayBuffer(44 + total * 2);
+  const v = new DataView(buf);
+  const wStr = (off, s) => { for (let i = 0; i < s.length; i++)
+    v.setUint8(off + i, s.charCodeAt(i)); };
+  wStr(0, 'RIFF'); v.setUint32(4, 36 + total * 2, true); wStr(8, 'WAVE');
+  wStr(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true);
+  v.setUint16(22, 1, true); v.setUint32(24, sampleRate, true);
+  v.setUint32(28, sampleRate * 2, true); v.setUint16(32, 2, true);
+  v.setUint16(34, 16, true);
+  wStr(36, 'data'); v.setUint32(40, total * 2, true);
+  let off = 44;
+  chunks.forEach(c => {
+    for (let i = 0; i < c.pcm.length; i++){
+      v.setInt16(off, c.pcm[i], true); off += 2;
+    }
+  });
+  return new Blob([buf], {type: 'audio/wav'});
+}
+
+function showStreamResult(d){
+  const st = d.stats || {};
+  const dur = typeof st.audio_duration_total_s === 'number'
+    ? st.audio_duration_total_s : 0;
+  const blob = chunksToWavBlob(S.chunks, S.sampleRate);
+  const url = URL.createObjectURL(blob);
+  const player = $('player');
+  player.src = url;
+  const dl = $('btnDownload');
+  dl.href = url;
+  dl.download = 'eiqaz_stream_' + (S.reqId || 0) + '.wav';
+
+  const m = S.metrics;
+  const ttfaTxt = m && m.ttfa_ms ? (m.ttfa_ms / 1000).toFixed(2) + ' ث' : '—';
+  const proofTxt = m && m.first_audio_while_feeding
+    ? '<span style="color:#065f46">بدأ الصوت عند ' +
+      Math.round(100 * m.feed_fraction_at_first_audio) +
+      '% من النص — <b>قبل اكتمال الإرسال</b></span>'
+    : '';
+  $('resultMeta').innerHTML =
+    '<span>المدة: <b>' + (dur ? dur.toFixed(1) : '—') + ' ث</b></span>' +
+    '<span>المقاطع المبثوثة: <b>' + S.chunks.length + '</b></span>' +
+    '<span>زمن أول صوت (TTFA): <b>' + ttfaTxt + '</b></span>' +
+    '<span>المتحدث: <b>' + (state.speaker === 0 ? 'الرجل المصري' : 'المرأة المصرية') + '</b></span>' +
+    '<span>التشكيل: <b>' + diacLabel(st.diacritize_resolved) + '</b></span>' +
+    '<span>الـcheckpoint: <b>' + (S.checkpoint || '—') + '</b></span>' +
+    '<span>RTF (خادم): <b>' + (st.rtf != null ? st.rtf : '—') + '</b></span>' +
+    '<span>نموذج متدفق: <b>نفس مسار الإنتاج R1F — بلا تعديل</b></span>' +
+    (st.n_discarded_inflight
+      ? '<span>مقاطع مُلغاة جارية: <b>' + st.n_discarded_inflight + '</b></span>'
+      : '') +
+    proofTxt;
+  setProgress(100, 'اكتمل البث — ' + S.chunks.length + ' مقطعًا بترتيب متواصل');
+  $('progressCard').style.display = 'none';
+  $('resultCard').style.display = 'block';
+  $('resultCard').scrollIntoView({behavior: 'smooth'});
+
+  state.history.unshift({
+    text: $('text').value.trim().slice(0, 60),
+    meta: (dur ? dur.toFixed(0) + ' ث · ' : '') + 'بث فوري · ' +
+      S.chunks.length + ' مقطع' + (m && m.ttfa_ms
+        ? ' · أول صوت ' + (m.ttfa_ms / 1000).toFixed(1) + ' ث' : ''),
+    url: url, name: dl.download
+  });
+  renderHistory();
 }
 </script>
 </body>

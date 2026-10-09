@@ -1,0 +1,232 @@
+{
+ "sections": {
+  "W": {
+   "pass": [
+    "مصافحة RFC 6455 + ping→pong",
+    "رسالة غير معروفة → error (بلا انهيار)"
+   ],
+   "fail": []
+  },
+  "X": {
+   "pass": [
+    "started: request_id + sample_rate + checkpoint",
+    "أول مقطع صوتي وصل (إطار PCM16 ثنائي)",
+    "أول صوت قبل اكتمال إرسال النص (محاكاة LLM)",
+    "end: kind=end + إحصاءات كاملة",
+    "الترتيب الصارم 1..N بلا فجوات ولا تكرار",
+    "TTFA من بدء الطلب < 8 ث (قياس فعلي)",
+    "الخادم حفظ الصوت المبث في web_outputs (تكافئ الدفعي)"
+   ],
+   "fail": []
+  },
+  "Z": {
+   "pass": [
+    "جهارة RMS متسقة عبر المقاطع (النسبة ≤ 2×)",
+    "فاصل الجملة مُسبق بكل مقطع غير الأول (بلا قصّ كلام)",
+    "سلامة النص: كل الجمل في المقاطع بترتيبها"
+   ],
+   "fail": []
+  },
+  "Y": {
+   "pass": [
+    "interrupt → إقرار + end cancelled",
+    "لا مقاطع جديدة بعد الإقرار (≤ حد جارٍ واحد)",
+    "طلب جديد فور المقاطعة يعمل (نفس المحرك — معرّف أعلى)",
+    "إزاحة: start جديد يلغي القديم تلقائيًا",
+    "لا صوت قديم بعد بدء الطلب الجديد (≤ حد جارٍ واحد)"
+   ],
+   "fail": []
+  },
+  "V": {
+   "pass": [
+    "المسار الدفعي القديم يعمل جنبًا إلى جنب مع البث"
+   ],
+   "fail": []
+  }
+ },
+ "failures": [],
+ "n_pass": 18,
+ "n_fail": 0,
+ "details": {
+  "W": {
+   "مصافحة RFC 6455 + ping→pong": {
+    "type": "pong",
+    "t_ms": 1791519410530
+   },
+   "رسالة غير معروفة → error (بلا انهيار)": {
+    "type": "error",
+    "request_id": null,
+    "error": "نوع رسالة غير معروف: 'unknown_thing'"
+   }
+  },
+  "X": {
+   "started: request_id + sample_rate + checkpoint": {
+    "type": "started",
+    "request_id": 1,
+    "sample_rate": 22050,
+    "checkpoint": "states_cont_180516.pth"
+   },
+   "أول مقطع صوتي وصل (إطار PCM16 ثنائي)": {
+    "seq": 1,
+    "n_samples": 52868,
+    "bytes": 105736
+   },
+   "أول صوت قبل اكتمال إرسال النص (محاكاة LLM)": {
+    "pieces_total": 29,
+    "t_first_audio": 0.23,
+    "t_feed_done": 1.5
+   },
+   "end: kind=end + إحصاءات كاملة": {
+    "ttfa_s": 0.208,
+    "ttfa_from_create_s": 0.228,
+    "rtf": 0.0642,
+    "state": "done",
+    "n_chunks_emitted": 14,
+    "n_chunks_consumed": 13,
+    "n_discarded_inflight": 0,
+    "n_inferences": 14,
+    "synth_time_total_s": 2.0391690731048584,
+    "audio_duration_total_s": 31.765850340136055,
+    "feed_chars": 486,
+    "feed_pieces": 29,
+    "speaker": 0,
+    "dialect": "egy",
+    "pace": 1.0,
+    "diacritize_resolved": "egyptian"
+   },
+   "الترتيب الصارم 1..N بلا فجوات ولا تكرار": {
+    "n": 14,
+    "seqs": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "sizes_match": true
+   },
+   "TTFA من بدء الطلب < 8 ث (قياس فعلي)": {
+    "ttfa_s": 0.229
+   },
+   "الخادم حفظ الصوت المبث في web_outputs (تكافئ الدفعي)": {
+    "file": "web_20261009_041653_spk0_stream.wav",
+    "n_frames": 700437,
+    "framerate": 22050,
+    "expect_frames": 700437
+   }
+  },
+  "Z": {
+   "جهارة RMS متسقة عبر المقاطع (النسبة ≤ 2×)": {
+    "rms": [
+     0.1173,
+     0.1117,
+     0.1123,
+     0.115,
+     0.1106,
+     0.1098,
+     0.1077,
+     0.1102,
+     0.107,
+     0.1108,
+     0.1123,
+     0.1146,
+     0.1154,
+     0.1173
+    ],
+    "ratio": 1.097
+   },
+   "فاصل الجملة مُسبق بكل مقطع غير الأول (بلا قصّ كلام)": {
+    "head_max_first_0.14s": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "سلامة النص: كل الجمل في المقاطع بترتيبها": {
+    "n_chunks": 14,
+    "missing": []
+   }
+  },
+  "Y": {
+   "interrupt → إقرار + end cancelled": {
+    "ack": {
+     "type": "interrupted",
+     "request_id": 2,
+     "applied": true
+    },
+    "end_stats": {
+     "ttfa_s": 0.159,
+     "ttfa_from_create_s": 0.179,
+     "rtf": 0.0506,
+     "state": "cancelled",
+     "n_chunks_emitted": 2,
+     "n_chunks_consumed": 2,
+     "n_discarded_inflight": 1,
+     "n_inferences": 2,
+     "synth_time_total_s": 0.22961020469665527,
+     "audio_duration_total_s": 4.536553287981859,
+     "feed_chars": 112,
+     "feed_pieces": 6,
+     "speaker": 0,
+     "dialect": "egy",
+     "pace": 1.0,
+     "diacritize_resolved": "egyptian"
+    }
+   },
+   "لا مقاطع جديدة بعد الإقرار (≤ حد جارٍ واحد)": {
+    "late_after_ack": [],
+    "late_after_end": []
+   },
+   "طلب جديد فور المقاطعة يعمل (نفس المحرك — معرّف أعلى)": {
+    "resume_to_first_audio_s": 0.43,
+    "request_ids": [
+     2,
+     3
+    ]
+   },
+   "إزاحة: start جديد يلغي القديم تلقائيًا": {
+    "request_ids": [
+     3,
+     4
+    ],
+    "old_end": "cancelled"
+   },
+   "لا صوت قديم بعد بدء الطلب الجديد (≤ حد جارٍ واحد)": {
+    "stale_after_new_start": 0,
+    "new_request_chunks": 3
+   }
+  },
+  "V": {
+   "المسار الدفعي القديم يعمل جنبًا إلى جنب مع البث": {
+    "status": "done",
+    "wav_bytes": 88108,
+    "elapsed": 0.1
+   }
+  }
+ },
+ "server": {
+  "port": 41615,
+  "endpoint": "/ws",
+  "started_from": "webapp.py (عملية مستقلة)"
+ },
+ "overall": "PASS"
+}

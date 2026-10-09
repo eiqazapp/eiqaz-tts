@@ -33,3 +33,6 @@ desktop.ini
 kaggle.json
 .env
 *.pem
+
+# سجل خادم اختبار البث (يُولَد محليًا عند تشغيل test_webapp_ws.py)
+inference/tests/webapp_ws_server.log

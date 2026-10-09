@@ -770,12 +770,18 @@ class EiqazStreamingTTS:
     (speaker/لهجة/تشكيل/pace/denoise) + معاملات التجزيع والاستمرارية.
     """
 
-    def __init__(self, checkpoint=None, threads=None):
+    def __init__(self, checkpoint=None, threads=None, model=None):
+        """model=(model, iter) اختياري: حقن نموذج محمّل سلفًا (مشترك مع
+        webapp.get_model مثلًا) بدل تحميل ثانٍ للأوزان نفسها — نفس
+        الكائن يخدم المسارين الدفعي والمتدفق بلا مضاعفة الذاكرة."""
         self.checkpoint = infer.resolve_checkpoint(checkpoint)
         import torch
         if threads:
             torch.set_num_threads(int(threads))
-        self.model, self.iter = infer.load_model(self.checkpoint)
+        if model is not None:
+            self.model, self.iter = model
+        else:
+            self.model, self.iter = infer.load_model(self.checkpoint)
         self.model_loads = 1
         self._infer_lock = threading.Lock()
         self._req_ids = itertools.count(1)
