@@ -28,7 +28,10 @@ import threading
 
 for _stream in (sys.stdout, sys.stderr):
     try:
-        _stream.reconfigure(encoding='utf-8', errors='replace')
+        # [IQZ_LINE_BUFFER] طباعة فورية للبانر حتى داخل أنابيب Git Bash/mintty
+        # (بدونها يتجمع الإخراج كتليًا ولا يظهر البانر إلا عند أول طلب)
+        _stream.reconfigure(encoding='utf-8', errors='replace',
+                             line_buffering=True)
     except Exception:
         pass
 
@@ -55,9 +58,27 @@ class Handler(SimpleHTTPRequestHandler):
         # عزل المصدر — يفعّل SharedArrayBuffer (خيوط WASM المتعددة)
         self.send_header('Cross-Origin-Opener-Policy', 'same-origin')
         self.send_header('Cross-Origin-Embedder-Policy', 'require-corp')
-        # لا تخزين مؤقت أثناء التطوير (نماذج كبيرة تُنزَّل كل مرة عند التعديل)
-        self.send_header('Cache-Control', 'no-store')
+        # [IQZ_CACHE] تخزين مؤقت ذكي: النماذج/WASM/vendor ليوم كامل كي لا
+        # يعيد الهاتف تنزيل مئات الميغابايت في كل زيارة، بينما app.js وHTML
+        # بلا كاش فتصلك أي تعديلات لاحقة فورًا (كان no-store لكل شيء).
+        try:
+            _p = self.path.split('?', 1)[0]
+            _heavy = (_p.lower().endswith(('.onnx', '.wasm', '.mjs',
+                                            '.woff2', '.data'))
+                      or _p.startswith('/vendor/') or _p.startswith('/models/'))
+            self.send_header('Cache-Control',
+                             'public, max-age=86400' if _heavy else 'no-cache')
+        except Exception:
+            self.send_header('Cache-Control', 'no-cache')
         super().end_headers()
+
+    def do_GET(self):
+        # [IQZ_FAVICON] إسكات 404 favicon.ico (يطلبه المتصفح تلقائيًا)
+        if self.path.split('?', 1)[0] == '/favicon.ico':
+            self.send_response(204)
+            self.end_headers()
+            return
+        return super().do_GET()
 
     def guess_type(self, path):
         ext = os.path.splitext(path)[1].lower()

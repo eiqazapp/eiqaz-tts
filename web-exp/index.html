@@ -258,6 +258,67 @@
 </div>
 
 <!-- الترتيب مهم: البيانات قبل المنطق -->
+<script>
+/* ===== [EIQAZ-AUDIO-UNLOCK] فتح قفل الصوت على متصفح الهاتف =====
+   كروم الهاتف يبدأ AudioContext معلقًا (suspended) حتى أول إيماءة مستخدم،
+   ويعلّقه مجددًا عند إرساء الصفحة للخلفية — فيبقى الصوت صامتًا بعد العودة.
+   المعالجة: (1) تلفّ منشئ AudioContext فتُسجَّل كل سياقات جديدة
+             (2) تُسجَّل السياقات القديمة عند أول createBufferSource
+             (3) أول نقرة أو لمسة على الصفحة تستأنف كل السياقات
+   (يعمل مع [EIQAZ-AUDIO-WARMUP] في app.js الذي يسخّن السياق داخل النقر) */
+(function () {
+  if (window.__IQZ_AUDIO_UNLOCK__) return;
+  window.__IQZ_AUDIO_UNLOCK__ = 1;
+  var EVENTS = ['pointerdown', 'touchstart', 'touchend', 'mousedown', 'click', 'keydown'];
+  var contexts = [];
+  function resumeAll() {
+    for (var i = 0; i < contexts.length; i++) {
+      try {
+        var c = contexts[i];
+        if (c && c.state === 'suspended') {
+          var p = c.resume();
+          if (p && p.catch) p.catch(function () {});
+        }
+      } catch (e) {}
+    }
+  }
+  for (var i = 0; i < EVENTS.length; i++) {
+    document.addEventListener(EVENTS[i], resumeAll, { capture: true, passive: true });
+  }
+  function track(ctx) {
+    try {
+      if (ctx && contexts.indexOf(ctx) === -1) contexts.push(ctx);
+    } catch (e) {}
+  }
+  function wrapCtor(name) {
+    var Original = window[name];
+    if (typeof Original !== 'function') return;
+    try {
+      var Wrapped = class extends Original {
+        constructor() {
+          super(...arguments);
+          track(this);
+          resumeAll();
+        }
+      };
+      try { Object.defineProperty(Wrapped, 'name', { value: name }); } catch (e) {}
+      window[name] = Wrapped;
+    } catch (e) {}
+  }
+  wrapCtor('AudioContext');
+  wrapCtor('webkitAudioContext');
+  try {
+    var BAC = window.BaseAudioContext;
+    if (BAC && BAC.prototype && BAC.prototype.createBufferSource) {
+      var origCBS = BAC.prototype.createBufferSource;
+      BAC.prototype.createBufferSource = function () {
+        track(this);
+        return origCBS.apply(this, arguments);
+      };
+    }
+  } catch (e) {}
+})();
+</script>
 <script src="models/textpipe_data.js"></script>
 <script src="textpipe.js"></script>
 <script src="catt.js"></script>

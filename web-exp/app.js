@@ -336,6 +336,15 @@
     return audioCtx;
   }
 
+  // [EIQAZ-AUDIO-WARMUP] فتح قفل صوت الهاتف: كروم الجوال يبدأ AudioContext
+  // معلقًا (suspended) حتى إيماءة مستخدم، وصلاحية الإيماءة تنتهي أثناء
+  // انتظار التوليد الطويل — فاستئناف getCtx() بعد الأوامر غير المتزامنة
+  // يُحجب ويبقى الصوت صامتًا للأبد. الحل: إنشاء/استئناف السياق متزامنًا
+  // داخل حدث النقر نفسه قبل أي await (نستدعيها من مستمعي الأزرار).
+  function warmupAudio() {
+    try { getCtx(); } catch (e) { }
+  }
+
   /**
    * جدولة موجة للطابور. تعيد زمن البدء الفعلي.
    * fadeEdges: تلاشي 8ms عند الحواف (منع نقرات الوصل — PATCH 13)
@@ -564,7 +573,12 @@
       const blob = wavBlobFromFloat32(final);
       els.fullAudio.src = URL.createObjectURL(blob);
       els.fullAudio.style.display = 'block';
-      els.fullAudio.play().catch(() => { });
+      // [EIQAZ-AUDIO-WARMUP] هواتف: play() بعد انتظار التوليد يُحجب أحيانًا
+      // (صلاحية الإيماءة انتهت) — جدولة احتياطية عبر Web Audio الذي فتحه
+      // warmupAudio داخل حدث النقر نفسه.
+      els.fullAudio.play().catch(() => {
+        try { scheduleWave(final, myEpoch); } catch (e) { }
+      });
 
       renderMetrics({
         ttfaMs: null,           // الوضع الكامل لا يقيس TTFA بث — البث يقيسه
@@ -711,12 +725,14 @@
         updateLlmBox(batches[i]);
         setStatus(`وصلت الدفعة ${i + 1}/${batches.length} — النموذج اللغوي يرسل…`, null);
 
-        // اكتشاف الجمل الكاملة الجديدة (قص عند نهايات الجمل فقط —
-        // العلامات {ق} تصل ملتصقة بكلماتها داخل الجملة الكاملة)
+        // اكتشاف الجمل الكاملة الجديدة — [EIQAZ-PUNCT-BATCH]
+        // حدود الجملة = كل علامات الترقيم: النهايات (.!؟?…) والفواصل
+        // (،؛,;) — كانت النهايات فقط فنصُّ الفواصل وحده لا يُبثّ أبدًا.
+        // العلامات {ق} تصل ملتصقة بكلماتها — تبقى داخل الجملة الكاملة.
         const tail = arrived.slice(synthPointer);
-        const parts = tail.split(/(?<=[.!؟?…])\s+/);
+        const parts = tail.split(/(?<=[.!؟?…،؛,;])\s+/);
         const complete = parts.slice(0, -1);
-        const lastIsComplete = /[.!؟?…]\s*$/.test(tail);
+        const lastIsComplete = /[.!؟?…،؛,;]\s*$/.test(tail);
         if (complete.length || lastIsComplete) {
           if (lastIsComplete) complete.push(parts[parts.length - 1]);
           for (const c of complete) {
@@ -951,11 +967,13 @@
   // ========================================================================
   // ربط الواجهة
   // ========================================================================
-  els.btnGenerate.addEventListener('click', () => generateFull());
-  els.btnStream.addEventListener('click', () => startStream());
+  // [EIQAZ-AUDIO-WARMUP] تسخير سياق الصوت داخل حدث النقر نفسه (متزامنًا
+  // قبل أي انتظار غير متزامن) — يفتح قفل الصوت على الهاتف من أول لمسة.
+  els.btnGenerate.addEventListener('click', () => { warmupAudio(); generateFull(); });
+  els.btnStream.addEventListener('click', () => { warmupAudio(); startStream(); });
   els.btnInterrupt.addEventListener('click', () => interrupt());
   els.btnStop.addEventListener('click', () => stopPlayback());
-  els.btnReplay.addEventListener('click', () => replay());
+  els.btnReplay.addEventListener('click', () => { warmupAudio(); replay(); });
 
   els.paceRange.addEventListener('input', () => {
     els.paceVal.textContent = (+els.paceRange.value).toFixed(2);
