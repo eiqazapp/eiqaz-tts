@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>تجربة محرك إيقاز في المتصفح — ONNX</title>
+<style>
+  :root {
+    --bg: #0f172a; --card: #1e293b; --card2: #273549;
+    --text: #e2e8f0; --muted: #94a3b8; --accent: #14b8a6;
+    --accent2: #2dd4bf; --danger: #f87171; --warn: #fbbf24; --ok: #34d399;
+    --border: #334155; --shadow: 0 4px 14px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Segoe UI", "Noto Sans Arabic", Tahoma, Arial, sans-serif;
+    line-height: 1.7; padding-bottom: 40px;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 14px; }
+  header {
+    background: linear-gradient(135deg, #134e4a, #0f172a);
+    border-bottom: 2px solid var(--accent); padding: 18px 14px;
+  }
+  header h1 { margin: 0; font-size: 1.35rem; }
+  header p { margin: 4px 0 0; color: var(--muted); font-size: .9rem; }
+  .badge {
+    display: inline-block; background: rgba(20,184,166,.15); color: var(--accent2);
+    border: 1px solid var(--accent); border-radius: 99px;
+    padding: 1px 10px; font-size: .78rem; margin-inline-start: 8px; vertical-align: middle;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px; margin: 14px 0; box-shadow: var(--shadow);
+  }
+  h2 { font-size: 1.05rem; margin: 0 0 12px; color: var(--accent2); }
+  label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+  textarea, select, input[type="number"], input[type="range"] {
+    width: 100%; background: var(--card2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 12px; font-size: 1rem; font-family: inherit;
+  }
+  textarea { min-height: 96px; resize: vertical; }
+  select { appearance: none; background-image: none; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 640px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  button {
+    border: none; border-radius: 12px; padding: 13px 18px;
+    font-size: 1rem; font-weight: 700; font-family: inherit;
+    cursor: pointer; min-height: 48px; flex: 1 1 auto;
+    transition: transform .06s, filter .15s;
+  }
+  button:active { transform: scale(.97); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  .b-gen { background: var(--accent); color: #042f2e; }
+  .b-stream { background: #2563eb; color: #fff; }
+  .b-stop { background: #7f1d1d; color: #fecaca; }
+  .b-interrupt { background: var(--danger); color: #450a0a; }
+  .b-replay { background: #4c1d95; color: #ede9fe; }
+  .b-small { flex: 0 0 auto; padding: 9px 14px; min-height: 40px; font-size: .88rem; background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+  .status {
+    background: var(--card2); border-radius: 10px; padding: 10px 12px;
+    font-size: .88rem; min-height: 42px; margin-top: 12px;
+    border-inline-start: 3px solid var(--accent);
+  }
+  .status.err { border-inline-start-color: var(--danger); color: #fecaca; }
+  .status.ok { border-inline-start-color: var(--ok); }
+  .warnbox {
+    display: none; background: rgba(251,191,36,.09); border: 1px solid var(--warn);
+    color: #fde68a; border-radius: 10px; padding: 10px 12px; font-size: .85rem; margin-top: 10px;
+  }
+  .warnbox.on { display: block; }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 10px; }
+  .metric { background: var(--card2); border-radius: 10px; padding: 8px 10px; text-align: center; }
+  .metric .v { font-size: 1.15rem; font-weight: 800; color: var(--accent2); }
+  .metric .k { font-size: .72rem; color: var(--muted); }
+  .chunks { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; max-height: 340px; overflow-y: auto; }
+  .chunk {
+    background: var(--card2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 8px 10px; font-size: .9rem; display: flex; gap: 10px; align-items: center;
+    flex-wrap: wrap;
+  }
+  .chunk .idx { color: var(--muted); font-size: .75rem; min-width: 58px; }
+  .chunk .txt { flex: 1 1 200px; }
+  .chunk .meta { color: var(--muted); font-size: .72rem; }
+  .chunk.playing { border-color: var(--accent); }
+  .chunk.cut { opacity: .5; text-decoration: line-through; }
+  audio { width: 100%; margin-top: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  td, th { border: 1px solid var(--border); padding: 6px 8px; text-align: right; }
+  th { color: var(--accent2); background: var(--card2); }
+  .diag { font-family: Consolas, monospace; font-size: .78rem; direction: ltr; text-align: left;
+          background: #0b1120; border-radius: 8px; padding: 10px; white-space: pre-wrap; color: #a5f3fc; }
+  details summary { cursor: pointer; color: var(--accent2); font-size: .9rem; }
+  .pill { display:inline-block; border-radius: 99px; padding: 0 8px; font-size: .72rem; font-weight:700; }
+  .pill.pass { background: rgba(52,211,153,.15); color: var(--ok); }
+  .pill.part { background: rgba(251,191,36,.15); color: var(--warn); }
+  .pill.fail { background: rgba(248,113,113,.15); color: var(--danger); }
+  .toggle-row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+  .toggle-row input { width: 18px; height: 18px; }
+  .hint { color: var(--muted); font-size: .78rem; margin-top: 4px; }
+  .llmbox {
+    background: #0b1120; border: 1px dashed var(--border); border-radius: 10px;
+    padding: 10px; font-size: .9rem; min-height: 48px; margin-top: 8px;
+  }
+  .llmbox .new { color: var(--accent2); }
+  .llmbox .old { color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>تجربة محرك إيقاز داخل المتصفح <span class="badge" id="verBadge">v1.0</span></h1>
+  <p>تشغيل ONNX محليًا في المتصفح (WASM/WebGPU) — توليد + محاكاة بث النموذج اللغوي + مقاطعة فورية</p>
+</header>
+
+<div class="wrap">
+
+  <!-- ======= إعدادات النموذج ======= -->
+  <section class="card" id="modelCard">
+    <h2>١ — النموذج ومسار التنفيذ</h2>
+    <div class="grid3">
+      <div>
+        <label for="modelSel">نسخة النموذج الصوتي</label>
+        <select id="modelSel"></select>
+        <div class="hint" id="modelHint"></div>
+      </div>
+      <div>
+        <label for="vocoderSel">المُصوِّت (Vocos)</label>
+        <select id="vocoderSel"></select>
+        <div class="hint" id="vocoderHint"></div>
+      </div>
+      <div>
+        <label for="epSel">مسار التنفيذ</label>
+        <select id="epSel">
+          <option value="auto" selected>تلقائي (WebGPU ثم WASM)</option>
+          <option value="wasm">WASM / CPU إلزامي</option>
+          <option value="webgpu">WebGPU إلزامي</option>
+        </select>
+        <div class="hint" id="epHint"></div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:12px">
+      <div>
+        <label for="speakerSel">المتحدث</label>
+        <select id="speakerSel">
+          <option value="0" selected>٠ — SPEAKER_01 (ذكر)</option>
+          <option value="1">١ — SPEAKER_02 (أنثى)</option>
+        </select>
+      </div>
+      <div>
+        <label for="dialectSel">اللهجة</label>
+        <select id="dialectSel">
+          <option value="egy" selected>مصرية (egy)</option>
+          <option value="msa">فصحى (msa)</option>
+        </select>
+      </div>
+      <div>
+        <label for="paceRange">سرعة الكلام (pace): <span id="paceVal">1.00</span></label>
+        <input type="range" id="paceRange" min="0.5" max="1.6" step="0.05" value="1">
+      </div>
+    </div>
+    <div class="toggle-row">
+      <input type="checkbox" id="useCatt" checked>
+      <label for="useCatt" style="margin:0">تشكيل تلقائي داخل المتصفح (catt_eo — يُحمَّل عند الحاجة 78MB)</label>
+    </div>
+    <div class="warnbox" id="sanityWarn">
+      ⚠️ النماذج الحالية مبنية على <b>أوزان عشوائية (sanity)</b> — للتحقق الميكانيكي فقط؛
+      الصوت ضجيج وليس كلامًا. شغّل التصدير بالأوزان الحقيقية على Windows للجودة الفعلية.
+    </div>
+    <div class="status" id="loadModelStatus">لم يُحمَّل أي نموذج بعد — اختر النسخة واضغط «توليد الصوت» أو «محاكاة البث» (التحميل يتم تلقائيًا).</div>
+  </section>
+
+  <!-- ======= النص ======= -->
+  <section class="card">
+    <h2>٢ — النص</h2>
+    <label for="textInput">اكتب أو الصق النص (تقبل علامات {ق}/{ء}/{ج})</label>
+    <textarea id="textInput">دلوقتي هنبدأ الدرس يا عمر. الذكاء الاصطناعي بيساعدنا نفهم المعلومات ونوصل لها أسرع من قبل كتير. جرب بنفسك واسمع الفرق قبل وبعد.</textarea>
+    <div class="btns" style="margin-top:8px">
+      <button class="b-small" id="presetShort">جملة قصيرة</button>
+      <button class="b-small" id="presetLong">رد طويل</button>
+      <button class="b-small" id="presetQaf">علامات ق/ج/ء</button>
+      <button class="b-small" id="presetMSA">فصحى مشكولة</button>
+    </div>
+  </section>
+
+  <!-- ======= الأوامر ======= -->
+  <section class="card">
+    <h2>٣ — التشغيل</h2>
+    <div class="btns">
+      <button class="b-gen" id="btnGenerate">🎧 توليد الصوت (كامل)</button>
+      <button class="b-stream" id="btnStream">▶️ بدء محاكاة البث</button>
+      <button class="b-interrupt" id="btnInterrupt" disabled>✂️ مقاطعة</button>
+      <button class="b-stop" id="btnStop" disabled>⏹️ إيقاف</button>
+      <button class="b-replay" id="btnReplay" disabled>🔁 إعادة التشغيل</button>
+    </div>
+    <div class="status" id="runStatus">جاهز.</div>
+    <div class="metrics" id="metrics"></div>
+    <audio id="fullAudio" controls style="display:none"></audio>
+  </section>
+
+  <!-- ======= محاكاة البث ======= -->
+  <section class="card">
+    <h2>٤ — إعدادات محاكاة البث (وصول النص من النموذج اللغوي)</h2>
+    <div class="grid3">
+      <div>
+        <label for="batchWords">حجم دفعة النص (كلمات): <span id="batchWordsVal">3</span></label>
+        <input type="range" id="batchWords" min="1" max="15" step="1" value="3">
+      </div>
+      <div>
+        <label for="batchMs">الفاصل بين الدفعات (مللي ثانية): <span id="batchMsVal">400</span></label>
+        <input type="range" id="batchMs" min="100" max="2000" step="50" value="400">
+      </div>
+      <div>
+        <label>الهدف</label>
+        <div class="hint" style="margin-top:6px">
+          الصوت يبدأ من أول دفعة تُكمل جملة قابلة للنطق — قبل وصول بقية الرد.
+        </div>
+      </div>
+    </div>
+    <div class="llmbox" id="llmBox"><span class="old">سيظهر وصول النص هنا دفعة بدفعة…</span></div>
+    <div class="chunks" id="chunkList"></div>
+  </section>
+
+  <!-- ======= التشخيص ======= -->
+  <section class="card">
+    <h2>٥ — التشخيص</h2>
+    <details open>
+      <summary>لوحة المعلومات</summary>
+      <div class="diag" id="diagPanel">—</div>
+    </details>
+    <details style="margin-top:8px">
+      <summary>توافق المتصفح</summary>
+      <div class="diag" id="compatPanel">—</div>
+    </details>
+  </section>
+
+</div>
+
+<!-- الترتيب مهم: البيانات قبل المنطق -->
+<script src="models/textpipe_data.js"></script>
+<script src="textpipe.js"></script>
+<script src="catt.js"></script>
+<script src="vendor/ort/ort.all.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
