@@ -191,6 +191,25 @@
     width:9px; height:9px; border-radius:50%; background:#10b981;
     animation:pulse 1.2s infinite; display:inline-block;
   }
+
+  /* ---------- PATCH 19: شريط جاهزية البث في الخادم ---------- */
+  .ws-strip{
+    margin-top:10px; font-size:.8rem; line-height:1.9;
+    border-radius:10px; padding:9px 13px;
+    background:#f1f5f9; border:1px solid #cbd5e1; color:#334155;
+  }
+  .ws-strip.ok{
+    background:#ecfdf5; border-color:#a7f3d0; color:#065f46;
+  }
+  .ws-strip.ok b{color:#047857}
+  .ws-strip.bad{
+    background:#fef2f2; border-color:#fecaca; color:#991b1b;
+  }
+  .ws-strip.bad b{color:#b91c1c}
+  .ws-strip code{
+    direction:ltr; unicode-bidi:embed; font-family:inherit;
+    background:rgba(0,0,0,.06); border-radius:5px; padding:1px 6px;
+  }
   @keyframes pulse{
     0%{opacity:1; box-shadow:0 0 0 0 rgba(16,185,129,.6)}
     70%{opacity:.75; box-shadow:0 0 0 7px rgba(16,185,129,0)}
@@ -355,6 +374,7 @@
           <span class="track"></span>
           <span style="font-size:.85rem">فعّال</span>
         </label>
+        <div class="ws-strip" id="wsStrip">جارٍ فحص جاهزية البث في الخادم ...</div>
       </div>
       <div class="field">
         <label>نقطة الحفظ (checkpoint)</label>
@@ -457,8 +477,39 @@
 'use strict';
 const $ = id => document.getElementById(id);
 const state = {
-  speaker: 0, dialect: 'egy', history: []
+  speaker: 0, dialect: 'egy', history: [],
+  wsReady: null, serverBuild: null
 };
+
+/* ---------- PATCH 19: فحص بناء الخادم وجاهزية البث عند التحميل ----------
+   يكشف الحالتين اللتين كانتا تسقطان صامتة للمسار الدفعي (فيبدو أن الصوت
+   «لا يبدأ قبل اكتمال التوليد»):
+   1) خادم قديم: عملية webapp.py بدأت قبل تحديث الكود — لا /ws أصلاً.
+   2) صفحة قديمة من كاش المتصفح (عولجت أيضًا بـ no-store من الخادم). */
+async function checkServerBuild(){
+  const el = $('wsStrip');
+  try{
+    const r = await fetch('/api/build', {cache: 'no-store'});
+    if (!r.ok) throw new Error('old-server');
+    const d = await r.json();
+    if (!d.ws || !d.streaming) throw new Error('no-ws');
+    state.wsReady = true;
+    state.serverBuild = d.build || null;
+    el.className = 'ws-strip ok';
+    el.innerHTML = '<b>البث الفوري جاهز ✓</b> — خادم البث يعمل' +
+      (state.serverBuild ? ' (بناء <code>' + state.serverBuild + '</code>)' : '') +
+      '. أول صوت يُسمع فور جاهزية أول جملة آمنة، والنص يستمر في الإرسال.';
+  }catch(e){
+    state.wsReady = false;
+    el.className = 'ws-strip bad';
+    el.innerHTML =
+      '<b>هذا الخادم لا يدعم البث الفوري (نسخة قديمة من webapp.py).</b> ' +
+      'بهذه النسخة يبدأ الصوت فقط بعد اكتمال توليد النص كاملًا. ' +
+      'الإصلاح: أوقف الخادم <code>Ctrl+C</code> ثم شغّله من الكود المحدّث ' +
+      '<code>python webapp.py</code>، وحدّث الصفحة <code>Ctrl+F5</code>.';
+  }
+}
+checkServerBuild();
 
 /* ---------- أمثلة جاهزة ---------- */
 const EXAMPLES = [
@@ -607,8 +658,14 @@ function onGenerate(){
   if ($('streaming').checked){
     streamGenerate().catch(e => {
       // تعذر البث (خادم قديم/اتصال مقطوع) — تراجع شفاف للمسار الدفعي
-      showError('تعذر بدء البث التدريجي (' + e.message +
-                ') — جاري التوليد بالمسار الدفعي الكامل ...');
+      // PATCH 19: مع سبب واضح وخطوات إصلاح صريحة — لا سقوط صامت
+      const hint = state.wsReady === false
+        ? ' الخادم الحالي لا يدعم البث — أعد تشغيل webapp.py من الكود ' +
+          'المحدّث ثم حدّث الصفحة (Ctrl+F5).'
+        : ' تأكد من تشغيل الخادم ثم أعد المحاولة.';
+      showError('تعذر بدء البث التدريجي (' + e.message + ').' + hint +
+                ' سيُستخدم المسار الدفعي الكامل الآن — الصوت سيبدأ بعد ' +
+                'اكتمال التوليد.');
       generate();
     });
   }else{

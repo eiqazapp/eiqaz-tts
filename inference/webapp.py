@@ -95,6 +95,37 @@ def log(msg):
     print(msg, flush=True)
 
 
+_BUILD = None
+
+
+def server_build():
+    """BUILD قصير (git rev-parse --short HEAD) — يُعرض في الواجهة.
+
+    PATCH 19 (2026-10-09، شكوى المستخدم: «الصوت لا يبدأ قبل اكتمال تحويل
+    كامل النص — شريط جاري التوليد بالكامل»): التشخيص كان أن الجهاز يشغّل
+    خادمًا قديمًا (عملية webapp.py بدأت قبل سحب PATCH 18) و/أو صفحة قديمة
+    من كاش المتصفح — فتتراجع الواجهة للمسار الدفعي بصمت ويظن المستخدم أن
+    البث لا يعمل. الحل: هوية بناء واضحة تفحصها الصفحة فور التحميل عبر
+    /api/build فتكشف الخادم القديم برسالة إصلاح صريحة، وCache-Control:
+    no-store على الصفحة نفسها فلا تُقدّم نسخة قديمة مخبأة أبدًا.
+    لا ينهار أبدًا: بلا git (نسخة zip) يبقى 'unknown'."""
+    global _BUILD
+    if _BUILD is None:
+        _BUILD = 'unknown'
+        try:
+            import subprocess
+            out = subprocess.run(
+                ['git', 'rev-parse', '--short', 'HEAD'], cwd=HERE,
+                capture_output=True, timeout=3)
+            if out.returncode == 0:
+                s = out.stdout.decode('ascii', 'replace').strip()
+                if s:
+                    _BUILD = s
+        except Exception:                                   # noqa: BLE001
+            pass
+    return _BUILD
+
+
 def get_model(ckpt_path):
     """تحميل نموذج من checkpoint (مع كاش صغير) — نفس دالة infer.load_model."""
     with _models_lock:
@@ -946,9 +977,21 @@ class Handler(BaseHTTPRequestHandler):
                 self.send_response(200)
                 self.send_header('Content-Type',
                                  'text/html; charset=utf-8')
+                # PATCH 19: لا كاش للصفحة إطلاقًا — بعد أي تحديث للكود
+                # يجلب المتصفح الواجهة الجديدة دومًا (وإلا عرض نسخة قديمة
+                # مخبأة بلا بث — جذر شكوى «الصوت بعد اكتمال التوليد»)
+                self.send_header('Cache-Control', 'no-store')
                 self.send_header('Content-Length', str(len(body)))
                 self.end_headers()
                 self.wfile.write(body)
+            elif u.path == '/api/build':
+                # PATCH 19: بطاقة هوية الخادم — تفحصها الواجهة عند التحميل
+                # فتكشف خادمًا قديمًا (بلا نقطة /api/build ولا /ws) وتوجّه
+                # المستخدم لإعادة التشغيل بدل التراجع الصامت للمسار الدفعي
+                self._json({'app': 'webapp.py', 'build': server_build(),
+                            'ws': True, 'streaming': True,
+                            'sample_rate': SAMPLE_RATE,
+                            'checkpoint_default': infer.DEFAULT_CHECKPOINT})
             elif u.path == '/api/checkpoints':
                 self._json({'items': list_checkpoints(),
                             'selected': default_checkpoint()})
@@ -1144,6 +1187,7 @@ def main():
     # ----- تحميل النماذج مرة واحدة قبل فتح الصفحة -----
     log('=' * 62)
     log('  NileTTS 4h — استوديو النطق (واجهة ويب محلية — CPU)')
+    log(f'  بناء الخادم: {server_build()} — البث الفوري عبر /ws (PATCH 19)')
     log('=' * 62)
 
     ckpt_arg = args.checkpoint

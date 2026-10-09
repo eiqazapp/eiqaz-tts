@@ -258,27 +258,27 @@
   },
   "B": {
    "أول صوت قبل اكتمال النص (قبل آخر feed)": {
-    "first_audio": 1791519846.27,
-    "last_feed": 1791519848.17,
+    "first_audio": 1791522453.2,
+    "last_feed": 1791522455.12,
     "fed_fraction_at_first_audio": 0.33
    },
    "أول صوت قبل finish()": {
-    "first_audio": 1791519846.27,
-    "finish": 1791519848.47
+    "first_audio": 1791522453.2,
+    "finish": 1791522455.42
    },
    "تدفق متعدد المقاطع (9) + نهاية سليمة": {
     "n_chunks": 9,
     "end": "end"
    },
    "TTFA مقيس (من أول تغذية إلى أول مقطع جاهز)": {
-    "ttfa_s": 0.562,
-    "rtf": 0.0658,
+    "ttfa_s": 0.494,
+    "rtf": 0.0615,
     "n_chunks": 9
    }
   },
   "C": {
    "إلغاء → StreamEnd(cancelled) سريع": {
-    "wake_s": 0.16,
+    "wake_s": 0.17,
     "kind": "cancelled"
    },
    "المنتج خرج وطابور فارغ": {
@@ -316,7 +316,7 @@
   "F": {
    "طلب B اكتمل بعد مقاطعة A": {
     "n_chunks_B": 4,
-    "elapsed": 0.58
+    "elapsed": 0.61
    },
    "بلا إعادة تحميل النموذج + معرفات متصاعدة": {
     "model_loads": 1,
@@ -337,7 +337,7 @@
     "end": "cancelled"
    },
    "G3: أثناء التشغيل — توقف فوري + B كامل + لا قديم بعد B": {
-    "stop_latency_s": 0.022,
+    "stop_latency_s": 0.003,
     "cleared": 1,
     "b_played": 4,
     "a_after_b": 0,
@@ -498,8 +498,8 @@
      {
       "test": "short",
       "n_chunks": 1,
-      "ttfa_s": 0.111,
-      "rtf": 0.0631,
+      "ttfa_s": 0.113,
+      "rtf": 0.0643,
       "total_gen_s": 0.11,
       "wall_s": 0.2,
       "audio_dur_s": 1.75,
@@ -507,52 +507,52 @@
       "first_chunk_tokens": 36,
       "cpu_avg_pct": 0.0,
       "cpu_max_pct": 0.0,
-      "rss_peak_mb": 1000.0,
+      "rss_peak_mb": 936.0,
       "cpu_cores": 2
      },
      {
       "test": "medium",
       "n_chunks": 4,
-      "ttfa_s": 0.112,
-      "rtf": 0.0557,
-      "total_gen_s": 0.57,
+      "ttfa_s": 0.129,
+      "rtf": 0.0531,
+      "total_gen_s": 0.55,
       "wall_s": 0.6,
       "audio_dur_s": 10.31,
       "avg_chunk_dur_s": 2.58,
       "first_chunk_tokens": 52,
-      "cpu_avg_pct": 92.3,
+      "cpu_avg_pct": 93.2,
       "cpu_max_pct": 100.0,
-      "rss_peak_mb": 1004.0,
+      "rss_peak_mb": 936.0,
       "cpu_cores": 2
      },
      {
       "test": "long",
       "n_chunks": 9,
-      "ttfa_s": 0.198,
-      "rtf": 0.0608,
-      "total_gen_s": 1.58,
+      "ttfa_s": 0.189,
+      "rtf": 0.058,
+      "total_gen_s": 1.5,
       "wall_s": 1.6,
       "audio_dur_s": 25.95,
       "avg_chunk_dur_s": 2.88,
       "first_chunk_tokens": 77,
-      "cpu_avg_pct": 99.4,
+      "cpu_avg_pct": 98.4,
       "cpu_max_pct": 100.0,
-      "rss_peak_mb": 1012.0,
+      "rss_peak_mb": 941.0,
       "cpu_cores": 2
      },
      {
       "test": "mixed",
       "n_chunks": 8,
-      "ttfa_s": 0.15,
-      "rtf": 0.0608,
-      "total_gen_s": 1.45,
-      "wall_s": 1.6,
+      "ttfa_s": 0.109,
+      "rtf": 0.0546,
+      "total_gen_s": 1.31,
+      "wall_s": 1.4,
       "audio_dur_s": 23.94,
       "avg_chunk_dur_s": 2.99,
       "first_chunk_tokens": 45,
-      "cpu_avg_pct": 99.7,
+      "cpu_avg_pct": 96.8,
       "cpu_max_pct": 100.0,
-      "rss_peak_mb": 1018.0,
+      "rss_peak_mb": 946.0,
       "cpu_cores": 2
      }
     ]
@@ -560,32 +560,32 @@
    "مقارنة أحجام المقاطع (صغير/وسط/كبير) مقيسة": {
     "small": {
      "n_chunks": 21,
-     "ttfa_s": 0.065,
-     "rtf": 0.0749,
+     "ttfa_s": 0.057,
+     "rtf": 0.0685,
      "avg_chunk_dur_s": 1.26,
      "f0_spread": 47.6,
      "rms_ratio": 1.845,
-     "total_gen_s": 1.98,
+     "total_gen_s": 1.81,
      "n_inferences": 21
     },
     "medium": {
      "n_chunks": 10,
-     "ttfa_s": 0.208,
-     "rtf": 0.0608,
+     "ttfa_s": 0.2,
+     "rtf": 0.0569,
      "avg_chunk_dur_s": 2.58,
      "f0_spread": 35.2,
      "rms_ratio": 1.14,
-     "total_gen_s": 1.57,
+     "total_gen_s": 1.47,
      "n_inferences": 10
     },
     "large": {
      "n_chunks": 9,
-     "ttfa_s": 0.238,
-     "rtf": 0.0575,
+     "ttfa_s": 0.24,
+     "rtf": 0.0538,
      "avg_chunk_dur_s": 2.88,
      "f0_spread": 35.2,
      "rms_ratio": 1.15,
-     "total_gen_s": 1.49,
+     "total_gen_s": 1.4,
      "n_inferences": 9
     }
    }
@@ -642,39 +642,39 @@
  "k_sizes": {
   "small": {
    "n_chunks": 21,
-   "ttfa_s": 0.065,
-   "rtf": 0.0749,
+   "ttfa_s": 0.057,
+   "rtf": 0.0685,
    "avg_chunk_dur_s": 1.26,
    "f0_spread": 47.6,
    "rms_ratio": 1.845,
-   "total_gen_s": 1.98,
+   "total_gen_s": 1.81,
    "n_inferences": 21
   },
   "medium": {
    "n_chunks": 10,
-   "ttfa_s": 0.208,
-   "rtf": 0.0608,
+   "ttfa_s": 0.2,
+   "rtf": 0.0569,
    "avg_chunk_dur_s": 2.58,
    "f0_spread": 35.2,
    "rms_ratio": 1.14,
-   "total_gen_s": 1.57,
+   "total_gen_s": 1.47,
    "n_inferences": 10
   },
   "large": {
    "n_chunks": 9,
-   "ttfa_s": 0.238,
-   "rtf": 0.0575,
+   "ttfa_s": 0.24,
+   "rtf": 0.0538,
    "avg_chunk_dur_s": 2.88,
    "f0_spread": 35.2,
    "rms_ratio": 1.15,
-   "total_gen_s": 1.49,
+   "total_gen_s": 1.4,
    "n_inferences": 9
   }
  },
  "environment": {
   "checkpoint": "states_cont_180516.pth",
   "model_iter": 180516,
-  "model_load_s": 2.79,
+  "model_load_s": 2.93,
   "cpu_cores": 2,
   "ram_total_mb": 4238.0,
   "rss_after_model_mb": 385.0,

@@ -1,5 +1,12 @@
 {
  "sections": {
+  "B": {
+   "pass": [
+    "/api/build: build + ws:true + streaming:true",
+    "الصفحة / تُخدم بـ Cache-Control: no-store"
+   ],
+   "fail": []
+  },
   "W": {
    "pass": [
     "مصافحة RFC 6455 + ping→pong",
@@ -45,13 +52,26 @@
   }
  },
  "failures": [],
- "n_pass": 18,
+ "n_pass": 20,
  "n_fail": 0,
  "details": {
+  "B": {
+   "/api/build: build + ws:true + streaming:true": {
+    "app": "webapp.py",
+    "build": "2850ee4",
+    "ws": true,
+    "streaming": true,
+    "sample_rate": 22050,
+    "checkpoint_default": "states_cont_180516.pth"
+   },
+   "الصفحة / تُخدم بـ Cache-Control: no-store": {
+    "cache-control": "no-store"
+   }
+  },
   "W": {
    "مصافحة RFC 6455 + ping→pong": {
     "type": "pong",
-    "t_ms": 1791519410530
+    "t_ms": 1791522213472
    },
    "رسالة غير معروفة → error (بلا انهيار)": {
     "type": "error",
@@ -73,19 +93,19 @@
    },
    "أول صوت قبل اكتمال إرسال النص (محاكاة LLM)": {
     "pieces_total": 29,
-    "t_first_audio": 0.23,
-    "t_feed_done": 1.5
+    "t_first_audio": 0.2,
+    "t_feed_done": 1.47
    },
    "end: kind=end + إحصاءات كاملة": {
-    "ttfa_s": 0.208,
-    "ttfa_from_create_s": 0.228,
-    "rtf": 0.0642,
+    "ttfa_s": 0.182,
+    "ttfa_from_create_s": 0.202,
+    "rtf": 0.0589,
     "state": "done",
     "n_chunks_emitted": 14,
     "n_chunks_consumed": 13,
     "n_discarded_inflight": 0,
     "n_inferences": 14,
-    "synth_time_total_s": 2.0391690731048584,
+    "synth_time_total_s": 1.8697021007537842,
     "audio_duration_total_s": 31.765850340136055,
     "feed_chars": 486,
     "feed_pieces": 29,
@@ -115,10 +135,10 @@
     "sizes_match": true
    },
    "TTFA من بدء الطلب < 8 ث (قياس فعلي)": {
-    "ttfa_s": 0.229
+    "ttfa_s": 0.203
    },
    "الخادم حفظ الصوت المبث في web_outputs (تكافئ الدفعي)": {
-    "file": "web_20261009_041653_spk0_stream.wav",
+    "file": "web_20261009_050335_spk0_stream.wav",
     "n_frames": 700437,
     "framerate": 22050,
     "expect_frames": 700437
@@ -174,15 +194,15 @@
      "applied": true
     },
     "end_stats": {
-     "ttfa_s": 0.159,
-     "ttfa_from_create_s": 0.179,
-     "rtf": 0.0506,
+     "ttfa_s": 0.153,
+     "ttfa_from_create_s": 0.173,
+     "rtf": 0.0527,
      "state": "cancelled",
      "n_chunks_emitted": 2,
      "n_chunks_consumed": 2,
      "n_discarded_inflight": 1,
      "n_inferences": 2,
-     "synth_time_total_s": 0.22961020469665527,
+     "synth_time_total_s": 0.23926305770874023,
      "audio_duration_total_s": 4.536553287981859,
      "feed_chars": 112,
      "feed_pieces": 6,
@@ -197,7 +217,7 @@
     "late_after_end": []
    },
    "طلب جديد فور المقاطعة يعمل (نفس المحرك — معرّف أعلى)": {
-    "resume_to_first_audio_s": 0.43,
+    "resume_to_first_audio_s": 0.42,
     "request_ids": [
      2,
      3
@@ -224,7 +244,7 @@
   }
  },
  "server": {
-  "port": 41615,
+  "port": 39837,
   "endpoint": "/ws",
   "started_from": "webapp.py (عملية مستقلة)"
  },

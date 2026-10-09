@@ -9,6 +9,9 @@
 
   W — بروتوكول WebSocket: مصافحة RFC 6455 سليمة · started · ping/pong ·
       رسالة غير معروفة → error.
+  B — PATCH 19 (هوية الخادم): /api/build يعلن البناء وجاهزية البث ·
+      الصفحة / تُخدم بـ Cache-Control: no-store — آلية كشف الخادم/الصفحة
+      القديمة التي كانت تُسقط الواجهة صامتة للمسار الدفعي.
   X — إثبات البث التدريجي (المسار الكامل): أول مقطع صوتي يصل قبل اكتمال
       تغذية النص (نص طويل يُغذّى قطعًا كل 50ms — محاكاة LLM) · الترتيب
       الصارم 1..N · تطابق n_samples مع حجم الإطار الثنائي · end سليم ·
@@ -286,6 +289,26 @@ try:
         'التفكير المنظم بيفتح العقل. '
         'يلا نراجع الدرس تاني بكرة إن شاء الله.'
     )
+
+    # =====================================================================
+    # B — PATCH 19: هوية الخادم + منع تخزين الصفحة (كشف الخادم القديم)
+    # جذر شكوى «الصوت لا يبدأ قبل اكتمال التوليد» كان خادمًا/صفحة قديمة
+    # تسقط صامتة للمسار الدفعي — هذه الاختبارات تثبت آلية الكشف
+    # =====================================================================
+    print('\n[B] هوية الخادم وعدم تخزين الصفحة (PATCH 19)')
+    try:
+        with urllib.request.urlopen(BASE + '/api/build', timeout=5) as r:
+            bld = json.loads(r.read().decode('utf-8'))
+            record('B', '/api/build: build + ws:true + streaming:true',
+                   bld.get('ws') is True and bld.get('streaming') is True
+                   and isinstance(bld.get('build'), str)
+                   and len(bld['build']) >= 3, bld)
+        with urllib.request.urlopen(BASE + '/', timeout=5) as r:
+            cc = (r.headers.get('Cache-Control') or '').lower()
+            record('B', 'الصفحة / تُخدم بـ Cache-Control: no-store',
+                   'no-store' in cc, {'cache-control': cc})
+    except Exception:                                              # noqa: BLE001
+        record('B', 'هوية الخادم', False, traceback.format_exc())
 
     # =====================================================================
     # W — بروتوكول WebSocket
