@@ -382,7 +382,7 @@ def effective_diacritize_mode(raw_text, mode, dialect='egy'):
     return 'fusha' if dialect == 'msa' else 'egyptian'
 
 
-def merge_preserved_marks(original, vocalized):
+def merge_preserved_marks(original, vocalized, return_info=False):
     """استكمال التشكيل مع حفظ حركات المستخدم (المبدأ د).
 
     لكل كلمة: حروف النص الأصلي المشكولة تُحفظ بحركاتها الأصلية حرفيًا،
@@ -397,13 +397,27 @@ def merge_preserved_marks(original, vocalized):
     """
     orig_ws = original.split()
     voc_ws = vocalized.split()
+    info = {'fallback': None, 'coverage': None, 'preserved': 0}
     if len(orig_ws) != len(voc_ws):
         cov, _, _ = diacritic_coverage(original)
+        info['coverage'] = round(cov, 3)
         if cov >= 0.5:
-            return eqz_text.keep_arabic_and_punct(original)
-        return vocalized
+            info['fallback'] = 'kept_original'
+            log(f'[preserve] alignment failed ({len(orig_ws)} vs '
+                f'{len(voc_ws)} words) - original returned AS-IS '
+                f'(coverage {cov:.2f} >= 0.5): incomplete, no '
+                'untrusted completion')
+            result = eqz_text.keep_arabic_and_punct(original)
+        else:
+            info['fallback'] = 'accepted_vocalizer'
+            log(f'[preserve] alignment failed ({len(orig_ws)} vs '
+                f'{len(voc_ws)} words) - vocalizer output accepted '
+                f'(original coverage {cov:.2f} < 0.5)')
+            result = vocalized
+        return (result, info) if return_info else result
     if not any('\u064B' <= c <= '\u0652' for c in original):
-        return vocalized          # لا حركات أصلية — لا شيء يُحفظ
+        return (vocalized, info) if return_info else vocalized
+        # لا حركات أصلية — لا شيء يُحفظ
     from det_tashkeel import Word, _compat
     out = []
     preserved = 0
@@ -428,10 +442,12 @@ def merge_preserved_marks(original, vocalized):
                 merged.append((vl, vd))
         word = Word(vw_parsed.prefix, merged, vw_parsed.suffix)
         out.append(word.render())
+    info['preserved'] = preserved
     if preserved:
         log(f'[preserve] حُفظت حركات مستخدم على {preserved} حرفًا '
             'مشكولًا أصلًا')
-    return ' '.join(out)
+    result = ' '.join(out)
+    return (result, info) if return_info else result
 
 
 def prepare_text_rich(raw_text, diacritize_mode='auto', dialect='egy',
@@ -457,7 +473,7 @@ def prepare_text_rich(raw_text, diacritize_mode='auto', dialect='egy',
        التدريب تمامًا.
 
     يعيد dict: {text, did_vocalize, diacritize, normalized, numbers,
-    translit, markers, stages}. مرحلات stages (التشخيص/التقييم فقط):
+    translit, markers, stages, merge_fallback}. مرحلات stages (التشخيص/التقييم فقط):
     stripped/after_catt/after_det|after_restore/after_merge."""
     # ---------- 1) التطبيع الموحد ----------
     norm = eqz_text.normalize_text(raw_text, dialect)
@@ -488,8 +504,10 @@ def prepare_text_rich(raw_text, diacritize_mode='auto', dialect='egy',
             voc = eqz_text.restore_punctuation(stripped, voc)
             stages['after_restore'] = voc
         # المبدأ د: حفظ حركات المستخدم عند استكمال النص المشكول جزئيًا
-        voc = merge_preserved_marks(stripped, voc)
+        voc, merge_info = merge_preserved_marks(stripped, voc,
+                                                return_info=True)
         stages['after_merge'] = voc
+        stages['merge_info'] = merge_info
     else:
         voc = eqz_text.keep_arabic_and_punct(stripped)
         if not _AR_LETTERS.search(voc):
@@ -513,6 +531,10 @@ def prepare_text_rich(raw_text, diacritize_mode='auto', dialect='egy',
         'translit': had_latin,
         'markers': has_markers,
         'stages': stages,
+        # تمييز صريح: True = فشلت محاذاة الكلمات وأُعيد النص الأصلي
+        # (ناقص التشكيل بلا استكمال) — لا يظهر إلا في الوضعين المشكّلين
+        'merge_fallback': bool(stages.get('merge_info',
+                                          {}).get('fallback')),
     }
     if verbose:
         log(f'[prep] mode={mode} | numbers={had_digits} | '

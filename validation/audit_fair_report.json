@@ -1,0 +1,490 @@
+{
+ "purpose": "fair fixed-set comparison correcting the mixed-denominator claim (17/29 vs 52/57) in commit db8f6b1",
+ "method": "same 8 baseline cases, same focus positions, same expected reference, same internal-letter counting (first/last excluded); before side recounted from the old report own words",
+ "n_cases": 8,
+ "n_focus_words": 12,
+ "n_comparable_positions": 29,
+ "before_reported_by_old_report": "17/29",
+ "before_recounted": "17/29",
+ "after_live_run": "24/29",
+ "before_pct": 58.62,
+ "after_pct": 82.76,
+ "positions_improved": 7,
+ "positions_regressed": 0,
+ "positions_unchanged": 22,
+ "exact_word_before": 0,
+ "exact_word_after": 2,
+ "expanded_set_note": "the 91.23% (52/57) figure remains valid but ONLY on the expanded 19-case fixture — it is not comparable to the 8-case baseline",
+ "no_silent_exclusions": "كل حالات الأساس الثماني معروضة؛ لا حالات سياقية في مجموعة الأساس",
+ "rows": [
+  {
+   "case": "egy_001",
+   "word_index": 1,
+   "input_word": "بيكتب",
+   "expected_word": "بِيِكْتِب",
+   "before_word": "بِيَكْتُبْ",
+   "after_word": "بِيِكْتِبْ",
+   "n_comparable_positions": 3,
+   "before_internal_correct": 1,
+   "after_internal_correct": 3,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ي",
+     "expected": "ِ",
+     "before": "َ",
+     "after": "ِ",
+     "before_ok": false,
+     "after_ok": true,
+     "delta": "improved"
+    },
+    {
+     "pos": 2,
+     "letter": "ك",
+     "expected": "ْ",
+     "before": "ْ",
+     "after": "ْ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 3,
+     "letter": "ت",
+     "expected": "ِ",
+     "before": "ُ",
+     "after": "ِ",
+     "before_ok": false,
+     "after_ok": true,
+     "delta": "improved"
+    }
+   ]
+  },
+  {
+   "case": "egy_002",
+   "word_index": 1,
+   "input_word": "بنروح",
+   "expected_word": "بِنِرُوح",
+   "before_word": "بِنُرُوحْ",
+   "after_word": "بِنُرُوحْ",
+   "n_comparable_positions": 3,
+   "before_internal_correct": 2,
+   "after_internal_correct": 2,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ن",
+     "expected": "ِ",
+     "before": "ُ",
+     "after": "ُ",
+     "before_ok": false,
+     "after_ok": false,
+     "delta": "same"
+    },
+    {
+     "pos": 2,
+     "letter": "ر",
+     "expected": "ُ",
+     "before": "ُ",
+     "after": "ُ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 3,
+     "letter": "و",
+     "expected": "",
+     "before": "",
+     "after": "",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_003",
+   "word_index": 0,
+   "input_word": "دلوقتي",
+   "expected_word": "دِلْوَقْتِي",
+   "before_word": "دَلُوقَتِي",
+   "after_word": "دِلْوَقْتِي",
+   "n_comparable_positions": 4,
+   "before_internal_correct": 1,
+   "after_internal_correct": 4,
+   "before_exact_word": false,
+   "after_exact_word": true,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ل",
+     "expected": "ْ",
+     "before": "ُ",
+     "after": "ْ",
+     "before_ok": false,
+     "after_ok": true,
+     "delta": "improved"
+    },
+    {
+     "pos": 2,
+     "letter": "و",
+     "expected": "َ",
+     "before": "",
+     "after": "َ",
+     "before_ok": false,
+     "after_ok": true,
+     "delta": "improved"
+    },
+    {
+     "pos": 3,
+     "letter": "ق",
+     "expected": "ْ",
+     "before": "َ",
+     "after": "ْ",
+     "before_ok": false,
+     "after_ok": true,
+     "delta": "improved"
+    },
+    {
+     "pos": 4,
+     "letter": "ت",
+     "expected": "ِ",
+     "before": "ِ",
+     "after": "ِ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_003",
+   "word_index": 1,
+   "input_word": "هنبدأ",
+   "expected_word": "هَنِبْدَأ",
+   "before_word": "هَنْبْدَأْ",
+   "after_word": "هَنِبْدَأ",
+   "n_comparable_positions": 3,
+   "before_internal_correct": 2,
+   "after_internal_correct": 3,
+   "before_exact_word": false,
+   "after_exact_word": true,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ن",
+     "expected": "ِ",
+     "before": "ْ",
+     "after": "ِ",
+     "before_ok": false,
+     "after_ok": true,
+     "delta": "improved"
+    },
+    {
+     "pos": 2,
+     "letter": "ب",
+     "expected": "ْ",
+     "before": "ْ",
+     "after": "ْ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 3,
+     "letter": "د",
+     "expected": "َ",
+     "before": "َ",
+     "after": "َ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_004",
+   "word_index": 1,
+   "input_word": "رايح",
+   "expected_word": "رَايِح",
+   "before_word": "رَايِحْ",
+   "after_word": "رَايِحْ",
+   "n_comparable_positions": 2,
+   "before_internal_correct": 2,
+   "after_internal_correct": 2,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ا",
+     "expected": "",
+     "before": "",
+     "after": "",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 2,
+     "letter": "ي",
+     "expected": "ِ",
+     "before": "ِ",
+     "after": "ِ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_004",
+   "word_index": 2,
+   "input_word": "أعمل",
+   "expected_word": "أَعْمِل",
+   "before_word": "أَعْمَلْ",
+   "after_word": "أَعْمَلْ",
+   "n_comparable_positions": 2,
+   "before_internal_correct": 1,
+   "after_internal_correct": 1,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ع",
+     "expected": "ْ",
+     "before": "ْ",
+     "after": "ْ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 2,
+     "letter": "م",
+     "expected": "ِ",
+     "before": "َ",
+     "after": "َ",
+     "before_ok": false,
+     "after_ok": false,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_005",
+   "word_index": 1,
+   "input_word": "عارف",
+   "expected_word": "عَارِف",
+   "before_word": "عَارِفْ",
+   "after_word": "عَارِفْ",
+   "n_comparable_positions": 2,
+   "before_internal_correct": 2,
+   "after_internal_correct": 2,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ا",
+     "expected": "",
+     "before": "",
+     "after": "",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 2,
+     "letter": "ر",
+     "expected": "ِ",
+     "before": "ِ",
+     "after": "ِ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_005",
+   "word_index": 2,
+   "input_word": "أعمل",
+   "expected_word": "أَعْمِل",
+   "before_word": "أَعْمَلْ",
+   "after_word": "أَعْمَلْ",
+   "n_comparable_positions": 2,
+   "before_internal_correct": 1,
+   "after_internal_correct": 1,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ع",
+     "expected": "ْ",
+     "before": "ْ",
+     "after": "ْ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 2,
+     "letter": "م",
+     "expected": "ِ",
+     "before": "َ",
+     "after": "َ",
+     "before_ok": false,
+     "after_ok": false,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_006",
+   "word_index": 1,
+   "input_word": "هنعمل",
+   "expected_word": "هَنِعْمِل",
+   "before_word": "هَنْعْمَلْ",
+   "after_word": "هَنْعْمَلْ",
+   "n_comparable_positions": 3,
+   "before_internal_correct": 1,
+   "after_internal_correct": 1,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ن",
+     "expected": "ِ",
+     "before": "ْ",
+     "after": "ْ",
+     "before_ok": false,
+     "after_ok": false,
+     "delta": "same"
+    },
+    {
+     "pos": 2,
+     "letter": "ع",
+     "expected": "ْ",
+     "before": "ْ",
+     "after": "ْ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 3,
+     "letter": "م",
+     "expected": "ِ",
+     "before": "َ",
+     "after": "َ",
+     "before_ok": false,
+     "after_ok": false,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_007",
+   "word_index": 2,
+   "input_word": "فاهم",
+   "expected_word": "فَاهِم",
+   "before_word": "فَاهِمْ",
+   "after_word": "فَاهِمْ",
+   "n_comparable_positions": 2,
+   "before_internal_correct": 2,
+   "after_internal_correct": 2,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ا",
+     "expected": "",
+     "before": "",
+     "after": "",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 2,
+     "letter": "ه",
+     "expected": "ِ",
+     "before": "ِ",
+     "after": "ِ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    }
+   ]
+  },
+  {
+   "case": "egy_007",
+   "word_index": 4,
+   "input_word": "ده",
+   "expected_word": "دَه",
+   "before_word": "دَهْ",
+   "after_word": "دَهْ",
+   "n_comparable_positions": 0,
+   "before_internal_correct": 0,
+   "after_internal_correct": 0,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": []
+  },
+  {
+   "case": "egy_008",
+   "word_index": 1,
+   "input_word": "بيقول",
+   "expected_word": "بِيِقُول",
+   "before_word": "بِيَقُولْ",
+   "after_word": "بِيِقُولْ",
+   "n_comparable_positions": 3,
+   "before_internal_correct": 2,
+   "after_internal_correct": 3,
+   "before_exact_word": false,
+   "after_exact_word": false,
+   "positions": [
+    {
+     "pos": 1,
+     "letter": "ي",
+     "expected": "ِ",
+     "before": "َ",
+     "after": "ِ",
+     "before_ok": false,
+     "after_ok": true,
+     "delta": "improved"
+    },
+    {
+     "pos": 2,
+     "letter": "ق",
+     "expected": "ُ",
+     "before": "ُ",
+     "after": "ُ",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    },
+    {
+     "pos": 3,
+     "letter": "و",
+     "expected": "",
+     "before": "",
+     "after": "",
+     "before_ok": true,
+     "after_ok": true,
+     "delta": "same"
+    }
+   ]
+  }
+ ]
+}

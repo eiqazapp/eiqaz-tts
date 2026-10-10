@@ -169,5 +169,54 @@ class MergeDecisionTests(unittest.TestCase):
         self.assertEqual(out, 'بِيِكْتِبْ اِلدَّرْسْ')
 
 
+class MergeFallbackFlagTests(unittest.TestCase):
+    """تمييز إعادة النص الأصلي الناقص عند فشل المحاذاة (تدقيق 2026-10-10).
+
+    المطلوب: النص شبه المشكول (تغطية >= 0.5) الذي تعذر محاذاة كلماته
+    يُعاد كما هو — لكن بعلم صريح يميزه من النص المكتمل، لا كتمًا.
+    """
+
+    def test_kept_original_fallback_is_explicit(self):
+        out, info = infer.merge_preserved_marks(
+            'أَنَا رَايِح أَعْمَلْ', 'أَنَا رَايِح', return_info=True)
+        self.assertEqual(out, 'أَنَا رَايِح أَعْمَلْ')
+        self.assertEqual(info['fallback'], 'kept_original')
+        self.assertIsNotNone(info['coverage'])
+        self.assertGreaterEqual(info['coverage'], 0.5)
+
+    def test_accepted_vocalizer_fallback_is_explicit(self):
+        out, info = infer.merge_preserved_marks(
+            'بيكتب الدرس', 'بِيِكْتِبْ', return_info=True)
+        self.assertEqual(out, 'بِيِكْتِبْ')
+        self.assertEqual(info['fallback'], 'accepted_vocalizer')
+        self.assertLess(info['coverage'], 0.5)
+
+    def test_normal_merge_has_no_fallback(self):
+        out, info = infer.merge_preserved_marks(
+            'بِيَكْتِب الدرس', 'بِيِكْتِبْ اِلدَّرْسْ', return_info=True)
+        self.assertEqual(out, 'بِيَكْتِبْ اِلدَّرْسْ')
+        self.assertIsNone(info['fallback'])
+        self.assertEqual(info['preserved'], 4)
+
+    def test_default_signature_unchanged(self):
+        # توافق كامل مع الواجهة القائمة (بلا return_info يعيد النص فقط)
+        out = infer.merge_preserved_marks(
+            'أَنَا رَايِح أَعْمَلْ', 'أَنَا رَايِح')
+        self.assertEqual(out, 'أَنَا رَايِح أَعْمَلْ')
+
+    def test_pipeline_exposes_merge_fallback_key(self):
+        # المسار الكامل: المفتاح موجود دائمًا، وFalse في الدمج الطبيعي
+        res = infer.prepare_text_rich('بِيَكْتِب الدرس', 'auto', 'egy')
+        self.assertIn('merge_fallback', res)
+        self.assertIn('merge_info', res['stages'])
+        self.assertFalse(res['merge_fallback'])
+        self.assertIsNone(res['stages']['merge_info']['fallback'])
+
+    def test_pipeline_manual_mode_has_no_fallback_flag(self):
+        res = infer.prepare_text_rich('بِيَكْتُبُ الدَّرْسُ', 'auto', 'egy')
+        self.assertFalse(res['merge_fallback'])
+        self.assertEqual(res['diacritize'], 'manual')
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
