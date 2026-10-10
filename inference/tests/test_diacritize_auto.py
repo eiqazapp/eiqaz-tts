@@ -6,7 +6,7 @@ import sys
 import unittest
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-INF = os.path.dirname(os.path.dirname(HERE))
+INF = os.path.dirname(HERE)
 for path in (INF, os.path.join(INF, 'lib')):
     if path not in sys.path:
         sys.path.insert(0, path)
