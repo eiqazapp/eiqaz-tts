@@ -317,16 +317,61 @@ def keep_arabic_only(text):
     return eqz_text.keep_arabic_and_punct(text)
 
 
+def diacritic_coverage(text):
+    """نسبة الحروف العربية التي تتبعها حركة واحدة على الأقل.
+
+    تختلف عن diacritic_density: الشدة مع الحركة قد تنتجان علامتين للحرف
+    الواحد، لذلك لا تصلح كثافة العلامات وحدها للحكم بأن النص مكتمل التشكيل.
+    """
+    chars = list(text)
+    letters = [i for i, ch in enumerate(chars) if _AR_LETTERS.fullmatch(ch)]
+    if not letters:
+        return 0.0, 0, 0
+    marked = 0
+    for i in letters:
+        j = i + 1
+        has_mark = False
+        while j < len(chars) and '\u064B' <= chars[j] <= '\u0652':
+            has_mark = True
+            j += 1
+        if has_mark:
+            marked += 1
+    return marked / len(letters), marked, len(letters)
+
+
+def _looks_fully_diacritized(text):
+    """قرار محافظ: لا نعد النص يدويًا إلا إذا كانت معظم حروفه مشكولة.
+
+    وجود بعض الحركات أو كثافتها وحدها لا يعني أن النص مكتمل. هذا الفحص
+    لا يدّعي فهم العربية؛ إنه حارس محافظ لوضع auto، بينما manual الصريح
+    يظل الوسيلة المضمونة لحفظ أي تشكيل يقدمه المستخدم.
+    """
+    coverage, marked, total = diacritic_coverage(text)
+    if total == 0 or coverage < 0.72:
+        return False
+    words = [w for w in text.split() if _AR_LETTERS.search(w)]
+    if not words:
+        return False
+    marked_words = sum(
+        any('\u064B' <= ch <= '\u0652' for ch in w)
+        for w in words)
+    return marked_words / len(words) >= 0.80
+
+
 def effective_diacritize_mode(raw_text, mode, dialect='egy'):
-    """توحيد قرار التشكيل (كما يحسمه auto): كثافة حركات < 0.30 → تشكيل،
-    وإلا تشكيل النص كما هو. الفصحى بلا قواعد det المصرية أبدًا."""
+    """اختيار وضع التشكيل.
+
+    auto: يترك النص يدويًا فقط عندما يبدو مكتمل التشكيل؛ أما النص غير
+    المشكول أو المشكول جزئيًا فيمر عبر مُشكِّل اللهجة المطلوبة. لا يعتمد
+    القرار على كثافة العلامات وحدها، لأنها قد ترتفع بسبب الشدة والتنوين.
+    لا تتغير دلالة الأوضاع الصريحة: egyptian/fusha/manual.
+    """
     if mode in ('egyptian', 'fusha', 'manual'):
         return mode
-    density, _ = diacritic_density(
-        eqz_text.keep_arabic_and_punct(raw_text))
-    if density < 0.30:
-        return 'fusha' if dialect == 'msa' else 'egyptian'
-    return 'manual'
+    text = eqz_text.keep_arabic_and_punct(raw_text)
+    if _looks_fully_diacritized(text):
+        return 'manual'
+    return 'fusha' if dialect == 'msa' else 'egyptian'
 
 
 def prepare_text_rich(raw_text, diacritize_mode='auto', dialect='egy',
