@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Initial Egyptian Arabic internal-vowel evaluation set for inference-time TTS text preparation.",
+  "status": "provisional_needs_native_review",
+  "warning": "These hand-authored references are a starting baseline, not a linguistically certified gold standard. A native Egyptian Arabic reviewer should validate each vowel before using aggregate scores as release gates.",
+  "comparison": "Compare diacritics on internal letters of focus words after matching the unvocalized letter skeleton. This isolates internal-vowel quality from final-ending heuristics.",
+  "cases": [
+    {
+      "id": "egy_001",
+      "input": "هو بيكتب الدرس",
+      "expected": "هُوَ بِيِكْتِب الدَّرْس",
+      "focus_word_indices": [
+        1
+      ]
+    },
+    {
+      "id": "egy_002",
+      "input": "إحنا بنروح المدرسة",
+      "expected": "إِحْنَا بِنِرُوح الْمَدْرَسَة",
+      "focus_word_indices": [
+        1
+      ]
+    },
+    {
+      "id": "egy_003",
+      "input": "دلوقتي هنبدأ الدرس يا عمر",
+      "expected": "دِلْوَقْتِي هَنِبْدَأ الدَّرْس يَا عُمَر",
+      "focus_word_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "egy_004",
+      "input": "أنا رايح أعمل حاجة مهمة",
+      "expected": "أَنَا رَايِح أَعْمِل حَاجَة مُهِمَّة",
+      "focus_word_indices": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "egy_005",
+      "input": "مش عارف أعمل إيه",
+      "expected": "مِشْ عَارِف أَعْمِل إِيه",
+      "focus_word_indices": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "egy_006",
+      "input": "بكرة هنعمل تجربة جديدة",
+      "expected": "بُكْرَة هَنِعْمِل تَجْرِبَة جَدِيدَة",
+      "focus_word_indices": [
+        1
+      ]
+    },
+    {
+      "id": "egy_007",
+      "input": "أنا مش فاهم السؤال ده",
+      "expected": "أَنَا مِشْ فَاهِم السُّؤَال دَه",
+      "focus_word_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": "egy_008",
+      "input": "المعلم بيقول للطالب",
+      "expected": "الْمُعَلِّم بِيِقُول لِلطَّالِب",
+      "focus_word_indices": [
+        1
+      ]
+    }
+  ]
+}
