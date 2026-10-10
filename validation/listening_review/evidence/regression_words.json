@@ -1,0 +1,810 @@
+[
+ {
+  "id": "S1",
+  "input": "بِيَكْتِب الدرس",
+  "n_words": 2,
+  "words_unchanged": 0,
+  "word_rows": [
+   {
+    "word": "بِيَكْتِب",
+    "word_fix": "بِيَكْتِبْ",
+    "status": "فرق-نصي-فقط",
+    "tok_main": [
+     "b",
+     "i",
+     "y",
+     "a",
+     "k",
+     "t",
+     "i",
+     "b",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "b",
+     "i",
+     "y",
+     "a",
+     "k",
+     "t",
+     "i",
+     "b",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "الدرس",
+    "word_fix": "اِلدَّرْسْ",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "aa",
+     "l",
+     "d",
+     "r",
+     "s",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "<",
+     "i",
+     "d",
+     "_dbl_",
+     "a",
+     "r",
+     "s",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ],
+  "pronunciation_changed_words": [
+   {
+    "main": "الدرس",
+    "fix": "اِلدَّرْسْ"
+   }
+  ],
+  "text_only_diff_words": [
+   {
+    "main": "بِيَكْتِب",
+    "fix": "بِيَكْتِبْ"
+   }
+  ],
+  "unexpected_pron_changes": []
+ },
+ {
+  "id": "S2",
+  "input": "هو بيقول للطالب",
+  "n_words": 3,
+  "words_unchanged": 1,
+  "word_rows": [
+   {
+    "word": "هُوْ",
+    "word_fix": "هُوَ",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "h",
+     "uu",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "h",
+     "u",
+     "w",
+     "a",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "بِيَقُولْ",
+    "word_fix": "بِيِقُولْ",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "b",
+     "i",
+     "y",
+     "a",
+     "<",
+     "i",
+     "uu",
+     "l",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "b",
+     "ii",
+     "i",
+     "<",
+     "i",
+     "uu",
+     "l",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "لِلطَّالِبْ",
+    "word_fix": "لِلطَّالِبْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "l",
+     "i",
+     "T",
+     "_dbl_",
+     "aa",
+     "l",
+     "i",
+     "b",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "l",
+     "i",
+     "T",
+     "_dbl_",
+     "aa",
+     "l",
+     "i",
+     "b",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ],
+  "pronunciation_changed_words": [
+   {
+    "main": "هُوْ",
+    "fix": "هُوَ"
+   },
+   {
+    "main": "بِيَقُولْ",
+    "fix": "بِيِقُولْ"
+   }
+  ],
+  "text_only_diff_words": [],
+  "unexpected_pron_changes": []
+ },
+ {
+  "id": "S3",
+  "input": "دلوقتي هنبدأ الدرس يا عمر",
+  "n_words": 5,
+  "words_unchanged": 2,
+  "word_rows": [
+   {
+    "word": "دَلُوقَتِي",
+    "word_fix": "دِلْوَقْتِي",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "d",
+     "a",
+     "l",
+     "uu",
+     "<",
+     "i",
+     "a",
+     "t",
+     "ii",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "d",
+     "i",
+     "l",
+     "w",
+     "a",
+     "<",
+     "i",
+     "t",
+     "ii",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "هَنْبْدَأْ",
+    "word_fix": "هَنِبْدَأ",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "h",
+     "a",
+     "n",
+     "b",
+     "d",
+     "a",
+     "<",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "h",
+     "a",
+     "n",
+     "i",
+     "b",
+     "d",
+     "a",
+     "<",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "اِلدَّرْسْ",
+    "word_fix": "اِلدَّرْسْ",
+    "status": "فرق-نصي-فقط",
+    "tok_main": [
+     "<",
+     "i",
+     "d",
+     "_dbl_",
+     "a",
+     "r",
+     "s",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "<",
+     "i",
+     "d",
+     "_dbl_",
+     "a",
+     "r",
+     "s",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "يَا",
+    "word_fix": "يَا",
+    "status": "ثابتة",
+    "tok_main": [
+     "y",
+     "aa",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "y",
+     "aa",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "عُمَرْ",
+    "word_fix": "عُمَرْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "E",
+     "u",
+     "m",
+     "a",
+     "r",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "E",
+     "u",
+     "m",
+     "a",
+     "r",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ],
+  "pronunciation_changed_words": [
+   {
+    "main": "دَلُوقَتِي",
+    "fix": "دِلْوَقْتِي"
+   },
+   {
+    "main": "هَنْبْدَأْ",
+    "fix": "هَنِبْدَأ"
+   }
+  ],
+  "text_only_diff_words": [
+   {
+    "main": "اِلدَّرْسْ",
+    "fix": "اِلدَّرْسْ"
+   }
+  ],
+  "unexpected_pron_changes": []
+ },
+ {
+  "id": "S4",
+  "input": "أنا مش فاهم السؤال ده",
+  "n_words": 5,
+  "words_unchanged": 5,
+  "word_rows": [
+   {
+    "word": "أَنَا",
+    "word_fix": "أَنَا",
+    "status": "ثابتة",
+    "tok_main": [
+     "<",
+     "a",
+     "n",
+     "aa",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "<",
+     "a",
+     "n",
+     "aa",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "مُشْ",
+    "word_fix": "مُشْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "m",
+     "u",
+     "$",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "m",
+     "u",
+     "$",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "فَاهِمْ",
+    "word_fix": "فَاهِمْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "f",
+     "aa",
+     "h",
+     "i",
+     "m",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "f",
+     "aa",
+     "h",
+     "i",
+     "m",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "اِلسُّؤَالْ",
+    "word_fix": "اِلسُّؤَالْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "<",
+     "i",
+     "s",
+     "_dbl_",
+     "u",
+     "<",
+     "aa",
+     "l",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "<",
+     "i",
+     "s",
+     "_dbl_",
+     "u",
+     "<",
+     "aa",
+     "l",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "دَهْ",
+    "word_fix": "دَهْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "d",
+     "a",
+     "h",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "d",
+     "a",
+     "h",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ],
+  "pronunciation_changed_words": [],
+  "text_only_diff_words": [],
+  "unexpected_pron_changes": []
+ },
+ {
+  "id": "S5",
+  "input": "بكرة هنعمل تجربة جديدة",
+  "n_words": 4,
+  "words_unchanged": 3,
+  "word_rows": [
+   {
+    "word": "بْكْرَة",
+    "word_fix": "بُكْرَة",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "b",
+     "k",
+     "r",
+     "a",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "b",
+     "u",
+     "k",
+     "r",
+     "a",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "هَنْعْمَلْ",
+    "word_fix": "هَنْعْمَلْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "h",
+     "a",
+     "n",
+     "E",
+     "m",
+     "a",
+     "l",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "h",
+     "a",
+     "n",
+     "E",
+     "m",
+     "a",
+     "l",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "تَجْرِبَة",
+    "word_fix": "تَجْرِبَة",
+    "status": "ثابتة",
+    "tok_main": [
+     "t",
+     "a",
+     "v",
+     "r",
+     "i",
+     "b",
+     "a",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "t",
+     "a",
+     "v",
+     "r",
+     "i",
+     "b",
+     "a",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "جَدِيدَة",
+    "word_fix": "جَدِيدَة",
+    "status": "ثابتة",
+    "tok_main": [
+     "v",
+     "a",
+     "d",
+     "ii",
+     "d",
+     "a",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "v",
+     "a",
+     "d",
+     "ii",
+     "d",
+     "a",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ],
+  "pronunciation_changed_words": [
+   {
+    "main": "بْكْرَة",
+    "fix": "بُكْرَة"
+   }
+  ],
+  "text_only_diff_words": [],
+  "unexpected_pron_changes": []
+ },
+ {
+  "id": "S6",
+  "input": "هو بيقول كده",
+  "n_words": 3,
+  "words_unchanged": 1,
+  "word_rows": [
+   {
+    "word": "هُوْ",
+    "word_fix": "هُوَ",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "h",
+     "uu",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "h",
+     "u",
+     "w",
+     "a",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "بِيَقُولْ",
+    "word_fix": "بِيِقُولْ",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "b",
+     "i",
+     "y",
+     "a",
+     "<",
+     "i",
+     "uu",
+     "l",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "b",
+     "ii",
+     "i",
+     "<",
+     "i",
+     "uu",
+     "l",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "كِدَهْ",
+    "word_fix": "كِدَهْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "k",
+     "i",
+     "d",
+     "a",
+     "h",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "k",
+     "i",
+     "d",
+     "a",
+     "h",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ],
+  "pronunciation_changed_words": [
+   {
+    "main": "هُوْ",
+    "fix": "هُوَ"
+   },
+   {
+    "main": "بِيَقُولْ",
+    "fix": "بِيِقُولْ"
+   }
+  ],
+  "text_only_diff_words": [],
+  "unexpected_pron_changes": []
+ },
+ {
+  "id": "S7",
+  "input": "مش عارف أعمل إيه",
+  "n_words": 4,
+  "words_unchanged": 4,
+  "word_rows": [
+   {
+    "word": "مُشْ",
+    "word_fix": "مُشْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "m",
+     "u",
+     "$",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "m",
+     "u",
+     "$",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "عَارِفْ",
+    "word_fix": "عَارِفْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "E",
+     "aa",
+     "r",
+     "i",
+     "f",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "E",
+     "aa",
+     "r",
+     "i",
+     "f",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "أَعْمَلْ",
+    "word_fix": "أَعْمَلْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "<",
+     "a",
+     "E",
+     "m",
+     "a",
+     "l",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "<",
+     "a",
+     "E",
+     "m",
+     "a",
+     "l",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "إِيهْ",
+    "word_fix": "إِيهْ",
+    "status": "ثابتة",
+    "tok_main": [
+     "<",
+     "ii",
+     "h",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "<",
+     "ii",
+     "h",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ],
+  "pronunciation_changed_words": [],
+  "text_only_diff_words": [],
+  "unexpected_pron_changes": []
+ },
+ {
+  "id": "S8",
+  "input": "هو هنا",
+  "n_words": 2,
+  "words_unchanged": 0,
+  "word_rows": [
+   {
+    "word": "هُوْ",
+    "word_fix": "هُوَ",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "h",
+     "uu",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "h",
+     "u",
+     "w",
+     "a",
+     "_+_",
+     "_eos_"
+    ]
+   },
+   {
+    "word": "هُنَا",
+    "word_fix": "هِنَا",
+    "status": "تغير-نطق",
+    "tok_main": [
+     "h",
+     "u",
+     "n",
+     "aa",
+     "_+_",
+     "_eos_"
+    ],
+    "tok_fix": [
+     "h",
+     "i",
+     "n",
+     "aa",
+     "_+_",
+     "_eos_"
+    ]
+   }
+  ],
+  "pronunciation_changed_words": [
+   {
+    "main": "هُوْ",
+    "fix": "هُوَ"
+   },
+   {
+    "main": "هُنَا",
+    "fix": "هِنَا"
+   }
+  ],
+  "text_only_diff_words": [],
+  "unexpected_pron_changes": []
+ }
+]

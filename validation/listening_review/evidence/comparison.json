@@ -1,0 +1,500 @@
+{
+ "provenance_old_recordings": [
+  {
+   "old_file": "A1_after_fix.wav",
+   "regenerated_from": "fix@A1_OLD",
+   "md5_identical": true,
+   "old_md5": "2fb8350a57",
+   "new_md5": "2fb8350a57"
+  },
+  {
+   "old_file": "A1_before_main.wav",
+   "regenerated_from": "main@A1_OLD",
+   "md5_identical": true,
+   "old_md5": "88f68d0cc0",
+   "new_md5": "88f68d0cc0"
+  },
+  {
+   "old_file": "A2_after_fix.wav",
+   "regenerated_from": "fix@S1",
+   "md5_identical": true,
+   "old_md5": "a0caaf1587",
+   "new_md5": "a0caaf1587"
+  },
+  {
+   "old_file": "A2_before_main.wav",
+   "regenerated_from": "main@S1",
+   "md5_identical": true,
+   "old_md5": "2ddd909350",
+   "new_md5": "2ddd909350"
+  },
+  {
+   "old_file": "A3_after_fix.wav",
+   "regenerated_from": "fix@S3",
+   "md5_identical": true,
+   "old_md5": "999215eb0c",
+   "new_md5": "999215eb0c"
+  },
+  {
+   "old_file": "A3_before_main.wav",
+   "regenerated_from": "main@S3",
+   "md5_identical": true,
+   "old_md5": "0afeb5a8b2",
+   "new_md5": "0afeb5a8b2"
+  },
+  {
+   "old_file": "A4_after_fix.wav",
+   "regenerated_from": "fix@S7",
+   "md5_identical": true,
+   "old_md5": "0b4f5098dd",
+   "new_md5": "0b4f5098dd"
+  },
+  {
+   "old_file": "A4_before_main.wav",
+   "regenerated_from": "main@S7",
+   "md5_identical": true,
+   "old_md5": "0b4f5098dd",
+   "new_md5": "0b4f5098dd"
+  },
+  {
+   "old_file": "A5_after_fix.wav",
+   "regenerated_from": "fix@S8",
+   "md5_identical": true,
+   "old_md5": "163a50670e",
+   "new_md5": "163a50670e"
+  },
+  {
+   "old_file": "A5_before_main.wav",
+   "regenerated_from": "main@S8",
+   "md5_identical": true,
+   "old_md5": "c7301b8f2b",
+   "new_md5": "c7301b8f2b"
+  }
+ ],
+ "pairs": [
+  {
+   "id": "S1",
+   "input": "بِيَكْتِب الدرس",
+   "main_text": "بِيَكْتِب الدرس",
+   "fix_text": "بِيَكْتِبْ اِلدَّرْسْ",
+   "n_words_main": 2,
+   "n_words_fix": 2,
+   "words_preserved": true,
+   "word_changes": [
+    {
+     "kind": "vowels",
+     "before": "بِيَكْتِب",
+     "after": "بِيَكْتِبْ",
+     "changed_letters": {
+      "ب": [
+       "—",
+       "ْ"
+      ]
+     }
+    },
+    {
+     "kind": "vowels",
+     "before": "الدرس",
+     "after": "اِلدَّرْسْ",
+     "changed_letters": {
+      "ا": [
+       "—",
+       "ِ"
+      ],
+      "د": [
+       "—",
+       "َّ"
+      ],
+      "ر": [
+       "—",
+       "ْ"
+      ],
+      "س": [
+       "—",
+       "ْ"
+      ]
+     }
+    }
+   ],
+   "tokens_identical": false,
+   "tokens_changed_positions": [
+    9,
+    11,
+    12,
+    13,
+    14
+   ],
+   "wav_identical": false,
+   "main_dur": 0.813,
+   "fix_dur": 0.882,
+   "main_n_tokens": 15,
+   "fix_n_tokens": 17
+  },
+  {
+   "id": "S2",
+   "input": "هو بيقول للطالب",
+   "main_text": "هُوْ بِيَقُولْ لِلطَّالِبْ",
+   "fix_text": "هُوَ بِيِقُولْ لِلطَّالِبْ",
+   "n_words_main": 3,
+   "n_words_fix": 3,
+   "words_preserved": true,
+   "word_changes": [
+    {
+     "kind": "vowels",
+     "before": "هُوْ",
+     "after": "هُوَ",
+     "changed_letters": {
+      "و": [
+       "ْ",
+       "َ"
+      ]
+     }
+    },
+    {
+     "kind": "vowels",
+     "before": "بِيَقُولْ",
+     "after": "بِيِقُولْ",
+     "changed_letters": {
+      "ي": [
+       "َ",
+       "ِ"
+      ]
+     }
+    }
+   ],
+   "tokens_identical": false,
+   "tokens_changed_positions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+   ],
+   "wav_identical": false,
+   "main_dur": 1.045,
+   "fix_dur": 1.196,
+   "main_n_tokens": 22,
+   "fix_n_tokens": 23
+  },
+  {
+   "id": "S3",
+   "input": "دلوقتي هنبدأ الدرس يا عمر",
+   "main_text": "دَلُوقَتِي هَنْبْدَأْ اِلدَّرْسْ يَا عُمَرْ",
+   "fix_text": "دِلْوَقْتِي هَنِبْدَأ اِلدَّرْسْ يَا عُمَرْ",
+   "n_words_main": 5,
+   "n_words_fix": 5,
+   "words_preserved": true,
+   "word_changes": [
+    {
+     "kind": "vowels",
+     "before": "دَلُوقَتِي",
+     "after": "دِلْوَقْتِي",
+     "changed_letters": {
+      "د": [
+       "َ",
+       "ِ"
+      ],
+      "ل": [
+       "ُ",
+       "ْ"
+      ],
+      "و": [
+       "—",
+       "َ"
+      ],
+      "ق": [
+       "َ",
+       "ْ"
+      ]
+     }
+    },
+    {
+     "kind": "vowels",
+     "before": "هَنْبْدَأْ",
+     "after": "هَنِبْدَأ",
+     "changed_letters": {
+      "ن": [
+       "ْ",
+       "ِ"
+      ],
+      "أ": [
+       "ْ",
+       "—"
+      ]
+     }
+    },
+    {
+     "kind": "mark_order_only",
+     "before": "اِلدَّرْسْ",
+     "after": "اِلدَّرْسْ",
+     "note": "ترتيب العلامات المركبة فقط — النطق متطابق بعد NFC"
+    }
+   ],
+   "tokens_identical": false,
+   "tokens_changed_positions": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+   ],
+   "wav_identical": false,
+   "main_dur": 1.869,
+   "fix_dur": 1.892,
+   "main_n_tokens": 35,
+   "fix_n_tokens": 36
+  },
+  {
+   "id": "S4",
+   "input": "أنا مش فاهم السؤال ده",
+   "main_text": "أَنَا مُشْ فَاهِمْ اِلسُّؤَالْ دَهْ",
+   "fix_text": "أَنَا مُشْ فَاهِمْ اِلسُّؤَالْ دَهْ",
+   "n_words_main": 5,
+   "n_words_fix": 5,
+   "words_preserved": true,
+   "word_changes": [],
+   "tokens_identical": true,
+   "tokens_changed_positions": null,
+   "wav_identical": true,
+   "main_dur": 1.44,
+   "fix_dur": 1.44,
+   "main_n_tokens": 28,
+   "fix_n_tokens": 28
+  },
+  {
+   "id": "S5",
+   "input": "بكرة هنعمل تجربة جديدة",
+   "main_text": "بْكْرَة هَنْعْمَلْ تَجْرِبَة جَدِيدَة",
+   "fix_text": "بُكْرَة هَنْعْمَلْ تَجْرِبَة جَدِيدَة",
+   "n_words_main": 4,
+   "n_words_fix": 4,
+   "words_preserved": true,
+   "word_changes": [
+    {
+     "kind": "vowels",
+     "before": "بْكْرَة",
+     "after": "بُكْرَة",
+     "changed_letters": {
+      "ب": [
+       "ْ",
+       "ُ"
+      ]
+     }
+    }
+   ],
+   "tokens_identical": false,
+   "tokens_changed_positions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28
+   ],
+   "wav_identical": false,
+   "main_dur": 1.405,
+   "fix_dur": 1.521,
+   "main_n_tokens": 29,
+   "fix_n_tokens": 30
+  },
+  {
+   "id": "S6",
+   "input": "هو بيقول كده",
+   "main_text": "هُوْ بِيَقُولْ كِدَهْ",
+   "fix_text": "هُوَ بِيِقُولْ كِدَهْ",
+   "n_words_main": 3,
+   "n_words_fix": 3,
+   "words_preserved": true,
+   "word_changes": [
+    {
+     "kind": "vowels",
+     "before": "هُوْ",
+     "after": "هُوَ",
+     "changed_letters": {
+      "و": [
+       "ْ",
+       "َ"
+      ]
+     }
+    },
+    {
+     "kind": "vowels",
+     "before": "بِيَقُولْ",
+     "after": "بِيِقُولْ",
+     "changed_letters": {
+      "ي": [
+       "َ",
+       "ِ"
+      ]
+     }
+    }
+   ],
+   "tokens_identical": false,
+   "tokens_changed_positions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+   ],
+   "wav_identical": false,
+   "main_dur": 0.906,
+   "fix_dur": 1.022,
+   "main_n_tokens": 19,
+   "fix_n_tokens": 20
+  },
+  {
+   "id": "S7",
+   "input": "مش عارف أعمل إيه",
+   "main_text": "مُشْ عَارِفْ أَعْمَلْ إِيهْ",
+   "fix_text": "مُشْ عَارِفْ أَعْمَلْ إِيهْ",
+   "n_words_main": 4,
+   "n_words_fix": 4,
+   "words_preserved": true,
+   "word_changes": [],
+   "tokens_identical": true,
+   "tokens_changed_positions": null,
+   "wav_identical": true,
+   "main_dur": 1.115,
+   "fix_dur": 1.115,
+   "main_n_tokens": 22,
+   "fix_n_tokens": 22
+  },
+  {
+   "id": "S8",
+   "input": "هو هنا",
+   "main_text": "هُوْ هُنَا",
+   "fix_text": "هُوَ هِنَا",
+   "n_words_main": 2,
+   "n_words_fix": 2,
+   "words_preserved": true,
+   "word_changes": [
+    {
+     "kind": "vowels",
+     "before": "هُوْ",
+     "after": "هُوَ",
+     "changed_letters": {
+      "و": [
+       "ْ",
+       "َ"
+      ]
+     }
+    },
+    {
+     "kind": "vowels",
+     "before": "هُنَا",
+     "after": "هِنَا",
+     "changed_letters": {
+      "ه": [
+       "ُ",
+       "ِ"
+      ]
+     }
+    }
+   ],
+   "tokens_identical": false,
+   "tokens_changed_positions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "wav_identical": false,
+   "main_dur": 0.511,
+   "fix_dur": 0.615,
+   "main_n_tokens": 9,
+   "fix_n_tokens": 11
+  }
+ ],
+ "environment": {
+  "main_git_sha": "0319e2866fe736024f17df77f541dadf7be128e0",
+  "fix_git_sha": "653633b273e8345481c849d05c6865f9f4cfe3f1",
+  "main_torch": "2.14.1+cpu",
+  "fix_torch": "2.14.1+cpu",
+  "settings": {
+   "checkpoint": "states_cont_180516.pth (git blob b0656ac7 — unmodified)",
+   "speaker": 0,
+   "pace": 1.0,
+   "denoise": 0.005,
+   "peak_normalize": true,
+   "sample_rate": 22050
+  }
+ }
+}

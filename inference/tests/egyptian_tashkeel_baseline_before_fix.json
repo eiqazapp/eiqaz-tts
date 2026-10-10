@@ -1,0 +1,213 @@
+{
+  "fixture_status": "provisional_needs_native_review",
+  "warning": "These hand-authored references are a starting baseline, not a linguistically certified gold standard. A native Egyptian Arabic reviewer should validate each vowel before using aggregate scores as release gates.",
+  "n_cases": 8,
+  "internal_diacritic_accuracy": 0.5862,
+  "exact_focus_word_accuracy": 0.0,
+  "internal_letters_correct": 17,
+  "internal_letters_total": 29,
+  "focus_words_exact": 0,
+  "focus_words_total": 12,
+  "cases": [
+    {
+      "id": "egy_001",
+      "input": "هو بيكتب الدرس",
+      "actual": "هُوْ بِيَكْتُبْ اِلدِّرْسْ",
+      "expected": "هُوَ بِيِكْتِب الدَّرْس",
+      "skeleton_match": true,
+      "focus_words": [
+        {
+          "word_index": 1,
+          "actual_word": "بِيَكْتُبْ",
+          "expected_word": "بِيِكْتِب",
+          "skeleton_match": true,
+          "internal_letters": 3,
+          "internal_correct": 1,
+          "internal_accuracy": 0.3333,
+          "exact_word_match": false
+        }
+      ],
+      "internal_accuracy": 0.3333
+    },
+    {
+      "id": "egy_002",
+      "input": "إحنا بنروح المدرسة",
+      "actual": "إِحْنَا بِنُرُوحْ اِلْمَدْرَسَة",
+      "expected": "إِحْنَا بِنِرُوح الْمَدْرَسَة",
+      "skeleton_match": true,
+      "focus_words": [
+        {
+          "word_index": 1,
+          "actual_word": "بِنُرُوحْ",
+          "expected_word": "بِنِرُوح",
+          "skeleton_match": true,
+          "internal_letters": 3,
+          "internal_correct": 2,
+          "internal_accuracy": 0.6667,
+          "exact_word_match": false
+        }
+      ],
+      "internal_accuracy": 0.6667
+    },
+    {
+      "id": "egy_003",
+      "input": "دلوقتي هنبدأ الدرس يا عمر",
+      "actual": "دَلُوقَتِي هَنْبْدَأْ اِلدَّرْسْ يَا عُمَرْ",
+      "expected": "دِلْوَقْتِي هَنِبْدَأ الدَّرْس يَا عُمَر",
+      "skeleton_match": true,
+      "focus_words": [
+        {
+          "word_index": 0,
+          "actual_word": "دَلُوقَتِي",
+          "expected_word": "دِلْوَقْتِي",
+          "skeleton_match": true,
+          "internal_letters": 4,
+          "internal_correct": 1,
+          "internal_accuracy": 0.25,
+          "exact_word_match": false
+        },
+        {
+          "word_index": 1,
+          "actual_word": "هَنْبْدَأْ",
+          "expected_word": "هَنِبْدَأ",
+          "skeleton_match": true,
+          "internal_letters": 3,
+          "internal_correct": 2,
+          "internal_accuracy": 0.6667,
+          "exact_word_match": false
+        }
+      ],
+      "internal_accuracy": 0.4286
+    },
+    {
+      "id": "egy_004",
+      "input": "أنا رايح أعمل حاجة مهمة",
+      "actual": "أَنَا رَايِحْ أَعْمَلْ حَاجَة مُهِمَّة",
+      "expected": "أَنَا رَايِح أَعْمِل حَاجَة مُهِمَّة",
+      "skeleton_match": true,
+      "focus_words": [
+        {
+          "word_index": 1,
+          "actual_word": "رَايِحْ",
+          "expected_word": "رَايِح",
+          "skeleton_match": true,
+          "internal_letters": 2,
+          "internal_correct": 2,
+          "internal_accuracy": 1.0,
+          "exact_word_match": false
+        },
+        {
+          "word_index": 2,
+          "actual_word": "أَعْمَلْ",
+          "expected_word": "أَعْمِل",
+          "skeleton_match": true,
+          "internal_letters": 2,
+          "internal_correct": 1,
+          "internal_accuracy": 0.5,
+          "exact_word_match": false
+        }
+      ],
+      "internal_accuracy": 0.75
+    },
+    {
+      "id": "egy_005",
+      "input": "مش عارف أعمل إيه",
+      "actual": "مُشْ عَارِفْ أَعْمَلْ إِيهْ",
+      "expected": "مِشْ عَارِف أَعْمِل إِيه",
+      "skeleton_match": true,
+      "focus_words": [
+        {
+          "word_index": 1,
+          "actual_word": "عَارِفْ",
+          "expected_word": "عَارِف",
+          "skeleton_match": true,
+          "internal_letters": 2,
+          "internal_correct": 2,
+          "internal_accuracy": 1.0,
+          "exact_word_match": false
+        },
+        {
+          "word_index": 2,
+          "actual_word": "أَعْمَلْ",
+          "expected_word": "أَعْمِل",
+          "skeleton_match": true,
+          "internal_letters": 2,
+          "internal_correct": 1,
+          "internal_accuracy": 0.5,
+          "exact_word_match": false
+        }
+      ],
+      "internal_accuracy": 0.75
+    },
+    {
+      "id": "egy_006",
+      "input": "بكرة هنعمل تجربة جديدة",
+      "actual": "بْكْرَة هَنْعْمَلْ تَجْرِبَة جَدِيدَة",
+      "expected": "بُكْرَة هَنِعْمِل تَجْرِبَة جَدِيدَة",
+      "skeleton_match": true,
+      "focus_words": [
+        {
+          "word_index": 1,
+          "actual_word": "هَنْعْمَلْ",
+          "expected_word": "هَنِعْمِل",
+          "skeleton_match": true,
+          "internal_letters": 3,
+          "internal_correct": 1,
+          "internal_accuracy": 0.3333,
+          "exact_word_match": false
+        }
+      ],
+      "internal_accuracy": 0.3333
+    },
+    {
+      "id": "egy_007",
+      "input": "أنا مش فاهم السؤال ده",
+      "actual": "أَنَا مُشْ فَاهِمْ اِلسُّؤَالْ دَهْ",
+      "expected": "أَنَا مِشْ فَاهِم السُّؤَال دَه",
+      "skeleton_match": true,
+      "focus_words": [
+        {
+          "word_index": 2,
+          "actual_word": "فَاهِمْ",
+          "expected_word": "فَاهِم",
+          "skeleton_match": true,
+          "internal_letters": 2,
+          "internal_correct": 2,
+          "internal_accuracy": 1.0,
+          "exact_word_match": false
+        },
+        {
+          "word_index": 4,
+          "actual_word": "دَهْ",
+          "expected_word": "دَه",
+          "skeleton_match": true,
+          "internal_letters": 0,
+          "internal_correct": 0,
+          "internal_accuracy": null,
+          "exact_word_match": false
+        }
+      ],
+      "internal_accuracy": 1.0
+    },
+    {
+      "id": "egy_008",
+      "input": "المعلم بيقول للطالب",
+      "actual": "اِلْمُعَلِّمْ بِيَقُولْ لِلطَّالِبْ",
+      "expected": "الْمُعَلِّم بِيِقُول لِلطَّالِب",
+      "skeleton_match": true,
+      "focus_words": [
+        {
+          "word_index": 1,
+          "actual_word": "بِيَقُولْ",
+          "expected_word": "بِيِقُول",
+          "skeleton_match": true,
+          "internal_letters": 3,
+          "internal_correct": 2,
+          "internal_accuracy": 0.6667,
+          "exact_word_match": false
+        }
+      ],
+      "internal_accuracy": 0.6667
+    }
+  ]
+}
