@@ -1,0 +1,77 @@
+{
+ "git_sha": "653633b273e8345481c849d05c6865f9f4cfe3f1",
+ "rows": {
+  "bare|manual": {
+   "input": "هو بيقول كده",
+   "mode": "manual",
+   "final_text": "هو بيقول كده",
+   "effective_mode": "manual"
+  },
+  "bare|egyptian": {
+   "input": "هو بيقول كده",
+   "mode": "egyptian",
+   "final_text": "هُوَ بِيِقُولْ كِدَهْ",
+   "effective_mode": "egyptian"
+  },
+  "bare|fusha": {
+   "input": "هو بيقول كده",
+   "mode": "fusha",
+   "final_text": "هُوَ بِيَقُولُ كَدَهْ",
+   "effective_mode": "fusha"
+  },
+  "bare|auto": {
+   "input": "هو بيقول كده",
+   "mode": "auto",
+   "final_text": "هُوَ بِيِقُولْ كِدَهْ",
+   "effective_mode": "egyptian"
+  },
+  "partial|manual": {
+   "input": "بِيَكْتِب الدرس",
+   "mode": "manual",
+   "final_text": "بِيَكْتِب الدرس",
+   "effective_mode": "manual"
+  },
+  "partial|egyptian": {
+   "input": "بِيَكْتِب الدرس",
+   "mode": "egyptian",
+   "final_text": "بِيَكْتِبْ اِلدَّرْسْ",
+   "effective_mode": "egyptian"
+  },
+  "partial|fusha": {
+   "input": "بِيَكْتِب الدرس",
+   "mode": "fusha",
+   "final_text": "بِيَكْتِبُ الدِّرْسِ",
+   "effective_mode": "fusha"
+  },
+  "partial|auto": {
+   "input": "بِيَكْتِب الدرس",
+   "mode": "auto",
+   "final_text": "بِيَكْتِبْ اِلدَّرْسْ",
+   "effective_mode": "egyptian"
+  },
+  "full|manual": {
+   "input": "هُوَ بِيِقُولْ كِدَهْ",
+   "mode": "manual",
+   "final_text": "هُوَ بِيِقُولْ كِدَهْ",
+   "effective_mode": "manual"
+  },
+  "full|egyptian": {
+   "input": "هُوَ بِيِقُولْ كِدَهْ",
+   "mode": "egyptian",
+   "final_text": "هُوَ بِيِقُولْ كِدَهْ",
+   "effective_mode": "egyptian"
+  },
+  "full|fusha": {
+   "input": "هُوَ بِيِقُولْ كِدَهْ",
+   "mode": "fusha",
+   "final_text": "هُوَ بِيِقُولْ كِدَهْ",
+   "effective_mode": "fusha"
+  },
+  "full|auto": {
+   "input": "هُوَ بِيِقُولْ كِدَهْ",
+   "mode": "auto",
+   "final_text": "هُوَ بِيِقُولْ كِدَهْ",
+   "effective_mode": "manual"
+  }
+ }
+}
