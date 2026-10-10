@@ -1,77 +1,261 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "purpose": "Initial Egyptian Arabic internal-vowel evaluation set for inference-time TTS text preparation.",
   "status": "provisional_needs_native_review",
-  "warning": "These hand-authored references are a starting baseline, not a linguistically certified gold standard. A native Egyptian Arabic reviewer should validate each vowel before using aggregate scores as release gates.",
-  "comparison": "Compare diacritics on internal letters of focus words after matching the unvocalized letter skeleton. This isolates internal-vowel quality from final-ending heuristics.",
+  "warning": "These hand-authored references are a starting baseline, not a linguistically certified gold standard. A native Egyptian Arabic reviewer should validate each vowel before using aggregate scores as release gates. Where the project's own tashkeel corpus (21,880 texts, 306,987 words — the standard the production model was trained on) contradicts the hand-authored expectation, the corpus_reference field records the measured corpus-dominant form and support, and corpus_conflict is set to true.",
+  "comparison": "Compare diacritics on internal letters of focus words after matching the unvocalized letter skeleton. This isolates internal-vowel quality from final-ending heuristics. The initial letter (hamzat wasl / initial vowel) and final letter are excluded.",
+  "fields": {
+    "input_type": "unvocalized | partial | fully_vocalized | mixed",
+    "requested_mode": "diacritize mode passed to the pipeline",
+    "dialect": "egy | msa",
+    "expected": "hand-authored provisional expectation (or merge-semantics expectation for partial/fully_vocalized inputs: user marks preserved by design)",
+    "focus_word_indices": "0-based word indices in the FINAL output text",
+    "corpus_reference": "measured dominant form per focus word in the project tashkeel corpus (form, n_positions, family_pct, agrees_with_expected)",
+    "context_dependent": "true = the word has materially different corpus readings by context; excluded from accuracy aggregates, reported for review",
+    "review_status": "provisional (no native review yet) — every case in this file"
+  },
   "cases": [
     {
       "id": "egy_001",
       "input": "هو بيكتب الدرس",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
       "expected": "هُوَ بِيِكْتِب الدَّرْس",
-      "focus_word_indices": [
-        1
-      ]
+      "focus_word_indices": [1],
+      "corpus_reference": {
+        "بيكتب": {"form": "بِيِكْتِبْ", "n_positions": 2, "family_pct": 100.0, "agrees_with_expected": true, "note": "ركن ضعيف (موضعان) متسق مع عائلة بيِ- (بيقول 455 موضعًا)"}
+      }
     },
     {
       "id": "egy_002",
       "input": "إحنا بنروح المدرسة",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
       "expected": "إِحْنَا بِنِرُوح الْمَدْرَسَة",
-      "focus_word_indices": [
-        1
-      ]
+      "focus_word_indices": [1],
+      "corpus_reference": {
+        "بنروح": {"form": "بِنْرُوح", "n_positions": 8, "family_pct": 37.5, "agrees_with_expected": false, "note": "انقسام فعلي: بِنْرُوح 3/8، بِنِرُوح 2/8، بِنَرُوح/بِنُرُوح/بَنِرُوح 1/8 لكل — لا فرض (تصريف شخصي)"}
+      }
     },
     {
       "id": "egy_003",
       "input": "دلوقتي هنبدأ الدرس يا عمر",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
       "expected": "دِلْوَقْتِي هَنِبْدَأ الدَّرْس يَا عُمَر",
-      "focus_word_indices": [
-        0,
-        1
-      ]
+      "focus_word_indices": [0, 1],
+      "corpus_reference": {
+        "دلوقتي": {"form": "دِلْوَقْتِي", "n_positions": 192, "family_pct": 99.5, "agrees_with_expected": true},
+        "هنبدأ": {"form": "هَنِبْدَأ", "n_positions": 8, "family_pct": 62.5, "agrees_with_expected": true}
+      }
     },
     {
       "id": "egy_004",
       "input": "أنا رايح أعمل حاجة مهمة",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
       "expected": "أَنَا رَايِح أَعْمِل حَاجَة مُهِمَّة",
-      "focus_word_indices": [
-        1,
-        2
-      ]
+      "focus_word_indices": [1, 2],
+      "corpus_reference": {
+        "رايح": {"form": "رَايِح", "n_positions": 21, "family_pct": 85.7, "agrees_with_expected": true},
+        "أعمل": {"form": "أَعْمَل", "n_positions": 37, "family_pct": 62.2, "agrees_with_expected": false, "note": "سياقية: أَعْمَل (أفعل) 23/37 مقابل اِعْمَل (أمر) 7/37 — الافتراض اليدوي أَعْمِل بكسرة الميم لا يسنده corpus"}
+      }
     },
     {
       "id": "egy_005",
       "input": "مش عارف أعمل إيه",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
       "expected": "مِشْ عَارِف أَعْمِل إِيه",
-      "focus_word_indices": [
-        1,
-        2
-      ]
+      "focus_word_indices": [1, 2],
+      "corpus_reference": {
+        "مش": {"form": "مُشْ", "n_positions": 2988, "family_pct": 88.4, "agrees_with_expected": false, "note": "أوسع خلاف في المجموعة: corpus (معيار النموذج المدرَّب) يقول مُشْ بضمة 88.4% والافتراض اليدوي مِشْ بكسرة"},
+        "أعمل": {"form": "أَعْمَل", "n_positions": 37, "family_pct": 62.2, "agrees_with_expected": false}
+      }
     },
     {
       "id": "egy_006",
       "input": "بكرة هنعمل تجربة جديدة",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
       "expected": "بُكْرَة هَنِعْمِل تَجْرِبَة جَدِيدَة",
-      "focus_word_indices": [
-        1
-      ]
+      "focus_word_indices": [1],
+      "corpus_reference": {
+        "بكرة": {"form": "بُكْرَة", "n_positions": 15, "family_pct": 93.3, "agrees_with_expected": true},
+        "هنعمل": {"form": "هَنِعْمَل", "n_positions": 2, "family_pct": 50.0, "agrees_with_expected": false, "note": "موضعان فقط منقسمان (هِنْعَمَلْ/هَنِعْمَل) — لا فرض"}
+      }
     },
     {
       "id": "egy_007",
       "input": "أنا مش فاهم السؤال ده",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
       "expected": "أَنَا مِشْ فَاهِم السُّؤَال دَه",
-      "focus_word_indices": [
-        2,
-        4
-      ]
+      "focus_word_indices": [2, 4],
+      "corpus_reference": {
+        "مش": {"form": "مُشْ", "n_positions": 2988, "family_pct": 88.4, "agrees_with_expected": false, "note": "انظر egy_005"},
+        "فاهم": {"form": "فَاهِم", "n_positions": 32, "family_pct": 81.3, "agrees_with_expected": true}
+      }
     },
     {
       "id": "egy_008",
       "input": "المعلم بيقول للطالب",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
       "expected": "الْمُعَلِّم بِيِقُول لِلطَّالِب",
-      "focus_word_indices": [
-        1
-      ]
+      "focus_word_indices": [1],
+      "corpus_reference": {
+        "بيقول": {"form": "بِيِقُولْ", "n_positions": 455, "family_pct": 51.2, "agrees_with_expected": true, "note": "عائلة بيِ- 51.2% (بِيِقُول) مقابل بِيْقُول 36.5% — ولا سند إطلاقًا لفتحة الياء (مخرج catt الحالي)"},
+        "المعلم": {"form": "اِلْمُعَلِّم", "n_positions": 2, "family_pct": 100.0, "agrees_with_expected": false, "note": "خلاف موضع الهمزة فقط (مستثنى من القياس الداخلي أصلًا)"}
+      }
+    },
+    {
+      "id": "egy_009",
+      "input": "بِيَكْتِب الدرس",
+      "input_type": "partial",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "بِيَكْتِب الدَّرْس",
+      "focus_word_indices": [0],
+      "expected_semantics": "merge: حركات المستخدم على الكلمة المشكولة جزئيًا محفوظة بالتصميم (فتحة الياء هنا إرادة المستخدم)؛ الكلمات العارية تُستكمل من معيار corpus",
+      "corpus_reference": {
+        "بيكتب": {"form": "بِيِكْتِبْ", "n_positions": 2, "family_pct": 100.0, "agrees_with_expected": false, "note": "المخرج المتوقع يتبع حركات المستخدم لا corpus — هذا هو السلوك المقصود (المبدأ د)"}
+      }
+    },
+    {
+      "id": "egy_010",
+      "input": "هُوَ بيكتب الدرس",
+      "input_type": "partial",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "هُوَ بِيِكْتِب الدَّرْس",
+      "focus_word_indices": [1],
+      "expected_semantics": "merge: هُوَ محفوظة حرفيًا (حركتا المستخدم)؛ بيكتب العارية تأخذ شكل corpus بِيِكْتِبْ",
+      "corpus_reference": {
+        "بيكتب": {"form": "بِيِكْتِبْ", "n_positions": 2, "family_pct": 100.0, "agrees_with_expected": true}
+      }
+    },
+    {
+      "id": "egy_011",
+      "input": "الْمُعَلِّم بِيِقُول لِلطَّالِب",
+      "input_type": "fully_vocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "الْمُعَلِّم بِيِقُول لِلطَّالِب",
+      "focus_word_indices": [1],
+      "expected_semantics": "نص مكتمل: كل حركات المستخدم محفوظة حرفيًا (الحروف العارية — همزة الوصل والنهايات — قد تُستكمل بأسلوب مصري)",
+      "corpus_reference": {
+        "بيقول": {"form": "بِيِقُولْ", "n_positions": 455, "family_pct": 51.2, "agrees_with_expected": true}
+      }
+    },
+    {
+      "id": "egy_012",
+      "input": "عندي 5 كتب مهمة، صح؟",
+      "input_type": "mixed",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "عِنْدِي خَمْسَة كُتُب مُهِمَّة, صَحّ?",
+      "focus_word_indices": [3],
+      "corpus_reference": {
+        "مهمة": {"form": "مُهِمَّة", "n_positions": 380, "family_pct": 99.5, "agrees_with_expected": true}
+      }
+    },
+    {
+      "id": "egy_013",
+      "input": "بكرة الساعة 10 هنبدأ التجربة.",
+      "input_type": "mixed",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "بُكْرَة السَّاعَة عَشْرَة هَنِبْدَأ التَّجْرِبَة.",
+      "focus_word_indices": [0, 3],
+      "corpus_reference": {
+        "بكرة": {"form": "بُكْرَة", "n_positions": 15, "family_pct": 93.3, "agrees_with_expected": true},
+        "هنبدأ": {"form": "هَنِبْدَأ", "n_positions": 8, "family_pct": 62.5, "agrees_with_expected": true}
+      }
+    },
+    {
+      "id": "egy_014",
+      "input": "هو هنا",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "هُوَ هِنَا",
+      "focus_word_indices": [1],
+      "corpus_reference": {
+        "هنا": {"form": "هِنَا", "n_positions": 836, "family_pct": 83.5, "agrees_with_expected": true, "note": "هُنَا الفصيحة مقابل هِنَا المصرية — مخرج catt الحالي هُنَا"}
+      }
+    },
+    {
+      "id": "egy_015",
+      "input": "أنا رايح الشغل بكرة، ومش عارف هنرجع إمتى.",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "أَنَا رَايِح الشُّغْل بُكْرَة, وِمُشْ عَارِف هنرجع إمتى.",
+      "focus_word_indices": [1, 3, 4],
+      "corpus_reference": {
+        "رايح": {"form": "رَايِح", "n_positions": 21, "family_pct": 85.7, "agrees_with_expected": true},
+        "بكرة": {"form": "بُكْرَة", "n_positions": 15, "family_pct": 93.3, "agrees_with_expected": true},
+        "عارف": {"form": "عَارِف", "n_positions": 99, "family_pct": 100.0, "agrees_with_expected": true}
+      }
+    },
+    {
+      "id": "egy_016",
+      "input": "هنا فيه حاجة لازم تعملها",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "هِنَا فِيه حَاجَة لَازِم تَعْمَلْهَا",
+      "focus_word_indices": [0, 3],
+      "corpus_reference": {
+        "هنا": {"form": "هِنَا", "n_positions": 836, "family_pct": 83.5, "agrees_with_expected": true},
+        "لازم": {"form": "لَازِمْ", "n_positions": 950, "family_pct": 99.0, "agrees_with_expected": true, "note": "كسرة الزاي — catt يخرج لَازَمْ"}
+      }
+    },
+    {
+      "id": "egy_017",
+      "input": "أنا أعمل حاجة",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "أَنَا أَعْمَل حَاجَة",
+      "focus_word_indices": [1],
+      "context_dependent": true,
+      "corpus_reference": {
+        "أعمل": {"form": "أَعْمَل", "n_positions": 37, "family_pct": 62.2, "agrees_with_expected": true, "note": "سياقية بالكامل: أَعْمَل (أفعل) مقابل اِعْمَل (أمر) — تُستثنى من المجاميع وتُعرض للمراجعة"}
+      }
+    },
+    {
+      "id": "egy_018",
+      "input": "اعمل كده",
+      "input_type": "unvocalized",
+      "dialect": "egy",
+      "requested_mode": "auto",
+      "expected": "اِعْمَل كِدَهْ",
+      "focus_word_indices": [0],
+      "context_dependent": true,
+      "corpus_reference": {
+        "اعمل": {"form": "اِعْمَل", "n_positions": 37, "family_pct": 18.9, "agrees_with_expected": true, "note": "قراءة الأمر — تُستثنى من المجاميع"}
+      }
+    },
+    {
+      "id": "msa_001",
+      "input": "هذا درس مفيد للطلاب",
+      "input_type": "unvocalized",
+      "dialect": "msa",
+      "requested_mode": "auto",
+      "expected": "هَذَا دَرْسٌ مُفِيدٌ لِلطَّلَّابِ",
+      "focus_word_indices": [1, 2],
+      "corpus_reference": {},
+      "note": "الفصحى خارج نطاق الحركات الداخلية المصرية — إثبات أن auto يختار fusha عند dialect=msa فقط"
     }
   ]
 }

@@ -52,9 +52,12 @@ DIGIT_LA = {str(i): chr(0x0660 + i) for i in range(10)}
 
 # ملصقات الواجهة (إلزامية عند أي عرض للمستخدم)
 LABEL_AR = ('تصحيح جزئي: أرقام وترقيم وقوائم مغلقة ونهايات فقط — '
-            'الحركات الداخلية تبقى من catt_eo')
+            'الحركات الداخلية تبقى من catt_eo إلا قائمة مغلقة موثقة من '
+            'corpus التشكيل (det-v1.3: 22 كلمة عالية التردد + هو)')
 LABEL_EN = ('Partial fix: numbers, punctuation, closed lists, endings '
-            'only — internal vowels remain from catt_eo')
+            'only — internal vowels remain from catt_eo except a '
+            'documented closed set from the tashkeel corpus (det-v1.3: '
+            '22 high-frequency words + hua)')
 
 # استثناءات كسرة ال التعريف (منقول حرفيًا من ph3_engine_v53.mjs + استثناء
 # الدليل §د «آلآن إن ورد» + حارس لام المحمولة: ال التعريف الحقيقية لامها
@@ -343,13 +346,13 @@ class DetTashkeel:
             fixes['hiya'] += 1
             return True
         if k == 'هو':
-            assim = False
-            if next_w is not None and next_w.units:
-                l0, d0 = next_w.units[0]
-                l1 = next_w.units[1][0] if len(next_w.units) > 1 else ''
-                assim = (l0 in 'اأإآ' and
-                         (l1 == 'ل' or l0 in 'أإآ' or d0.startswith(KASRA)))
-            w.units = [('ه', DAMMA), ('و', FATHA if assim else SUKUN)]
+            # هُوَ دائمًا — دليل corpus التشكيل (معيار المشروع الذي
+            # درّب النموذج عليه): 2,286/2,336 موضعًا هُوَ (97.9%) مقابل
+            # 25 هُوْ فقط (1.1% — ضجيج محرك). قاعدة §ج-5 القديمة كانت
+            # تُخرج هُوْ الافتراضية وتخالف ممارسة corpus نفسها (انحدار
+            # موثق في قياس det_eval50). فرع الإدغام الشرطي أُزيل: لم
+            # يسنده أي توزيع فعلي في corpus.
+            w.units = [('ه', DAMMA), ('و', FATHA)]
             fixes['hua'] += 1
             return True
         return False
